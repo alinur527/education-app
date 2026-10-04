@@ -12,6 +12,22 @@ import org.springframework.web.server.ResponseStatusException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+  @ExceptionHandler(ent.kz.entbackend.platform.PlatformException.class)
+  ResponseEntity<Map<String, String>> platform(
+    ent.kz.entbackend.platform.PlatformException e
+  ) {
+    return ResponseEntity.status(e.getStatusCode()).body(
+      Map.of("code", e.code())
+    );
+  }
+
+  @ExceptionHandler(
+    org.springframework.web.multipart.MaxUploadSizeExceededException.class
+  )
+  ResponseEntity<Map<String, String>> uploadTooLarge(Exception e) {
+    return ResponseEntity.status(413).body(Map.of("code", "FILE_TOO_LARGE"));
+  }
+
   @ExceptionHandler(ResponseStatusException.class)
   ResponseEntity<Map<String, String>> status(ResponseStatusException e) {
     int status = e.getStatusCode().value();

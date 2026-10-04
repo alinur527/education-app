@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.transaction.annotation.Transactional
 @RestController
 @RequestMapping("/api/admin/theories")
 public class AdminTheoryController {
 
   private final AdminTheoryService adminTheoryService;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  private ent.kz.entbackend.platform.content.LegacyContentBridge editorial;
 
   public AdminTheoryController(AdminTheoryService adminTheoryService) {
     this.adminTheoryService = adminTheoryService;
@@ -40,7 +44,12 @@ public class AdminTheoryController {
   public TheoryAdminResponse createTheory(
     @Valid @RequestBody TheoryAdminRequest request
   ) {
-    return adminTheoryService.createTheory(request);
+    var result = adminTheoryService.createTheory(request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.THEORY,
+      result.id()
+    );
+    return result;
   }
 
   @PutMapping(
@@ -51,11 +60,19 @@ public class AdminTheoryController {
     @PathVariable UUID id,
     @Valid @RequestBody TheoryAdminRequest request
   ) {
-    return adminTheoryService.updateTheory(id, request);
+    editorial.lockExisting(id);
+    var result = adminTheoryService.updateTheory(id, request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.THEORY,
+      result.id()
+    );
+    return result;
   }
 
   @DeleteMapping("/{id}")
   public void deleteTheory(@PathVariable UUID id) {
+    editorial.lockExisting(id);
     adminTheoryService.softDeleteTheory(id);
+    editorial.sync(ent.kz.entbackend.platform.content.ContentKind.THEORY, id);
   }
 }

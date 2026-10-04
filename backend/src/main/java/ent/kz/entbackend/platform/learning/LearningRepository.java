@@ -1,0 +1,111 @@
+package ent.kz.entbackend.platform.learning;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ent.kz.entbackend.dto.QuestionSnapshot;
+import java.util.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class LearningRepository {
+
+  private final JdbcTemplate db;
+  private final ObjectMapper json;
+
+  public LearningRepository(JdbcTemplate db, ObjectMapper json) {
+    this.db = db;
+    this.json = json;
+  }
+
+  private static final String LATEST =
+    "SELECT DISTINCT ON(question_id) * FROM completed_question_activity WHERE user_id=? ORDER BY question_id,completed_at DESC,session_id DESC";
+
+  public List<Map<String, Object>> errors(UUID user) {
+    return db.queryForList(
+      "SELECT e.topic_id AS \"topicId\",min(e.snapshot->>'topicRu') AS \"titleRu\",min(e.snapshot->>'topicKz') AS \"titleKz\",count(*) AS count FROM (" +
+        LATEST +
+        ") e WHERE NOT correct AND topic_id IS NOT NULL AND EXISTS(SELECT 1 FROM topics t JOIN subjects s ON s.id=t.subject_id WHERE t.id=e.topic_id AND t.is_active AND s.is_active) GROUP BY e.topic_id ORDER BY count(*) DESC,e.topic_id",
+      user
+    );
+  }
+
+  public List<QuestionSnapshot> review(UUID user, UUID topic) {
+    return db.query(
+      "SELECT snapshot::text FROM (" +
+        LATEST +
+        ") e WHERE NOT correct AND topic_id=? ORDER BY completed_at DESC,question_id LIMIT 50",
+      (r, n) -> {
+        try {
+          return json.readValue(r.getString(1), QuestionSnapshot.class);
+        } catch (Exception ex) {
+          throw new IllegalStateException("Invalid frozen question", ex);
+        }
+      },
+      user,
+      topic
+    );
+  }
+
+  public Map<String, Object> overview(UUID user) {
+    return db.queryForMap(
+      "SELECT count(*) AS \"questionsAnswered\",count(DISTINCT session_id) AS \"testsCompleted\",coalesce(round(100.0*count(*) FILTER(WHERE correct)/nullif(count(*),0),1),0) AS accuracy FROM completed_question_activity WHERE user_id=?",
+      user
+    );
+  }
+
+  public List<Map<String, Object>> topics(UUID user) {
+    return db.queryForList(
+      """
+      WITH attempts AS (
+        SELECT topic_id,score,total_questions,correct_answers,completed_at,
+        row_number() OVER(PARTITION BY topic_id ORDER BY completed_at DESC,id DESC) AS rn
+        FROM test_sessions WHERE user_id=? AND status='COMPLETED'
+      ), scores AS (
+        SELECT topic_id,count(*) AS attempts,max(score) AS best,max(score) FILTER(WHERE rn=1) AS last,
+        100.0*sum(correct_answers) FILTER(WHERE rn<=3)/nullif(sum(total_questions) FILTER(WHERE rn<=3),0) AS accuracy
+        FROM attempts GROUP BY topic_id
+      ), reading AS (
+        SELECT t.topic_id,count(*) AS total,count(*) FILTER(WHERE p.is_read) AS done
+        FROM theories t LEFT JOIN user_theory_progress p ON p.theory_id=t.id AND p.user_id=?
+        WHERE t.is_active GROUP BY t.topic_id
+      )
+      SELECT t.id AS "topicId",s.id AS "subjectId",t.title_ru AS "titleRu",t.title_kz AS "titleKz",
+        s.name_ru AS "subjectRu",s.name_kz AS "subjectKz",coalesce(a.attempts,0) AS attempts,
+        coalesce(a.best,0) AS "bestScore",coalesce(a.last,0) AS "lastScore",coalesce(round(a.accuracy,1),0) AS "recentAccuracy",
+        coalesce(r.total,0) AS "theoryTotal",coalesce(r.done,0) AS "theoryRead",
+        round(CASE WHEN coalesce(r.total,0)=0 THEN coalesce(a.accuracy,0)
+        ELSE 20.0*r.done/r.total+0.8*coalesce(a.accuracy,0) END,1) AS mastery
+      FROM topics t JOIN subjects s ON s.id=t.subject_id LEFT JOIN scores a ON a.topic_id=t.id LEFT JOIN reading r ON r.topic_id=t.id
+      WHERE t.is_active AND s.is_active ORDER BY mastery,t.sort_order,t.id
+      """,
+      user,
+      user
+    );
+  }
+
+  public Map<String, Object> continueTopic(UUID user) {
+    var rows = db.queryForList(
+      """
+      SELECT t.id AS "topicId",t.title_ru AS "titleRu",t.title_kz AS "titleKz" FROM (
+        SELECT topic_id,coalesce(completed_at,started_at) AS at FROM test_sessions WHERE user_id=?
+        UNION ALL SELECT th.topic_id,p.read_at AS at FROM user_theory_progress p JOIN theories th ON th.id=p.theory_id WHERE p.user_id=? AND p.is_read
+      ) a JOIN topics t ON t.id=a.topic_id JOIN subjects s ON s.id=t.subject_id
+      WHERE t.is_active AND s.is_active ORDER BY a.at DESC NULLS LAST,t.id LIMIT 1
+      """,
+      user,
+      user
+    );
+    return rows.isEmpty() ? null : rows.getFirst();
+  }
+
+  public void read(UUID user, UUID theory) {
+    int count = db.update(
+      "INSERT INTO user_theory_progress(user_id,theory_id,is_read,read_at) SELECT ?,th.id,true,now() FROM theories th JOIN topics t ON t.id=th.topic_id JOIN subjects s ON s.id=t.subject_id WHERE th.id=? AND th.is_active AND t.is_active AND s.is_active ON CONFLICT(user_id,theory_id) DO UPDATE SET is_read=true,read_at=now()",
+      user,
+      theory
+    );
+    if (
+      count == 0
+    ) throw ent.kz.entbackend.platform.PlatformException.missing();
+  }
+}
