@@ -66,18 +66,24 @@ public class LearningRepository {
   }
 
   public List<Map<String, Object>> topics(UUID user) {
+    return topics(user, null);
+  }
+
+  public List<Map<String, Object>> topics(UUID user, java.time.Instant asOf) {
+    java.sql.Timestamp cutoff =
+      asOf == null ? null : java.sql.Timestamp.from(asOf);
     return db.queryForList(
       """
       WITH attempts AS (
         SELECT topic_id,100.0*sum(earned_points)/nullif(sum(max_points),0) AS score,count(*) AS total_questions,count(*) FILTER(WHERE correct) AS correct_answers,completed_at,
         row_number() OVER(PARTITION BY topic_id ORDER BY completed_at DESC,session_id DESC) AS rn
-        FROM completed_question_activity WHERE user_id=? GROUP BY topic_id,session_id,completed_at
+        FROM completed_question_activity WHERE user_id=? AND (?::timestamptz IS NULL OR (completed_at AT TIME ZONE 'UTC')<=?) GROUP BY topic_id,session_id,completed_at
       ), scores AS (
         SELECT topic_id,count(*) AS attempts,max(score) AS best,max(score) FILTER(WHERE rn=1) AS last,
         100.0*sum(correct_answers) FILTER(WHERE rn<=3)/nullif(sum(total_questions) FILTER(WHERE rn<=3),0) AS accuracy
         FROM attempts GROUP BY topic_id
       ), reading AS (
-        SELECT t.topic_id,count(*) AS total,count(*) FILTER(WHERE p.is_read) AS done
+        SELECT t.topic_id,count(*) AS total,count(*) FILTER(WHERE p.is_read AND (?::timestamptz IS NULL OR (p.read_at AT TIME ZONE 'UTC')<=?)) AS done
         FROM theories t LEFT JOIN user_theory_progress p ON p.theory_id=t.id AND p.user_id=?
         WHERE t.is_active GROUP BY t.topic_id
       )
@@ -91,6 +97,10 @@ public class LearningRepository {
       WHERE t.is_active AND s.is_active AND (coalesce(qb.total,0)>0 OR coalesce(r.total,0)>0) ORDER BY mastery,t.sort_order,t.id
       """,
       user,
+      cutoff,
+      cutoff,
+      cutoff,
+      cutoff,
       user
     );
   }
@@ -100,7 +110,7 @@ public class LearningRepository {
       """
       SELECT t.id AS "topicId",t.title_ru AS "titleRu",t.title_kz AS "titleKz" FROM (
         SELECT topic_id,coalesce(completed_at,started_at) AS at FROM test_sessions WHERE user_id=?
-        UNION ALL SELECT th.topic_id,p.read_at AS at FROM user_theory_progress p JOIN theories th ON th.id=p.theory_id WHERE p.user_id=? AND p.is_read
+        UNION ALL SELECT th.topic_id,coalesce(p.last_read_at,p.read_at) AS at FROM user_theory_progress p JOIN theories th ON th.id=p.theory_id WHERE p.user_id=? AND p.is_read
       ) a JOIN topics t ON t.id=a.topic_id JOIN subjects s ON s.id=t.subject_id
       WHERE t.is_active AND s.is_active ORDER BY a.at DESC NULLS LAST,t.id LIMIT 1
       """,
@@ -112,7 +122,7 @@ public class LearningRepository {
 
   public void read(UUID user, UUID theory) {
     int count = db.update(
-      "INSERT INTO user_theory_progress(user_id,theory_id,is_read,read_at) SELECT ?,th.id,true,now() FROM theories th JOIN topics t ON t.id=th.topic_id JOIN subjects s ON s.id=t.subject_id WHERE th.id=? AND th.is_active AND t.is_active AND s.is_active ON CONFLICT(user_id,theory_id) DO UPDATE SET is_read=true,read_at=now()",
+      "INSERT INTO user_theory_progress(user_id,theory_id,is_read,read_at,last_read_at) SELECT ?,th.id,true,now(),now() FROM theories th JOIN topics t ON t.id=th.topic_id JOIN subjects s ON s.id=t.subject_id WHERE th.id=? AND th.is_active AND t.is_active AND s.is_active ON CONFLICT(user_id,theory_id) DO UPDATE SET is_read=true,read_at=coalesce(user_theory_progress.read_at,excluded.read_at),last_read_at=excluded.last_read_at",
       user,
       theory
     );

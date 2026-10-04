@@ -48,8 +48,8 @@ Teacher analytics show current group members, actual completed lesson counts, av
 `/learning` and the dashboard calculate mastery on the server:
 
 ```
-recentAccuracy = 100 × sum(earned points in latest 3 completed attempts containing the topic)
-                      / sum(maximum points for that topic in those attempts)
+recentAccuracy = 100 × fully correct questions in latest 3 completed attempts containing the topic
+                      / all snapshot questions for that topic in those attempts
 theoryFraction = marked-read active theories / all active theories
 mastery = 20 × theoryFraction + 0.8 × recentAccuracy
 ```
