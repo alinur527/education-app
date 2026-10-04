@@ -85,7 +85,7 @@ public class ContentRepository {
     int size
   ) {
     String where =
-      " WHERE (?='' OR kind=?) AND (?='' OR status=?) AND (title_ru ILIKE ? OR title_kz ILIKE ?) AND (?::uuid IS NULL OR owner_id=?::uuid)";
+      " WHERE (?='' OR kind=?) AND (?='' OR status=?) AND (title_ru ILIKE ? OR title_kz ILIKE ?) AND (?::uuid IS NULL OR (owner_id=?::uuid AND kind NOT IN ('SUBJECT','TOPIC','THEORY','QUESTION')))";
     Object[] values = {
       kind,
       kind,

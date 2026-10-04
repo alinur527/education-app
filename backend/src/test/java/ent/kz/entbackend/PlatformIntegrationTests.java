@@ -255,6 +255,9 @@ class PlatformIntegrationTests {
       Map.of("topicId", topic.path("id").asText()),
       200
     );
+    call("PATCH","/api/admin/users/"+editor.id(),admin,Map.of("role","TEACHER","active",true,"revision",0),200);
+    assertEquals(0,call("GET","/api/cms/content",editor,null,200).path("items").size());
+
   }
 
   @Test
