@@ -3,3 +3,6 @@
 mvnw text eol=lf
 *.cmd text eol=crlf
 *.png binary
+/content/**/*.json text eol=lf
+# User-provided inputs are byte-preserved; keep this override after content rules.
+/content/inputs/** -text

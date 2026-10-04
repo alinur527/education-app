@@ -124,5 +124,5 @@ for subject in data['subjects']:
             else:raise AssertionError(q['questionType'])
 
 summary=dict(schema='education-pilot-checks/v1',sourceSha256=hashlib.sha256((ROOT/'pilot.json').read_bytes()).hexdigest(),structuralQuestionCount=len(questions),distinctRussianPrompts=len(titles),questionTypes=dict(Counter(x['questionType'] for x in questions.values())),explicitAnswerChecks=len(proofs),proofs=proofs,limitations=['Conceptual, translation and historical explanations reviewed by model; no human subject expert approval claimed','This script proves authored arithmetic and structural constraints, not completeness of ENT coverage','Official PDF examples were not mechanically copied into the bank'])
-(ROOT/'pilot-proofs.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(ROOT/'pilot-proofs.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 print(json.dumps({k:v for k,v in summary.items() if k not in('proofs','limitations')},ensure_ascii=False))

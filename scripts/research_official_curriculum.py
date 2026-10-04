@@ -102,13 +102,13 @@ def download(record: dict, extension: str = 'pdf') -> dict:
             if extension == 'pdf':
                 with pdfplumber.open(target) as pdf:
                     pages = [{'page': index + 1, 'text': page.extract_text() or '', 'tables': page.extract_tables()} for index, page in enumerate(pdf.pages)]
-                (OUTPUT / f"{record['id']}.extracted.json").write_text(json.dumps(pages, ensure_ascii=False, indent=2), encoding='utf-8')
+                (OUTPUT / f"{record['id']}.extracted.json").write_text(json.dumps(pages, ensure_ascii=False, indent=2), encoding='utf-8', newline='\n')
                 item['pageCount'] = len(pages)
                 first = pages[0]['text']
                 if ('2026' in first and ('использования' in first or 'қолдану' in first)):
                     item['appliesFrom'] = 2026
                     item['appliesFromEvidence'] = {'page': 1, 'basis': 'Explicit document heading'}
-            cached.write_text(json.dumps(item, ensure_ascii=False, indent=2), encoding='utf-8')
+            cached.write_text(json.dumps(item, ensure_ascii=False, indent=2), encoding='utf-8', newline='\n')
             return item
         except Exception as error:
             item.update(accessStatus='DOWNLOAD_FAILED', error=str(error))
@@ -140,7 +140,7 @@ def main():
     ]:
         manifest.append(download(record, 'html'))
     manifest.append(download({'id': 'NTC-PROFILE-PAIRS', 'url': 'https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf', 'kind': 'OFFICIAL_PROGRAMME_SUBJECT_PAIRS'}))
-    (ARTIFACTS / 'official-source-manifest.json').write_text(json.dumps({'schema': 'education-app-official-source-manifest-v1', 'sources': manifest}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    (ARTIFACTS / 'official-source-manifest.json').write_text(json.dumps({'schema': 'education-app-official-source-manifest-v1', 'sources': manifest}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
 
 
 if __name__ == '__main__':

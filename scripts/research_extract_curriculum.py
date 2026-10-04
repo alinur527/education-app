@@ -185,7 +185,7 @@ def main():
     catalog = json.loads((INPUT / 'ENT_sources_2026-10-04.json').read_text(encoding='utf-8-sig'))
     documents = [extract(spec) for spec in catalog['specifications']]
     result = {'schema': 'education-app-official-curriculum-v1', 'checkedAt': datetime.now(timezone.utc).isoformat(), 'scope': 'NTC full-duration admission; official source document variants remain separate', 'editorialApproval': False, 'programmes': documents, 'inputConsistency': consistency(catalog)}
-    (OUTPUT / 'official-curriculum.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    (OUTPUT / 'official-curriculum.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
     for item in documents:
         print(item['sourceId'], item['sectionCount'], item['topicCount'], item['extractionWarnings'])
     print('CONSISTENCY', result['inputConsistency'])

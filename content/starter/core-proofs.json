@@ -1,6 +1,6 @@
 {
   "schema": "education-core-checks/v1",
-  "sourceSha256": "7fee3defe67ecf1542de68926f6895a90cf7908c842714aafd1b288817cdc116",
+  "sourceSha256": "951be462ba2eb1bd70d5c042ed841f18450cfeeaaeca78ad7794cdc1f1276923",
   "structuralQuestionCount": 160,
   "distinctRussianPrompts": 160,
   "contextCount": 2,

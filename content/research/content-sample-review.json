@@ -7,28 +7,28 @@
   "files": {
     "pilot": {
       "path": "content/starter/pilot.json",
-      "sha256": "7fdfd169236dce43886dddc47bfa79da4942a8dc7ea0e8009d355594ac3b39e5",
+      "sha256": "ea38d0c5fc098d5c2ca590d182342e5293cf8a8b2b00b4c0135e3737f692ed04",
       "topicOrLessonCount": 15,
       "structuralQuestionCount": 150,
       "structuralChecksPassed": true
     },
     "languages": {
       "path": "content/starter/languages.json",
-      "sha256": "7cb8b70b6da193509c3a358980098e068791dcd521d84845e0da79f939b6e9e0",
+      "sha256": "e8646e77c7615bb0324c74e78109522c9aef0e9bf46f94d21bd83f650309b558",
       "topicOrLessonCount": 14,
       "structuralQuestionCount": 140,
       "structuralChecksPassed": true
     },
     "python-course": {
       "path": "content/starter/python-course.json",
-      "sha256": "55f68333d01cb972fdd2e1812c297f3f96bc4b1f0cb1698d2d8a3619431cab37",
+      "sha256": "9d849cfe39016bb8e9379b1d69d3412f019dafe30aa06626346a828ec51ddf67",
       "topicOrLessonCount": 6,
       "structuralQuestionCount": 30,
       "structuralChecksPassed": true
     },
     "core": {
       "path": "content/starter/core.json",
-      "sha256": "7fee3defe67ecf1542de68926f6895a90cf7908c842714aafd1b288817cdc116",
+      "sha256": "951be462ba2eb1bd70d5c042ed841f18450cfeeaaeca78ad7794cdc1f1276923",
       "topicOrLessonCount": 16,
       "structuralQuestionCount": 160,
       "structuralChecksPassed": true

@@ -30,6 +30,8 @@ The expansion suite additionally covers versioned pack/source UI, mass review/pu
 
 Viewports: 320/390/768/1024/1440. Reduced motion, long RU/KZ text, responsive CMS hierarchy/editor/preview, groups/courses, planner/practice and safe rich content were exercised. Axe found no violations in tested surfaces; this is not full accessibility certification. No unexpected browser/console/network errors remained in passing runs.
 
+The first expansion CI run caught a Windows CRLF versus Git LF mismatch in byte-based content proof hashes. New content JSON and its writers now use canonical LF; the four original input files remain byte-preserved. Proof/review hashes were regenerated for the identical parsed content, and checked against staged Git blobs. The canonical release-plan checksum and runtime content are unchanged. That failed run is not counted as release verification.
+
 The independent [security review](EXPANSION_SECURITY_REVIEW.md) closed editorial answer-evidence leakage, pack locking/conflicts, context withdrawal, stale session/deadline races and legacy assessment compatibility. No unresolved P0/P1 findings remain. Source content is untrusted; safe renderers never execute imported HTML. Student attachments use real ClamAV, revision-specific grades and protected downloads.
 
 [CONTENT_RELEASE_REPORT.md](CONTENT_RELEASE_REPORT.md) records actual publication, file hashes, repeat/resume and preservation of 51 old users / 26 unchanged old attempts / 17 old Flyway checksums. [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md) identifies deployment work not claimed as completed. Full ENT content and human subject approval remain incomplete; working software is not evidence of a complete or expert-reviewed exam bank.

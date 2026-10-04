@@ -1,6 +1,6 @@
 {
   "schema": "education-pilot-checks/v1",
-  "sourceSha256": "7fdfd169236dce43886dddc47bfa79da4942a8dc7ea0e8009d355594ac3b39e5",
+  "sourceSha256": "ea38d0c5fc098d5c2ca590d182342e5293cf8a8b2b00b4c0135e3737f692ed04",
   "structuralQuestionCount": 150,
   "distinctRussianPrompts": 150,
   "questionTypes": {

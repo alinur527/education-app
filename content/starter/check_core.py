@@ -109,5 +109,5 @@ for subject in data['subjects']:
 assert len(contexts)==2
 assert sum('contextExternalKey' in q for q in questions.values())==20
 summary=dict(schema='education-core-checks/v1',sourceSha256=hashlib.sha256((ROOT/'core.json').read_bytes()).hexdigest(),structuralQuestionCount=len(questions),distinctRussianPrompts=len(titles),contextCount=len(contexts),contextQuestionCount=20,questionTypes=dict(Counter(q['questionType'] for q in questions.values())),explicitAnswerChecks=len(proofs),proofs=proofs,limitations=['Conceptual, legal, historical and translation checks are model review, not human certification','Law content reads Constitution K2600000000 effective 2026-07-01; older article numbering must not be substituted','Reading passages and their scenarios are original fictional educational examples','This is starter coverage, not an official exam-ready complete bank'])
-(ROOT/'core-proofs.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(ROOT/'core-proofs.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 print(json.dumps({k:v for k,v in summary.items() if k not in ('proofs','limitations')},ensure_ascii=False))

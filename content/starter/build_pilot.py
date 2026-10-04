@@ -65,7 +65,7 @@ def finish(filename='pilot.json'):
             value=re.sub(r'(?<=[A-Za-zΣ])(?=[А-Яа-яЁёӘәҒғҚқҢңӨөҰұҮүҺһІі])', ' ', value)
         return value
     payload=typeset(dict(schema='education-starter-authoring/v1', authoring='Original AI-assisted explanations and exercises; no copied official question bank; no human review claimed', subjects=SUBJECTS))
-    (OUT/filename).write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    (OUT/filename).write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 
 
 if __name__ == '__main__':

@@ -52,7 +52,7 @@ def digest(value):
 
 def write(path, value):
     path=Path(path); path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+"\n", encoding="utf-8", newline="\n")
 
 def row(key, kind, payload, parent=None):
     value={"externalKey":key,"kind":kind,"payload":payload,"sourceVersion":VERSION}
