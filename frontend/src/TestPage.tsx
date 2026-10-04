@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { AnswerControls } from './features/assessment/AnswerControls';
+import { completeAnswer, type Answer } from './features/assessment/model';
+import { InlineText, RichText } from './features/content/RichText';
+import { useL } from './features/shared';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { Navigate, useBlocker, useNavigate, useParams } from 'react-router';
 import { ArrowLeft, ArrowRight, Check, LogOut } from 'lucide-react';
 import type { z } from 'zod';
@@ -20,8 +24,14 @@ export function TestPage() {
 function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
   const { t, user } = useApp();
   const navigate = useNavigate();
+  const l = useL();
+  const [now, setNow] = useState(Date.now);
+  const remaining = session.deadlineAt
+    ? Math.max(0, Math.ceil((Date.parse(session.deadlineAt) - now) / 1000))
+    : null;
   const [index, setIndex] = useState(Math.min(session.answers.length, session.totalQuestions - 1));
   const [saved, setSaved] = useState(session.answers);
+  const [drafts, setDrafts] = useState<Record<string, Answer>>({});
   const resource = useResource(`/tests/${session.sessionId}/questions/${index}`, questionSchema);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -42,7 +52,7 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
     window.addEventListener('beforeunload', before);
     return () => window.removeEventListener('beforeunload', before);
   }, []);
-  async function finish() {
+  const finish = useCallback(async () => {
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
@@ -57,8 +67,18 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
       lock.current = false;
       setBusy(false);
     }
-  }
-  async function save(selectedOptionId: string, timeSpentSecs: number) {
+  }, [navigate, session.sessionId]);
+  useEffect(() => {
+    if (!session.deadlineAt) return;
+    const deadline = Date.parse(session.deadlineAt);
+    const id = setInterval(() => {
+      const at = Date.now();
+      setNow(at);
+      if (at >= deadline) void finish();
+    }, 1000);
+    return () => clearInterval(id);
+  }, [session.deadlineAt, finish]);
+  async function save(answer: Answer, timeSpentSecs: number) {
     if (!resource.data || lock.current) return;
     lock.current = true;
     setBusy(true);
@@ -66,7 +86,11 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
     try {
       const receipt = await request(`/tests/${session.sessionId}/answers`, receiptSchema, {
         method: 'POST',
-        body: { questionId: resource.data.questionId, selectedOptionId, timeSpentSecs },
+        body: {
+          questionId: resource.data.questionId,
+          ...(answer.selectedOptionId ? { selectedOptionId: answer.selectedOptionId } : { answer }),
+          timeSpentSecs,
+        },
       });
       setSaved((items) =>
         items.some((a) => a.questionId === receipt.questionId) ? items : [...items, receipt],
@@ -88,12 +112,22 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
   return (
     <div className="test-workspace">
       <div className="test-top">
-        <span>{t('practice')}</span>
+        <span>
+          {session.practiceMode === 'MOCK_ENT'
+            ? l('Сокращённая тренировка', 'Қысқартылған жаттығу')
+            : t('practice')}
+        </span>
         <button className="text-button" onClick={() => navigate('/')} disabled={busy}>
           <LogOut size={17} />
           {t('exit')}
         </button>
       </div>
+      {remaining !== null && (
+        <p role="timer" aria-label={l('Осталось времени', 'Қалған уақыт')}>
+          {l('Осталось', 'Қалды')}: {Math.floor(remaining / 60)}:
+          {String(remaining % 60).padStart(2, '0')}
+        </p>
+      )}
       <div className="test-progress">
         <span>
           {t('question')} {index + 1} {t('of')} {session.totalQuestions}
@@ -107,6 +141,28 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
           aria-label={t('testProgress')}
         />
       </div>
+      {session.questionIds && (
+        <details className="question-map">
+          <summary>
+            {l('Карта вопросов', 'Сұрақтар картасы')} · {saved.length}/{session.totalQuestions}
+          </summary>
+          <nav aria-label={l('Перейти к вопросу', 'Сұраққа өту')}>
+            {session.questionIds.map((id, i) => (
+              <button
+                type="button"
+                key={id}
+                disabled={busy}
+                aria-current={index === i ? 'step' : undefined}
+                className={saved.some((a) => a.questionId === id) ? 'answered' : ''}
+                aria-label={`${l('Вопрос', 'Сұрақ')} ${i + 1}, ${saved.some((a) => a.questionId === id) ? l('ответ сохранён', 'жауап сақталды') : l('без ответа', 'жауап жоқ')}`}
+                onClick={() => setIndex(i)}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </nav>
+        </details>
+      )}
       {resource.loading ? (
         <Loading />
       ) : resource.error ? (
@@ -116,8 +172,14 @@ function TestRunner({ session }: { session: z.infer<typeof sessionSchema> }) {
           <QuestionForm
             key={q.questionId}
             question={q}
-            saved={existing?.selectedOptionId}
+            saved={
+              existing
+                ? existing.answer || { selectedOptionId: existing.selectedOptionId || '' }
+                : undefined
+            }
             busy={busy}
+            draft={drafts[q.questionId]}
+            onDraft={(answer) => setDrafts((d) => ({ ...d, [q.questionId]: answer }))}
             onSave={save}
           />
         )
@@ -180,48 +242,52 @@ function QuestionForm({
   saved,
   busy,
   onSave,
+  draft,
+  onDraft,
 }: {
   question: z.infer<typeof questionSchema>;
-  saved?: string;
+  saved?: Answer;
   busy: boolean;
-  onSave: (id: string, time: number) => Promise<void>;
+  onSave: (answer: Answer, time: number) => Promise<void>;
+  draft?: Answer;
+  onDraft: (answer: Answer) => void;
 }) {
   const { t, content } = useApp();
-  const [selected, setSelected] = useState(saved || '');
+  const l = useL();
+  const selected = saved || draft || {};
+  const setSelected = onDraft;
+  const assessment = { ...question.assessment, options: question.options };
   const [start] = useState(() => Date.now());
   function submit(e: FormEvent) {
     e.preventDefault();
-    if (selected && !busy && !saved)
+    if (completeAnswer(assessment, selected) && !busy && !saved)
       void onSave(selected, Math.min(86400, Math.floor((Date.now() - start) / 1000)));
   }
   return (
     <form className="question-card" onSubmit={submit}>
       <fieldset disabled={busy || Boolean(saved)}>
-        <legend>{content(question.questionRu, question.questionKz)}</legend>
-        <p className="answer-hint">{t('answerHint')}</p>
-        <div className="answer-options">
-          {question.options.map((option, i) => (
-            <label
-              className={`answer-option ${selected === option.id ? 'selected' : ''}`}
-              key={option.id}
-            >
-              <input
-                type="radio"
-                name="answer"
-                value={option.id}
-                checked={selected === option.id}
-                onChange={() => setSelected(option.id)}
-              />
-              <span className="option-letter" aria-hidden="true">
-                {String.fromCharCode(65 + i)}
-              </span>
-              <span>{content(option.textRu, option.textKz)}</span>
-              <span className="radio-indicator" aria-hidden="true">
-                {selected === option.id && <Check size={13} />}
-              </span>
-            </label>
-          ))}
-        </div>
+        <legend>
+          <InlineText text={content(question.questionRu, question.questionKz)} />
+        </legend>
+        {question.context && (
+          <div className="passage">
+            <h3>{l(question.context.titleRu, question.context.titleKz)}</h3>
+            <RichText text={l(question.context.contentRu, question.context.contentKz)} />
+          </div>
+        )}
+        <p className="answer-hint">
+          {assessment.questionType === 'MULTIPLE_SELECT'
+            ? l('Выберите один или несколько ответов.', 'Бір немесе бірнеше жауап таңдаңыз.')
+            : assessment.questionType === 'MATCHING'
+              ? l('Установите два соответствия.', 'Екі сәйкестікті белгілеңіз.')
+              : t('answerHint')}
+        </p>
+        <AnswerControls
+          question={assessment}
+          value={selected}
+          onChange={setSelected}
+          disabled={busy || Boolean(saved)}
+        />
       </fieldset>
       {saved ? (
         <p className="saved-answer" role="status">
@@ -229,7 +295,10 @@ function QuestionForm({
           {t('saved')}
         </p>
       ) : (
-        <button className="button answer-submit" disabled={!selected || busy}>
+        <button
+          className="button answer-submit"
+          disabled={!completeAnswer(assessment, selected) || busy}
+        >
           {t(
             busy
               ? 'saving'

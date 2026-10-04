@@ -1,0 +1,20 @@
+// Static application files only. API responses, JWTs and uploads never enter CacheStorage.
+self.addEventListener('install',event=>event.waitUntil(caches.open(STATIC_CACHE).then(cache=>cache.addAll(ASSETS))));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const key of await caches.keys())if(key.startsWith('education-shell-')&&key!==STATIC_CACHE)await caches.delete(key);await self.clients.claim();})()));
+self.addEventListener('fetch',event=>{
+ const request=event.request,url=new URL(request.url);
+ if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/')||request.headers.has('Authorization'))return;
+ if(request.mode==='navigate'){
+  event.respondWith(fetch(request).catch(async()=>url.pathname==='/saved'?await (await caches.open(STATIC_CACHE)).match('/index.html'):Response.redirect(self.location.origin+'/saved')));return;
+ }
+ if(ASSETS.includes(url.pathname)&&!url.search)event.respondWith(caches.open(STATIC_CACHE).then(async cache=>(await cache.match(url.pathname))||fetch(request)));
+});
+self.addEventListener('message',event=>{
+ if(event.data?.type!=='APPLY_UPDATE')return;
+ event.waitUntil((async()=>{
+  const tabs=await self.clients.matchAll({type:'window',includeUncontrolled:true});
+  const safe=tabs.length===1&&event.source?.id===tabs[0].id&&['/','/settings','/saved'].includes(new URL(tabs[0].url).pathname);
+  if(!safe){event.source?.postMessage('UPDATE_BLOCKED');return;}
+  event.source?.postMessage('UPDATE_APPROVED');await self.skipWaiting();
+ })());
+});

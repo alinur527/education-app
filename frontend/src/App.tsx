@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import PwaNotice from './features/offline/PwaNotice';
+const SavedPage = lazy(() => import('./features/offline/SavedPage'));
 import {
   createBrowserRouter,
   RouterProvider,
@@ -107,6 +109,18 @@ function Shell() {
                 {content('Кабинет', 'Кабинет')}
               </NavLink>
             )}
+            <details className="tools-menu">
+              <summary>{content('Ещё', 'Тағы')}</summary>
+              <nav aria-label={content('Учебные инструменты', 'Оқу құралдары')}>
+                <NavLink to="/practice">{content('Практика', 'Жаттығу')}</NavLink>
+                <NavLink to="/study">{content('План и календарь', 'Жоспар және күнтізбе')}</NavLink>
+                <NavLink to="/saved">{content('Сохранено офлайн', 'Офлайн сақталған')}</NavLink>
+                <NavLink to="/notes">
+                  {content('Заметки и повторение', 'Жазбалар және қайталау')}
+                </NavLink>
+                <NavLink to="/notifications">{content('Уведомления', 'Хабарламалар')}</NavLink>
+              </nav>
+            </details>
             <LanguageSwitch />
             <NavLink to="/settings" className="avatar" aria-label={t('settings')}>
               {user?.firstName.slice(0, 1)}
@@ -140,6 +154,14 @@ function Shell() {
   );
 }
 export const routes = [
+  {
+    path: '/saved',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <SavedPage />
+      </Suspense>
+    ),
+  },
   { path: '/login', element: <AuthPage key="login" mode="login" /> },
   { path: '/register', element: <AuthPage key="register" mode="register" /> },
   {
@@ -163,7 +185,17 @@ export const routes = [
     ],
   },
 ];
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter([
+  {
+    element: (
+      <>
+        <PwaNotice />
+        <Outlet />
+      </>
+    ),
+    children: routes,
+  },
+]);
 export default function App() {
   return (
     <ErrorBoundary>

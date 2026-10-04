@@ -643,6 +643,7 @@ svg {
   align-items: start;
 }
 .theory-content {
+  min-width: 0;
   background: white;
   padding: 35px 40px;
   border: 1px solid var(--line);
@@ -1786,4 +1787,362 @@ dd {
   .learning-panel .metric {
     gap: 20px;
   }
+}
+
+/* Shared rich learning content retains a readable width and bounded mathematics. */
+.rich-text {
+  max-width: 68ch;
+  overflow-wrap: anywhere;
+}
+.rich-text p {
+  white-space: pre-line;
+}
+.math-display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 12px 0;
+}
+.math-inline {
+  max-width: 100%;
+}
+.rich-text pre,
+.learning-content pre {
+  overflow-x: auto;
+  padding: 16px;
+  border: 1px solid var(--border, #e3e8f0);
+  background: #f4f6fa;
+  border-radius: 8px;
+  white-space: pre;
+  max-width: 100%;
+}
+.matching-options {
+  display: grid;
+  gap: 16px;
+}
+.matching-options label {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+}
+.matching-options select {
+  min-width: 0;
+  width: 100%;
+}
+.passage {
+  padding: 16px;
+  background: #f4f6fa;
+  margin: 12px 0 24px;
+  border-left: 3px solid #315ae8;
+}
+@media (max-width: 600px) {
+  .matching-options label {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Study tools remain one compact menu on small screens. */
+.tools-menu {
+  position: relative;
+}
+.tools-menu summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.tools-menu nav {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 30;
+  width: min(280px, 80vw);
+  padding: 12px;
+  background: var(--surface, #fff);
+  border: 1px solid #d5ddea;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px #172d571c;
+}
+.tools-menu nav a {
+  display: block;
+  padding: 12px;
+  border-radius: 8px;
+}
+.tools-menu nav a:hover {
+  background: #edf2ff;
+}
+.practice-setup {
+  max-width: 1000px;
+  margin: auto;
+}
+.practice-form {
+  padding: clamp(16px, 3vw, 32px);
+  display: grid;
+  gap: 20px;
+}
+.subject-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 12px;
+}
+.subject-pick {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #d5ddea;
+  border-radius: 10px;
+  min-height: 70px;
+}
+.subject-pick input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.subject-pick small {
+  display: block;
+  color: #526583;
+}
+.practice-form table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+.practice-form th,
+.practice-form td {
+  padding: 12px;
+  border-bottom: 1px solid #d5ddea;
+}
+.practice-form th {
+  font-weight: 500;
+}
+.question-map {
+  margin-bottom: 20px;
+}
+.question-map summary {
+  cursor: pointer;
+  padding: 12px 0;
+}
+.question-map nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.question-map button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #97a7c3;
+  border-radius: 8px;
+  background: white;
+  color: #19365b;
+}
+.question-map button.answered {
+  background: #e6f4ed;
+  border-color: #5c9b77;
+}
+.question-map button[aria-current] {
+  outline: 3px solid #315bec;
+  outline-offset: 1px;
+}
+
+.pwa-notice {
+  background: #eaf0ff;
+  border-bottom: 1px solid #cbd6f0;
+  padding: 8px 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.pwa-notice p {
+  margin: 0;
+}
+.saved-library {
+  max-width: 1000px;
+  margin: auto;
+  padding: clamp(16px, 4vw, 48px);
+}
+.saved-list {
+  list-style: none;
+  padding: 0;
+}
+.saved-list li {
+  padding: 20px 0;
+  border-bottom: 1px solid #d4deec;
+}
+.saved-list small {
+  display: block;
+  color: #526583;
+  margin: 8px 0;
+}
+.saved-reading {
+  margin-top: 32px;
+  background: white;
+  padding: clamp(16px, 3vw, 32px);
+  border: 1px solid #d4deec;
+  border-radius: 14px;
+}
+.saved-reading img {
+  max-width: 100%;
+  height: auto;
+}
+.offline-save {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #d4deec;
+  border-radius: 12px;
+}
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+  gap: 20px;
+}
+.source-grid article {
+  min-width: 0;
+}
+.source-grid dd,
+.hash-value {
+  overflow-wrap: anywhere;
+  margin-left: 0;
+}
+.source-grid dt {
+  font-weight: 600;
+  margin-top: 12px;
+}
+.bulk-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 20px 0;
+}
+.bulk-actions > div {
+  flex-basis: 100%;
+  background: #f2f5fc;
+  padding: 20px;
+  border-radius: 12px;
+}
+.review-entry {
+  padding: 12px;
+  border: 1px solid #d4deec;
+  margin: 12px 0;
+  border-radius: 8px;
+}
+.conflict-preview {
+  padding: 20px;
+  background: #f2f5fc;
+}
+.table-region td:first-child {
+  min-width: 240px;
+  max-width: 560px;
+  overflow-wrap: anywhere;
+}
+.table-region input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+@media (max-width: 390px) {
+  .topbar-actions {
+    gap: 4px;
+  }
+  .tools-menu summary {
+    padding: 0 2px;
+    font-size: 0.8rem;
+  }
+  .topbar-actions .staff-link {
+    font-size: 0.8rem;
+    padding: 4px;
+  }
+}
+
+.subject-section {
+  margin: 32px 0;
+}
+.syllabus-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 24px 0;
+  border-bottom: 1px solid #d4deec;
+}
+.syllabus-row > div {
+  min-width: 0;
+}
+.syllabus-row h2 {
+  font-size: 1.12rem;
+  overflow-wrap: anywhere;
+}
+.syllabus-row small {
+  color: #526583;
+}
+.syllabus-code {
+  flex: 0 0 44px;
+  color: #315ae8;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.syllabus-row p {
+  font-size: 0.9rem;
+  color: #526583;
+}
+
+.today-panel {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.today-task {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+}
+.today-task a {
+  color: var(--blue);
+  font-weight: 600;
+}
+.today-task small {
+  white-space: nowrap;
+}
+.catalog-search {
+  display: grid;
+  gap: 8px;
+  max-width: 32rem;
+  margin: 0 0 24px;
+}
+.catalog-search input {
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  min-width: 0;
+}
+
+.rich-text .table-scroll table,
+.learning-content > .table-scroll table {
+  min-width: 30rem;
+}
+.rich-text .table-scroll,
+.learning-content > .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.rich-text {
+  min-width: 0;
+  max-width: 100%;
+}
+.learning-content {
+  min-width: 0;
+  width: 100%;
 }

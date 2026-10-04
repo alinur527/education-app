@@ -1,3 +1,6 @@
+import { AnswerControls, AnswerText } from '../assessment/AnswerControls';
+import { answerSchema, completeAnswer, type Answer } from '../assessment/model';
+import { InlineText, RichText } from '../content/RichText';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { z } from 'zod';
@@ -11,7 +14,7 @@ const attemptSchema = z.object({
   quizId: z.string(),
   questions: z.array(questionPayload),
   score: z.number().nullable(),
-  answers: z.array(z.string()).nullable(),
+  answers: z.array(z.union([z.string(), answerSchema])).nullable(),
 });
 export default function Quiz() {
   const { id, attemptId } = useParams();
@@ -50,7 +53,7 @@ function Attempt({ id }: { id: string }) {
   const l = useL(),
     r = useResource(`/quiz-attempts/${id}`, attemptSchema),
     action = useAction(),
-    [answers, setAnswers] = useState<Record<number, string>>({});
+    [answers, setAnswers] = useState<Record<number, Answer>>({});
   if (r.loading) return <Loading />;
   if (r.error) return <ErrorState error={r.error} retry={r.reload} />;
   const a = r.data!,
@@ -80,29 +83,35 @@ function Attempt({ id }: { id: string }) {
         {a.questions.map((q, i) => (
           <fieldset className="question-card" key={i}>
             <legend>
-              {i + 1}. {l(q.titleRu, q.titleKz)}
+              {i + 1}. <InlineText text={l(q.titleRu, q.titleKz)} />
             </legend>
-            {q.options.map((o) => (
-              <label className="answer-option" key={o.id}>
-                <input
-                  type="radio"
-                  name={`question-${i}`}
-                  required
-                  disabled={finished}
-                  checked={(finished ? a.answers?.[i] : answers[i]) === o.id}
-                  onChange={() => setAnswers({ ...answers, [i]: o.id })}
-                />
-                <span>{l(o.textRu, o.textKz)}</span>
-                {finished && q.correctOptionId === o.id && (
-                  <strong>{l('Правильный', 'Дұрыс')}</strong>
-                )}
-              </label>
-            ))}
-            {finished && <p>{l(q.explanationRu, q.explanationKz)}</p>}
+            <AnswerControls
+              question={q}
+              value={
+                finished
+                  ? (typeof a.answers?.[i] === 'string'
+                      ? { selectedOptionId: a.answers[i] as string }
+                      : (a.answers?.[i] as Answer)) || {}
+                  : answers[i] || {}
+              }
+              onChange={(v) => setAnswers({ ...answers, [i]: v })}
+              disabled={finished || action.busy}
+            />
+            {finished && (
+              <>
+                <p>
+                  {l('Правильный ответ', 'Дұрыс жауап')}: <AnswerText question={q} correct />
+                </p>
+                <RichText text={l(q.explanationRu, q.explanationKz)} />
+              </>
+            )}
           </fieldset>
         ))}
         {!finished && (
-          <button className="button" disabled={action.busy}>
+          <button
+            className="button"
+            disabled={action.busy || !a.questions.every((q, i) => completeAnswer(q, answers[i]))}
+          >
             {l('Завершить тест', 'Тестті аяқтау')}
           </button>
         )}

@@ -1,0 +1,16 @@
+{
+  "id": "/",
+  "name": "Education App — ЕНТ / ҰБТ",
+  "short_name": "Education",
+  "description": "Теория, практика и учебный план / Теория, жаттығу және оқу жоспары",
+  "lang": "ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#315ae8",
+  "icons": [
+    {"src":"/icons/app-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"/icons/app-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

@@ -73,11 +73,17 @@ export function MaterialList({ items }: { items: Material[] }) {
               <small>
                 {m.originalFileName} · {Math.ceil(m.size / 1024)} {l('КБ', 'КБ')}
                 {!m.published && ` · ${l('Черновик', 'Жоба')}`}
+                {m.scanStatus === 'CLEAN' &&
+                  ` · ${l('Антивирусная проверка пройдена', 'Антивирустық тексеруден өтті')}`}
+                {(m.scanStatus === 'UNSCANNED' || m.scanStatus === 'UNSCANNED_LEGACY') &&
+                  ` · ${l('Без антивирусной проверки (материал преподавателя)', 'Антивирустық тексерусіз (мұғалім материалы)')}`}
               </small>
             </span>
             <button
               className="button secondary"
-              disabled={action.busy}
+              disabled={
+                action.busy || m.scanStatus === 'INFECTED' || m.scanStatus === 'SCAN_FAILED'
+              }
               onClick={() => void action.run(() => downloadMaterial(m))}
             >
               {l('Скачать', 'Жүктеу')}

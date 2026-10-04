@@ -1,0 +1,64 @@
+.submission-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+.submission-fieldset:disabled {
+  opacity: 0.7;
+}
+.submission-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.submission-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  accent-color: #315ae8;
+}
+.submission-files li {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.submission-files li > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.submission-files .button-row {
+  flex-wrap: wrap;
+  margin: 0;
+  gap: 8px;
+}
+.submission-files button {
+  white-space: normal;
+}
+.submission-files small {
+  line-height: 1.6;
+}
+.submission-files + details summary {
+  cursor: pointer;
+  min-height: 40px;
+}
+.submission-panel time {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+.submission-fieldset input[type='file'] {
+  max-width: 100%;
+  min-width: 0;
+}
+.submission-panel details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 36px;
+}
+.submission-panel .submission-panel {
+  box-shadow: none;
+  border: 1px solid #dce3ed;
+  padding: 16px;
+  margin-top: 14px;
+}

@@ -7,13 +7,22 @@ export default function Workspace() {
   if (!user || user.role === 'STUDENT') return <Navigate to="/" replace />;
   return (
     <div className="workspace">
-      <nav className="workspace-nav" aria-label={l('Кабинет преподавателя', 'Оқытушы кабинеті')}>
+      <nav className="workspace-nav" aria-label={l('Управление обучением', 'Оқуды басқару')}>
         <NavLink to="/workspace/content">{l('Материалы', 'Материалдар')}</NavLink>
+        <NavLink to="/workspace/files">{l('Файлы', 'Файлдар')}</NavLink>
         {['TEACHER', 'ADMIN'].includes(user.role) && (
           <NavLink to="/workspace/groups">{l('Группы и ученики', 'Топтар мен оқушылар')}</NavLink>
         )}
         {['CONTENT_EDITOR', 'ADMIN'].includes(user.role) && (
-          <NavLink to="/workspace/imports">{l('Импорт', 'Импорт')}</NavLink>
+          <>
+            <NavLink to="/workspace/imports">
+              {l('Импорт CSV / JSON', 'CSV / JSON импорты')}
+            </NavLink>
+            <NavLink to="/workspace/packs">{l('Обновление пакетов', 'Пакеттерді жаңарту')}</NavLink>
+            <NavLink to="/workspace/sources">
+              {l('Источники и права', 'Дереккөздер мен құқықтар')}
+            </NavLink>
+          </>
         )}
         {user.role === 'ADMIN' && (
           <NavLink to="/workspace/users">{l('Пользователи', 'Пайдаланушылар')}</NavLink>

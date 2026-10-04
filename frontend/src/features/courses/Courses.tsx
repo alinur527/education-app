@@ -219,6 +219,12 @@ export function Lesson() {
         title={l('Урок', 'Сабақ')}
         back={{ to: '/courses', label: l('Курсы', 'Курстар') }}
       />
+      <Link
+        className="text-link"
+        to={`/notes?kind=LESSON&target=${id}&title=${encodeURIComponent(l(r.data.content.titleRu, r.data.content.titleKz))}`}
+      >
+        {l('Заметка / закладка к уроку', 'Сабаққа жазба / бетбелгі')}
+      </Link>
       <div className="lesson-surface">
         <RenderedContent payload={r.data.content} materials={files.data || []} />
         <Materials contentId={id!} />
