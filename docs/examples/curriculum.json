@@ -1,0 +1,64 @@
+[
+  {
+    "key": "math",
+    "kind": "SUBJECT",
+    "payload": {
+      "titleRu": "Математика — учебный пример",
+      "titleKz": "Математика — оқу үлгісі",
+      "sourceType": "EDITOR_CREATED",
+      "verified": false
+    }
+  },
+  {
+    "key": "addition",
+    "kind": "TOPIC",
+    "parentKey": "math",
+    "payload": {
+      "titleRu": "Сложение",
+      "titleKz": "Қосу",
+      "sortOrder": 1
+    }
+  },
+  {
+    "key": "theory",
+    "kind": "THEORY",
+    "parentKey": "addition",
+    "payload": {
+      "titleRu": "Две пары",
+      "titleKz": "Екі жұп",
+      "blocks": [
+        {
+          "type": "TEXT",
+          "textRu": "Две пары предметов — это четыре предмета.",
+          "textKz": "Заттардың екі жұбы — төрт зат."
+        }
+      ]
+    }
+  },
+  {
+    "key": "question",
+    "kind": "QUESTION",
+    "parentKey": "addition",
+    "payload": {
+      "titleRu": "Сколько будет 2 + 2?",
+      "titleKz": "2 + 2 қанша?",
+      "options": [
+        {
+          "id": "A",
+          "textRu": "4",
+          "textKz": "4"
+        },
+        {
+          "id": "B",
+          "textRu": "5",
+          "textKz": "5"
+        }
+      ],
+      "correctOptionId": "A",
+      "explanationRu": "2 + 2 = 4",
+      "explanationKz": "2 + 2 = 4",
+      "sourceType": "EDITOR_CREATED",
+      "verified": false
+    }
+  }
+]

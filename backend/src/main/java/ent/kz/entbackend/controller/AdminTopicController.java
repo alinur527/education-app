@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.transaction.annotation.Transactional
 @RestController
 @RequestMapping("/api/admin/topics")
 public class AdminTopicController {
 
   private final AdminTopicService adminTopicService;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  private ent.kz.entbackend.platform.content.LegacyContentBridge editorial;
 
   public AdminTopicController(AdminTopicService adminTopicService) {
     this.adminTopicService = adminTopicService;
@@ -40,7 +44,12 @@ public class AdminTopicController {
   public TopicAdminResponse createTopic(
     @Valid @RequestBody TopicAdminRequest request
   ) {
-    return adminTopicService.createTopic(request);
+    var result = adminTopicService.createTopic(request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.TOPIC,
+      result.id()
+    );
+    return result;
   }
 
   @PutMapping(
@@ -51,11 +60,19 @@ public class AdminTopicController {
     @PathVariable UUID id,
     @Valid @RequestBody TopicAdminRequest request
   ) {
-    return adminTopicService.updateTopic(id, request);
+    editorial.lockExisting(id);
+    var result = adminTopicService.updateTopic(id, request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.TOPIC,
+      result.id()
+    );
+    return result;
   }
 
   @DeleteMapping("/{id}")
   public void deleteTopic(@PathVariable UUID id) {
+    editorial.lockExisting(id);
     adminTopicService.softDeleteTopic(id);
+    editorial.sync(ent.kz.entbackend.platform.content.ContentKind.TOPIC, id);
   }
 }

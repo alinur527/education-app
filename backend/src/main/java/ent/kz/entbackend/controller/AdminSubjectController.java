@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.transaction.annotation.Transactional
 @RestController
 @RequestMapping("/api/admin/subjects")
 public class AdminSubjectController {
 
   private final AdminSubjectService adminSubjectService;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  private ent.kz.entbackend.platform.content.LegacyContentBridge editorial;
 
   public AdminSubjectController(AdminSubjectService adminSubjectService) {
     this.adminSubjectService = adminSubjectService;
@@ -35,7 +39,12 @@ public class AdminSubjectController {
   public SubjectAdminResponse createSubject(
     @Valid @RequestBody SubjectAdminRequest request
   ) {
-    return adminSubjectService.createSubject(request);
+    var result = adminSubjectService.createSubject(request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.SUBJECT,
+      result.id()
+    );
+    return result;
   }
 
   @PutMapping(
@@ -46,11 +55,19 @@ public class AdminSubjectController {
     @PathVariable UUID id,
     @Valid @RequestBody SubjectAdminRequest request
   ) {
-    return adminSubjectService.updateSubject(id, request);
+    editorial.lockExisting(id);
+    var result = adminSubjectService.updateSubject(id, request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.SUBJECT,
+      result.id()
+    );
+    return result;
   }
 
   @DeleteMapping("/{id}")
   public void deleteSubject(@PathVariable UUID id) {
+    editorial.lockExisting(id);
     adminSubjectService.softDeleteSubject(id);
+    editorial.sync(ent.kz.entbackend.platform.content.ContentKind.SUBJECT, id);
   }
 }

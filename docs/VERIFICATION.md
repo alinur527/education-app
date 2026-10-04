@@ -1,5 +1,7 @@
 # Verification and handoff record
 
+The first sections record the Phase 1 baseline. Current Phase 2 results and limits are appended below.
+
 Verified locally on 2026-10-04, Windows PowerShell, JDK 21.0.9, Node 25.8.0, Docker Desktop, PostgreSQL 17. Production containers use Java 21 and Node 24 for the frontend build. CI uses Node 24 and Java 21 on Ubuntu.
 
 ## Executed
@@ -58,6 +60,54 @@ Original audit issues (pre-finish answer leakage, disabled accounts, hardcoded c
 
 ## Scope retained
 
-Current learning inventory: 3 subjects, 4 topics, 6 questions, 5 theory blocks. Admin CRUD is integration-tested and documented; no admin UI. Password reset/email verification and public hosting are not implemented. JWT logout is client-side. Before internet exposure, configure HTTPS, auth rate limits, monitoring and database backups. These are explicit scope boundaries, not placeholder controls in the student UI.
+Current learning inventory: 3 subjects, 4 topics, 6 questions, 5 theory blocks. At that baseline, Admin CRUD was integration-tested and documented without an admin UI. Phase 2 below adds the UI. Password reset/email verification and public hosting are not implemented. JWT logout is client-side. Before internet exposure, configure HTTPS, auth rate limits, monitoring and database backups. These are explicit scope boundaries, not placeholder controls in the student UI.
 
 GitHub workflow results must be checked after push; local test success alone does not certify the remote runner.
+
+
+## Phase 2 verification — 2026-10-04
+
+Baseline compatibility was checked before changes and after implementation. V1–V15 are unchanged. Work is on `codex/education-platform-phase-2`; main is untouched.
+
+| Exact command (repository root unless noted) | Local result |
+| --- | --- |
+| `backend/mvnw.cmd -f backend/pom.xml verify` with JAVA_HOME pointing at JDK 21 | 26 tests passed: 8 baseline, 13 platform PostgreSQL integration, 3 validation, 2 storage; zero skipped |
+| `npm run typecheck` (frontend) | Passed |
+| `npm run lint` (frontend) | Passed |
+| `npm test` (frontend) | 15 passed: 9 baseline + 6 platform |
+| `npm run build` (frontend) | Passed; cached vendor chunk 447.91 kB / 138.92 kB gzip, application entry 73.33 kB / 21.46 kB gzip; CMS/LMS pages split into small lazy chunks |
+| `docker compose --profile app up -d --build --wait --wait-timeout 180` | Backend/frontend images built; all three services healthy |
+| `.venv/Scripts/python.exe scripts/browser_tests.py` with BROWSER_BASE_URL=http://127.0.0.1:8081 | All 28 baseline checkpoints passed; no unexpected browser/network errors |
+| `.venv/Scripts/python.exe scripts/phase2_browser_tests.py` | All 57 Phase 2 checkpoints passed; no unexpected browser/network errors |
+| `git diff --check` | Passed |
+
+On Linux/CI use `.venv/bin/python` and `cd backend && ./mvnw -B verify`. The existing three-job workflow now includes both browser suites; no extra slow workflow was added. Remote results are available under [GitHub Actions](https://github.com/alinur527/education-app/actions); local success is not a substitute for checking the PR's final run.
+
+### Actual browser journeys
+
+- ADMIN login → subject → topic → block theory → bilingual question → review/publish.
+- TEACHER login → public course → manual enrollment/cancellation → module → lesson draft → PDF upload → publish → assignment/deadline → lesson quiz → group → student membership → assign task.
+- STUDENT → new ENT topic → mark theory read → wrong practice answer → result → error review → correct answer → empty error list → real mastery.
+- STUDENT → enrolled course outline → lesson → authorized PDF download (bytes compared) → text assignment submission → lesson quiz/result → completed course progress.
+- TEACHER → grade submission → group shows real 100% lesson progress and submission count.
+- CONTENT_EDITOR → workspace access with no user-management navigation. ADMIN → search user → change role and restore it.
+- ADMIN → valid JSON preview/confirm → open draft and publish; repeat CSV; invalid correctOptionId and malformed row types retain line-specific errors and cannot confirm.
+- Draft navigation confirmation, revision409 preservation and network-failure preservation.
+
+Axe WCAG 2 A/AA + 2.1 AA ran on the main new screens, dialogs, forms, import errors, course/quiz and group views. Course, group and CMS views were inspected at 1440, 1024, 768, 390 and 320 px (the desktop teacher screenshot is 1440). The baseline suite also exercises mobile practice and failure states. Screenshots are in [screenshots/phase2](screenshots/phase2). These automated checks do not claim a complete assistive-technology audit.
+
+The script provisions unique role fixtures through local-only Docker SQL, then authors content through real UI. Successful runs archive their disposable content; users/audit/attempt history remain. No public bootstrap API or default credentials are introduced.
+
+### Backend coverage and review repairs
+
+Checked roles/public escalation, current-role JWTs, ownership, drafts, archive/restore, stale revisions, groups, manual/self/group enrollment, cancellation, simultaneous group removals, simultaneous lesson completion, assignment access and grading conflicts, quiz snapshots/answer secrecy, private lesson and course attachments, MIME/name/traversal guards, JSON/CSV validation/idempotence, mastery/deduplication and migration upgrade with old users/attempts.
+
+Storage tests perform a real signed S3 PUT/GET/DELETE against disposable digest-pinned RustFS, including rejection of a wrong secret. The previously available MinIO images returned registry errors; that failed attempt is not counted as passing interoperability. DOCX/PPTX archive structure, macros/traversal, executable/MIME rejection and size limits are tested directly. Browser upload/download coverage uses PDF.
+
+The independent adversarial review found and drove fixes for archive resurrection, legacy draft-block publication, stale grades, concurrent enrollment revocation, max-score changes after submissions, nullable import contracts, prototype-like invalid kind values, duplicate CSV headers, numeric overflow, dirty-form navigation and missing enrollment on course attachments. Published content/list queries no longer load full bodies for CMS indexes. No unresolved P0/P1 remained at the final source review; relevant P2 defects were repaired before regression.
+
+### Scope and skills
+
+P0 CMS/LMS/files/import/roles and P1 mastery/error-review/analytics are implemented. P2 planner/calendar/in-app reminders/bookmarks/notes, Mixed Practice, the official mock exam and full ENT content are deferred. Lesson completion is self-reported, text assignments are teacher-graded, deadlines do not reject late answers, and the scanner interface is a no-op by default. These limits are described in [PLATFORM.md](PLATFORM.md) and [STORAGE.md](STORAGE.md).
+
+Skills applied this phase: frontend-design (prior design plan + screenshot critique), webapp-testing (native Python Playwright + rendered-DOM reconnaissance + actual browser runs), grill-me/grilling (brief's settled scope and independent adversarial factual review). The handoff skill is applied only after delivery, saving an OS-temp continuity note with final PR/SHA references.

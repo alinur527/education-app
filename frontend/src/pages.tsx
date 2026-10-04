@@ -22,6 +22,9 @@ import {
 } from './api';
 import { useApp, errorKey } from './state';
 import { useResource } from './hooks';
+import { LearningSummary } from './features/mastery/Learning';
+import { TheoryExtras } from './features/content/TheoryExtras';
+import { Materials } from './features/content/Materials';
 import {
   Logo,
   LanguageSwitch,
@@ -189,6 +192,7 @@ export function Dashboard() {
       </section>
       <div className="dashboard-columns">
         <div>
+          <LearningSummary />
           <div className="section-heading">
             <h2>{t('yourSubjects')}</h2>
             <Link className="text-link" to="/subjects">
@@ -371,6 +375,7 @@ export function TopicPage() {
       />
       <div className="reading-layout">
         <article className="theory-content">
+          <Materials contentId={topicId!} />
           {theories.data?.length ? (
             theories.data.map((theory, i) => (
               <section id={`material-${i}`} key={theory.id}>
@@ -384,6 +389,7 @@ export function TopicPage() {
                       <p key={n}>{paragraph}</p>
                     ),
                   )}
+                <TheoryExtras id={theory.id} />
               </section>
             ))
           ) : (

@@ -57,6 +57,9 @@ jobs:
       - run: .venv/bin/python scripts/browser_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/phase2_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
       - uses: actions/upload-artifact@v4
         if: always()
         with:

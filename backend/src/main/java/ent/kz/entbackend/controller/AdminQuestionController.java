@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@org.springframework.transaction.annotation.Transactional
 @RestController
 @RequestMapping("/api/admin/questions")
 public class AdminQuestionController {
 
   private final AdminQuestionService adminQuestionService;
+
+  @org.springframework.beans.factory.annotation.Autowired
+  private ent.kz.entbackend.platform.content.LegacyContentBridge editorial;
 
   public AdminQuestionController(AdminQuestionService adminQuestionService) {
     this.adminQuestionService = adminQuestionService;
@@ -40,7 +44,12 @@ public class AdminQuestionController {
   public QuestionAdminResponse createQuestion(
     @Valid @RequestBody QuestionAdminRequest request
   ) {
-    return adminQuestionService.createQuestion(request);
+    var result = adminQuestionService.createQuestion(request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.QUESTION,
+      result.id()
+    );
+    return result;
   }
 
   @PutMapping(
@@ -51,11 +60,19 @@ public class AdminQuestionController {
     @PathVariable UUID id,
     @Valid @RequestBody QuestionAdminRequest request
   ) {
-    return adminQuestionService.updateQuestion(id, request);
+    editorial.lockExisting(id);
+    var result = adminQuestionService.updateQuestion(id, request);
+    editorial.sync(
+      ent.kz.entbackend.platform.content.ContentKind.QUESTION,
+      result.id()
+    );
+    return result;
   }
 
   @DeleteMapping("/{id}")
   public void deleteQuestion(@PathVariable UUID id) {
+    editorial.lockExisting(id);
     adminQuestionService.softDeleteQuestion(id);
+    editorial.sync(ent.kz.entbackend.platform.content.ContentKind.QUESTION, id);
   }
 }

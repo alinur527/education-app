@@ -19,3 +19,10 @@ Java / Spring Boot 3.5, PostgreSQL, JPA domain and UUIDs, BCrypt, signed expirin
 Frontend is a Figma export with MUI + Radix + Tailwind and unused dependencies, fake phone/status bar, dead registration/password-reset controls, partial localization, guessed DTOs and no typecheck/lint/tests. Retain domain and route intent; rebuild typed React with native semantic controls, Tailwind and Radix confirmation dialog.
 
 Statistics must be database aggregates. Public question counts reflect active questions. Existing theory seeds are short introductions, not a complete exam curriculum. Student flow takes priority; admin API remains supported and tested.
+
+
+## Phase 2 adversarial review
+
+The legacy findings above describe the original restoration. Phase 2 preserves that verified baseline and adds the independent editorial/course domains documented in [PLATFORM.md](PLATFORM.md). The final review covered backend roles, ownership, publication ancestry, protected downloads, import transaction boundaries, current JWT roles, stale updates and real analytics. All discovered P0/P1 and actionable P2 findings were corrected; concrete repairs and regression coverage are recorded in [VERIFICATION.md](VERIFICATION.md#phase-2-verification--2026-10-04).
+
+Remaining limitations are product/operations boundaries, not hidden working features: no official ENT simulator/data bank, planner/calendar/reminders/notes, full text-revision rollback, student file submissions or active malware scanner. No payments/ERP or foreign framework was introduced. Local file storage requires backup alongside PostgreSQL; cloud providers need their own configuration smoke test.

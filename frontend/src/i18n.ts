@@ -1,5 +1,6 @@
 export type Language = 'ru' | 'kz';
 export const ru = {
+  courses: 'Курсы',
   brand: 'Education App',
   prep: 'Подготовка к ЕНТ',
   home: 'Главная',
@@ -135,6 +136,7 @@ export const ru = {
 } as const;
 export type TranslationKey = keyof typeof ru;
 export const kz: Record<TranslationKey, string> = {
+  courses: 'Курстар',
   brand: 'Education App',
   prep: 'ҰБТ-ға дайындық',
   home: 'Басты бет',

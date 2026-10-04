@@ -46,6 +46,9 @@ public class TestSession {
   @Column(name = "status", nullable = false, length = 20)
   private String status;
 
+  @Column(name = "practice_mode", nullable = false)
+  private String practiceMode = "TOPIC_PRACTICE";
+
   @Column(name = "question_ids", nullable = false, columnDefinition = "jsonb")
   @ColumnTransformer(read = "question_ids::text", write = "?::jsonb")
   private String questionIds;

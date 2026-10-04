@@ -1,0 +1,85 @@
+[
+  {
+    "key": "course",
+    "kind": "COURSE",
+    "payload": {
+      "titleRu": "Логика — учебный пример",
+      "titleKz": "Логика — оқу үлгісі",
+      "descriptionRu": "Один демонстрационный урок.",
+      "descriptionKz": "Бір көрсетілім сабағы.",
+      "visibility": "PUBLIC",
+      "selfEnroll": true
+    }
+  },
+  {
+    "key": "module",
+    "kind": "MODULE",
+    "parentKey": "course",
+    "payload": {
+      "titleRu": "Начало",
+      "titleKz": "Бастау",
+      "sortOrder": 1
+    }
+  },
+  {
+    "key": "lesson",
+    "kind": "LESSON",
+    "parentKey": "module",
+    "payload": {
+      "titleRu": "Объясняем решение",
+      "titleKz": "Шешімді түсіндіру",
+      "sortOrder": 1,
+      "blocks": [
+        {
+          "type": "TEXT",
+          "textRu": "Две пары предметов — это четыре предмета.",
+          "textKz": "Заттардың екі жұбы — төрт зат."
+        }
+      ]
+    }
+  },
+  {
+    "key": "assignment",
+    "kind": "ASSIGNMENT",
+    "parentKey": "lesson",
+    "payload": {
+      "titleRu": "Объясните 2 + 2",
+      "titleKz": "2 + 2 түсіндіріңіз",
+      "descriptionRu": "Напишите короткое объяснение.",
+      "descriptionKz": "Қысқаша түсіндіріңіз.",
+      "maxScore": 10
+    }
+  },
+  {
+    "key": "quiz",
+    "kind": "QUIZ",
+    "parentKey": "lesson",
+    "payload": {
+      "titleRu": "Самопроверка",
+      "titleKz": "Өзін-өзі тексеру",
+      "questions": [
+        {
+          "titleRu": "Сколько будет 2 + 2?",
+          "titleKz": "2 + 2 қанша?",
+          "options": [
+            {
+              "id": "A",
+              "textRu": "4",
+              "textKz": "4"
+            },
+            {
+              "id": "B",
+              "textRu": "5",
+              "textKz": "5"
+            }
+          ],
+          "correctOptionId": "A",
+          "explanationRu": "2 + 2 = 4",
+          "explanationKz": "2 + 2 = 4",
+          "sourceType": "EDITOR_CREATED",
+          "verified": false
+        }
+      ]
+    }
+  }
+]

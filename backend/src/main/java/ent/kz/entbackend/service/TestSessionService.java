@@ -74,6 +74,34 @@ public class TestSessionService {
     );
   }
 
+  public StartTestResponse startReview(
+    UUID topicId,
+    List<QuestionSnapshot> items
+  ) {
+    Topic topic = access.topic(topicId);
+    if (items.isEmpty() || items.size() > 50) throw status(HttpStatus.CONFLICT);
+    TestSession s = new TestSession();
+    s.setUser(auth.getCurrentUser());
+    s.setSubject(topic.getSubject());
+    s.setTopic(topic);
+    s.setPracticeMode("ERROR_REVIEW");
+    s.setStatus("IN_PROGRESS");
+    s.setQuestionIds(write(items.stream().map(QuestionSnapshot::id).toList()));
+    s.setQuestionSnapshot(write(items));
+    s.setTotalQuestions(items.size());
+    s.setCorrectAnswers(0);
+    s.setScore(BigDecimal.ZERO);
+    s.setStartedAt(LocalDateTime.now());
+    s.setCreatedAt(s.getStartedAt());
+    s.setUpdatedAt(s.getStartedAt());
+    sessions.save(s);
+    return new StartTestResponse(
+      s.getId(),
+      s.getTotalQuestions(),
+      s.getStartedAt()
+    );
+  }
+
   @Transactional(readOnly = true)
   public SessionResponse getState(UUID id) {
     TestSession s = owned(id, false);

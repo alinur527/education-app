@@ -7,7 +7,15 @@ import {
   Navigate,
   useLocation,
 } from 'react-router';
-import { BookOpen, ChartNoAxesCombined, House, LogOut, Settings2 } from 'lucide-react';
+import {
+  BookOpen,
+  ChartNoAxesCombined,
+  House,
+  LogOut,
+  Settings2,
+  GraduationCap,
+  Search,
+} from 'lucide-react';
 import { AppProvider, useApp } from './state';
 import { Logo, LanguageSwitch, Loading, ErrorState, ErrorBoundary } from './components';
 import {
@@ -22,6 +30,8 @@ import {
   NotFound,
 } from './pages';
 import { TestPage } from './TestPage';
+import { platformRoutes } from './features/routes';
+import { roleLabels } from './features/shared';
 
 function Protected() {
   const { user, loading, restoreError, restore } = useApp();
@@ -32,7 +42,7 @@ function Protected() {
   return <Outlet />;
 }
 function Shell() {
-  const { t, user, logout, languageError } = useApp();
+  const { t, user, logout, languageError, content } = useApp();
   const location = useLocation();
   const isTest = location.pathname.startsWith('/tests/');
   useEffect(() => {
@@ -41,6 +51,7 @@ function Shell() {
   const links = [
     { to: '/', key: 'home', Icon: House },
     { to: '/subjects', key: 'subjects', Icon: BookOpen },
+    { to: '/courses', key: 'courses', Icon: GraduationCap },
     { to: '/statistics', key: 'statistics', Icon: ChartNoAxesCombined },
     { to: '/settings', key: 'settings', Icon: Settings2 },
   ] as const;
@@ -67,7 +78,12 @@ function Shell() {
             <span className="avatar">{user?.firstName.slice(0, 1)}</span>
             <span>
               <strong>{user?.firstName}</strong>
-              <small>{t(user?.role === 'ADMIN' ? 'admin' : 'student')}</small>
+              <small>
+                {content(
+                  roleLabels[user?.role || 'STUDENT'][0],
+                  roleLabels[user?.role || 'STUDENT'][1],
+                )}
+              </small>
             </span>
           </div>
           <button onClick={logout} className="text-button">
@@ -83,6 +99,14 @@ function Shell() {
           </span>
           <span className="desktop-caption">{t('prep')}</span>
           <div className="topbar-actions">
+            <NavLink className="search-link" to="/search" aria-label={content('Поиск', 'Іздеу')}>
+              <Search size={20} />
+            </NavLink>
+            {user && user.role !== 'STUDENT' && (
+              <NavLink className="staff-link" to="/workspace/content">
+                {content('Кабинет', 'Кабинет')}
+              </NavLink>
+            )}
             <LanguageSwitch />
             <NavLink to="/settings" className="avatar" aria-label={t('settings')}>
               {user?.firstName.slice(0, 1)}
@@ -124,6 +148,7 @@ export const routes = [
       {
         element: <Shell />,
         children: [
+          ...platformRoutes,
           { path: '/', element: <Dashboard /> },
           { path: '/subjects', element: <SubjectsPage /> },
           { path: '/subjects/:subjectId', element: <TopicsPage /> },

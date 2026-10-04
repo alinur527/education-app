@@ -16,3 +16,10 @@ desktop                           mobile
 ```
 
 Plan critique: rejected gradient KPI hero and identical repeated cards. The characteristic element is a large study invitation with a geometric open-book drawing. Statistics stay secondary until real activity exists. Native controls minimize dependencies; Radix handles dialog focus. User-triggered transitions only, reduced motion respected. Validate via screenshots at desktop/tablet/mobile widths.
+
+
+## Phase 2 surfaces
+
+The pre-implementation plan and reference critique are in [PHASE2.md](PHASE2.md). The student shell retains Golos Text, the original blue/ink palette and responsive navigation. Courses add an ordered module/lesson outline; a focused reading surface joins theory, attachments, assignments and quizzes. Learning indicators disclose their real activity formula.
+
+The staff workspace uses content rows, search/type/status filters, bilingual paired fields, explicit save state and review/publication controls. Status is written as text as well as color. Blocks use native labeled controls rather than unsafe rich HTML. Drag/drop has a normal file picker. Forms collapse to one column; tables scroll inside labeled regions. At 320px the header uses the compact book mark to preserve room for search, staff access and language controls. Screenshots were inspected at all five requested widths. Empty file sections are hidden; error states preserve recoverable input. No new UI or calendar dependency was added.

@@ -103,17 +103,16 @@ public class AuthService {
       );
     }
 
-    user.setLastLoginAt(LocalDateTime.now());
-    User savedUser = userRepository.save(user);
-    setAuthentication(savedUser);
-
-    return buildAuthResponse(savedUser);
+    userRepository.recordLogin(user.getId(), LocalDateTime.now());
+    setAuthentication(user);
+    return buildAuthResponse(user);
   }
 
   public UserResponse updateLanguage(String language) {
     User user = getCurrentUser();
+    userRepository.changeLanguage(user.getId(), language);
     user.setLanguage(language);
-    return toUserResponse(userRepository.save(user));
+    return toUserResponse(user);
   }
 
   public UserResponse getMe() {
