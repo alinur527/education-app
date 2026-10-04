@@ -13,6 +13,7 @@ const ContentPacks = lazy(() => import('./admin/ContentPacks'));
 const Sources = lazy(() => import('./admin/Sources'));
 const Groups = lazy(() => import('./teacher/Groups'));
 const Submissions = lazy(() => import('./teacher/Submissions'));
+const StaffAnalytics = lazy(() => import('./analytics/StaffAnalytics'));
 const Courses = lazy(() => import('./courses/Courses'));
 const Lesson = lazy(() => import('./courses/Courses').then((m) => ({ default: m.Lesson })));
 const Assignments = lazy(() => import('./courses/Assignments'));
@@ -63,6 +64,7 @@ export const platformRoutes = [
       {
         element: <TeacherOnly />,
         children: [
+          { path: 'analytics', element: wait(<StaffAnalytics />) },
           { path: 'groups', element: wait(<Groups />) },
           { path: 'groups/:id', element: wait(<Groups />) },
           { path: 'assignments/:id', element: wait(<Submissions />) },

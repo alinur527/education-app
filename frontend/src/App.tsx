@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import PwaNotice from './features/offline/PwaNotice';
+const StatisticsPage = lazy(() => import('./features/analytics/Statistics'));
 const SavedPage = lazy(() => import('./features/offline/SavedPage'));
 import {
   createBrowserRouter,
@@ -26,7 +27,6 @@ import {
   SubjectsPage,
   TopicsPage,
   TopicPage,
-  StatisticsPage,
   ResultsPage,
   SettingsPage,
   NotFound,
@@ -177,7 +177,14 @@ export const routes = [
           { path: '/topics/:topicId', element: <TopicPage /> },
           { path: '/tests/:sessionId', element: <TestPage /> },
           { path: '/results/:sessionId', element: <ResultsPage /> },
-          { path: '/statistics', element: <StatisticsPage /> },
+          {
+            path: '/statistics',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <StatisticsPage />
+              </Suspense>
+            ),
+          },
           { path: '/settings', element: <SettingsPage /> },
           { path: '*', element: <NotFound /> },
         ],

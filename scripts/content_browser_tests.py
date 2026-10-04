@@ -342,6 +342,9 @@ $$S=ab=3\,\mathrm{cm}\cdot4\,\mathrm{cm}=12\,\mathrm{cm}^2$$
                 page.get_by_role("link", name="Моя статистика", exact=True).click()
                 expect(page.get_by_role("heading", name="Статистика", exact=True)).to_be_visible()
                 page.wait_for_load_state("networkidle")
+                # Preserve a direct compatibility check of the legacy API; the new
+                # statistics surface intentionally uses the analytics endpoint.
+                statistics.update(page.evaluate("async () => (await fetch('/api/statistics/me', {headers:{Authorization:'Bearer '+sessionStorage.getItem('education.session')}})).json()"))
                 assert statistics["testsTaken"] == 18 and statistics["averageScore"] == 100, statistics
                 assert len(statistics["subjects"]) == 18
                 assert sum(s["testsTaken"] for s in statistics["subjects"]) == 18

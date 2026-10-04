@@ -323,7 +323,7 @@ with sync_playwright() as p:
             page.get_by_role('button', name='Основное', exact=True).click()
         page.set_viewport_size({'width':1440,'height':1000})
         page.get_by_label('Название RU', exact=True).fill('Несохранённая правка')
-        page.get_by_role('link', name='Материалы', exact=True).click()
+        page.get_by_role('link', name='Контент', exact=True).click()
         expect(page.get_by_role('alertdialog')).to_be_visible()
         inspect('dirty-draft-dialog', True)
         page.get_by_role('button', name='Остаться', exact=True).click()

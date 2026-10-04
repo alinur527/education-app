@@ -1,5 +1,6 @@
 import ResultSubjects from './features/assessment/ResultSubjects';
 import Today from './features/study/Today';
+import WeeklySummary from './features/analytics/WeeklySummary';
 import TopicCatalog from './features/content/TopicCatalog';
 import { AnswerText } from './features/assessment/AnswerControls';
 import { RichText, InlineText } from './features/content/RichText';
@@ -189,6 +190,7 @@ export function Dashboard() {
       <div className="dashboard-columns">
         <div>
           <Today />
+          <WeeklySummary />
           <LearningSummary />
           <div className="section-heading">
             <h2>{t('yourSubjects')}</h2>
@@ -411,77 +413,6 @@ export function TopicPage() {
           </div>
         </aside>
       </div>
-    </>
-  );
-}
-export function StatisticsPage() {
-  const { t, content } = useApp();
-  const resource = useResource('/statistics/me', statsSchema);
-  const stats = resource.data;
-  return (
-    <>
-      <PageHeading title={t('statistics')} body={t('statsIntro')} />
-      {resource.loading ? (
-        <Loading />
-      ) : resource.error ? (
-        <ErrorState error={resource.error} retry={resource.reload} />
-      ) : (
-        stats && (
-          <>
-            <Metrics stats={stats} />
-            {stats.testsTaken > 0 && (
-              <div className="stats-columns">
-                <section className="panel">
-                  <h2>{t('trend')}</h2>
-                  <div
-                    className="chart"
-                    role="img"
-                    aria-label={`${t('trend')}: ${[...stats.recentAttempts]
-                      .reverse()
-                      .map((a) => `${content(a.nameRu, a.nameKz)} ${a.score}%`)
-                      .join(', ')}`}
-                  >
-                    {[...stats.recentAttempts].reverse().map((a, i) => (
-                      <div className="chart-column" key={a.sessionId}>
-                        <strong>{Math.round(a.score)}%</strong>
-                        <div className="chart-track">
-                          <div style={{ height: `${Math.max(a.score, 1)}%` }} />
-                        </div>
-                        <small>{i + 1}</small>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-                <section className="panel">
-                  <h2>{t('bySubject')}</h2>
-                  <ul className="subject-results">
-                    {stats.subjects.map((s) => (
-                      <li key={s.subjectId}>
-                        <div>
-                          <strong>{content(s.nameRu, s.nameKz)}</strong>
-                          <span>{Math.round(s.averageScore)}%</span>
-                        </div>
-                        <progress
-                          value={s.averageScore}
-                          max={100}
-                          aria-label={`${content(s.nameRu, s.nameKz)}: ${t('average')}`}
-                        />
-                        <small>
-                          {t('attempts')}: {s.testsTaken}
-                        </small>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              </div>
-            )}
-            <section className="panel">
-              <h2>{t('recent')}</h2>
-              <RecentAttempts stats={stats} />
-            </section>
-          </>
-        )
-      )}
     </>
   );
 }

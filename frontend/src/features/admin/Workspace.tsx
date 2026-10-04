@@ -8,7 +8,10 @@ export default function Workspace() {
   return (
     <div className="workspace">
       <nav className="workspace-nav" aria-label={l('Управление обучением', 'Оқуды басқару')}>
-        <NavLink to="/workspace/content">{l('Материалы', 'Материалдар')}</NavLink>
+        <NavLink to="/workspace/content">{l('Контент', 'Контент')}</NavLink>
+        {user.role === 'ADMIN' && (
+          <NavLink to="/workspace/users">{l('Пользователи', 'Пайдаланушылар')}</NavLink>
+        )}
         <NavLink to="/workspace/files">{l('Файлы', 'Файлдар')}</NavLink>
         {['TEACHER', 'ADMIN'].includes(user.role) && (
           <NavLink to="/workspace/groups">{l('Группы и ученики', 'Топтар мен оқушылар')}</NavLink>
@@ -24,8 +27,8 @@ export default function Workspace() {
             </NavLink>
           </>
         )}
-        {user.role === 'ADMIN' && (
-          <NavLink to="/workspace/users">{l('Пользователи', 'Пайдаланушылар')}</NavLink>
+        {['TEACHER', 'ADMIN'].includes(user.role) && (
+          <NavLink to="/workspace/analytics">{l('Аналитика', 'Аналитика')}</NavLink>
         )}
       </nav>
       <Outlet />
