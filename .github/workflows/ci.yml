@@ -37,6 +37,9 @@ jobs:
   browser:
     needs: [backend, frontend]
     runs-on: ubuntu-latest
+    env:
+      APP_SCAN_ENGINE: clamav
+      APP_SCAN_REQUIRED: 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,11 +56,27 @@ jobs:
           .venv/bin/pip install -r scripts/requirements-browser.txt
           .venv/bin/python -m playwright install --with-deps chromium
       - run: sh scripts/setup.sh
-      - run: docker compose --profile app up -d --build --wait --wait-timeout 180
+      - run: .venv/bin/python scripts/validate_content.py
+      - run: docker compose --profile app --profile malware up -d --build --wait --wait-timeout 300
       - run: .venv/bin/python scripts/browser_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081
       - run: .venv/bin/python scripts/phase2_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/expansion_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/content_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/course_content_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/content_pack_safety_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/pwa_update_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081
       - uses: actions/upload-artifact@v4
@@ -67,5 +86,7 @@ jobs:
           path: |
             test-results/
             docs/screenshots/
-      - run: docker compose --profile app down
+            !test-results/**/*fixture*.json
+            !test-results/**/*.dump
+      - run: docker compose --profile app --profile malware down
         if: always()

@@ -192,7 +192,7 @@ Conflicts return 409: `REVISION_CONFLICT`, `INVALID_TRANSITION`, `ARCHIVED_CONTE
 | GET `/teacher/assignments/{id}/submissions?page=` | → page of `{userId,firstName,lastName,text,score,feedback,revision,submittedAt}` | Owned assignment and current group students / ADMIN |
 | POST `/teacher/assignments/{id}/submissions/{userId}/grade` | `{score,feedback?,revision}` → saved | Same; range 0..published maxScore |
 
-`GroupDetail` = `{id,name,courseId,students:[{id,email,firstName,lastName,enrollment,completed}],totalLessons,averageProgress,assignments:[{id,titleRu,titleKz,dueAt,submitted}],availableAssignments:[{id,titleRu,titleKz}],weakTopics:[{id,titleRu,titleKz,accuracy}]}`. `submission` is null or `{text,submittedAt,score,feedback}`; ungraded fields are null. Groups do not create new user accounts. There is no student file-submission endpoint. Group/course mismatch and score outside scale return 400, unrelated resources 404, stale grade or unpublished assignment 409. Resubmission clears the grade and increments revision.
+`GroupDetail` = `{id,name,courseId,students:[{id,email,firstName,lastName,enrollment,completed}],totalLessons,averageProgress,assignments:[{id,titleRu,titleKz,dueAt,submitted}],availableAssignments:[{id,titleRu,titleKz}],weakTopics:[{id,titleRu,titleKz,accuracy}]}`. `submission` is null or `{text,submittedAt,score,feedback}`; ungraded fields are null. Groups do not create new user accounts. Versioned file submissions are documented in [STUDENT_FILES.md](STUDENT_FILES.md). Group/course mismatch and score outside scale return 400, unrelated resources 404, stale grade or unpublished assignment 409. Resubmission clears the grade and increments revision.
 
 ## Lesson quizzes
 
@@ -230,3 +230,8 @@ Conflicts return 409: `REVISION_CONFLICT`, `INVALID_TRANSITION`, `ARCHIVED_CONTE
 GET `/admin/users?q=&role=&page=` returns a page of `{id,email,firstName,lastName,role,active,revision}`. PATCH `/admin/users/{id}` requires `{role,active,revision}` and returns saved. Both require ADMIN. Revision mismatch, self-demotion/deactivation, or losing the last active administrator return 409. Role/status changes are audited. No password hashes are returned.
 
 V16 creates the editorial/LMS/file/import/audit schema and backfills legacy content as published/archived without changing IDs. V17 adds practice modes and the completed-question activity view. V18 adds submission revisions. The migration upgrade integration test applies V1–V15, inserts an old completed attempt and users, upgrades, and asserts unchanged snapshot/score/roles plus visible activity.
+
+
+## Current expansion contracts
+
+[EXPANSION_API.md](EXPANSION_API.md) documents typed assessments, mixed/timed practice, contexts, sources, versioned imports, bulk publication, file library and offline export. Planner, reminders, private notes and versioned student files are implemented. Existing requests remain compatible.

@@ -40,7 +40,7 @@ Common metadata: `sourceType` = OFFICIAL_SAMPLE / EDITOR_CREATED / AI_GENERATED 
 | QUIZ | `questions` array of question payloads (1–100) |
 | ASSIGNMENT | descriptions, blocks, `dueAt` ISO timestamp with offset, `maxScore` 1–10000 |
 
-Questions require 2–8 unique option IDs and a matching correctOptionId, including in a draft. Blocks are an ordered array (maximum 100). Text-like blocks have `type` plus `textRu/Kz`; FILE/IMAGE need an existing `materialId` belonging to the same content record; VIDEO has an HTTP(S) `url`. Upload bytes separately in the CMS after creating drafts. A file reference is validated again during publication. Formulas are safely displayed as plain text.
+Questions require 2–8 unique option IDs and valid answer keys, including in a draft. `SINGLE_CHOICE` uses `correctOptionId`; `MULTIPLE_SELECT` uses `correctOptionIds`; `MATCHING` uses typed left/right items and valid pairs. See [EXPANSION_API.md](EXPANSION_API.md) for the additive assessment contracts. Blocks are an ordered array (maximum 100). Text-like blocks have `type` plus `textRu/Kz`; FILE/IMAGE need an existing `materialId` belonging to the same content record; VIDEO has an HTTP(S) `url`. Upload bytes separately in the CMS after creating drafts. A file reference is validated again during publication. Formulas use bounded KaTeX with trusted HTML disabled; legacy plain text remains readable.
 
 ## CSV
 
@@ -51,3 +51,9 @@ The first row is the header. Structural columns are `key,kind,parentKey,parentId
 Invalid preview returns `status:INVALID`, original rows and `errors:[{row,field,code,detail}]`. Row is the 1-based **data row**, excluding the CSV header; multiline CSV rows count as one. A bad answer key produces, for example, `correctOptionId=D; options=[A, B, C]`. Malformed JSON/CSV syntax fails the upload with 400 instead of creating a misleading preview.
 
 An invalid batch cannot be confirmed. A valid preview is revalidated at confirmation; missing/changed references produce 409. The import row is locked, all creates run in one transaction, and a retry after success returns the same key→UUID result without duplicates. Any failure rolls back the whole batch. The preview owner or ADMIN can view/confirm it. History is paginated. Import confirmation does not implicitly publish any row.
+
+## Versioned releases across batches
+
+The CSV/JSON wizard above remains available. Larger maintained releases use the separate `education-content-pack/v1` JSON contract in **Кабинет → Пакеты контента**, with a namespace, permanent external keys, pack/source versions and batch keys. Preview lists creates, updates, unchanged records, validation errors and conflicts with editorial changes. Confirmation is atomic per batch; later batches can resume through persistent server mappings. A conflicting update requires an explicit recorded resolution and only updates the draft, never the published snapshot.
+
+Use [CONTENT_RELEASE.md](CONTENT_RELEASE.md) for the schema, operator CLI, source/material manifests, transaction boundaries and repeat/resume commands. [EXPANSION_API.md](EXPANSION_API.md) documents permissions and errors. Publication remains a separate preview/confirmation workflow. Imported provenance never creates a human review approval automatically.

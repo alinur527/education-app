@@ -1,6 +1,40 @@
 # Verification and handoff record
 
-The first sections record the Phase 1 baseline. Current Phase 2 results and limits are appended below.
+The expansion release is recorded first. Phase 1 and Phase 2 sections below are historical baseline evidence; their deferred-feature lists do not describe the current expansion.
+
+## Unified expansion — 2026-10-04
+
+Branch `codex/education-content-experience` extends Phase 2 commit `e39293b3d9a044006a8768698dccffbaaa1b6234`, whose PR #15 remains open. The release PR targets `codex/education-platform-phase-2`; neither PR is automatically merged. Exact release SHA and final CI are recorded in the PR and final handoff, separately from earlier baseline runs.
+
+| Command / evidence | Local result |
+|---|---|
+| `backend/mvnw.cmd -q -f backend/pom.xml verify` with JDK 21 | 58 backend tests, zero failures/errors/skips; real PostgreSQL/Testcontainers, legacy migration upgrade, concurrency, ownership, scoring, imports, S3 and scanner tests |
+| `npm --prefix frontend run typecheck` | Pass |
+| `npm --prefix frontend run lint` | Pass, zero warnings |
+| `npm --prefix frontend test` | 45 frontend tests pass, including RU/KZ safe assignment description rendering |
+| `docker compose --profile app build` | Both production images pass; final frontend rebuilt after readability repair |
+| `docker compose --profile app --profile malware up -d --build --wait --wait-timeout 300` | Nginx, backend, PostgreSQL and real ClamAV healthy |
+| `python scripts/validate_content.py --verify-cache` | All 480 questions structurally checked; 147 pilot/core proof checks, 112 model sample checks, 12 Python examples and 8 boundary cases; 77 cached NCT source hashes match; zero network requests |
+| `python scripts/browser_tests.py` with `BROWSER_BASE_URL=http://127.0.0.1:8081` | 28 original student browser checkpoints pass |
+| `python scripts/phase2_browser_tests.py` | 68 CMS/LMS browser checkpoints pass; four roles, ENT publication, courses, PDF upload/download, enrollment, group, assignment, grading, quiz, mastery/error review, CSV/JSON imports and invalid imports |
+| `python scripts/content_browser_tests.py` | 18 real subject journeys / 180 UI answers / 18 completed attempts; 175 single, 3 multiple, 2 matching and 10 shared-context answers; no keys exposed in 180 question responses; 22 axe/overflow inspections including RU/KZ KaTeX/table/code and keyboard scrolling |
+| `python scripts/expansion_browser_tests.py` | 29 UI checkpoints, zero unexpected errors; includes actual scheduled grade reminder and mass REVIEW/PUBLISHED confirmation |
+| `python scripts/course_content_browser_tests.py` | 16 local course checkpoints, 30 UI quiz answers, six-of-six lesson completion, assigned response and exact protected-PDF SHA; CI omits the licensed external PDF and reports that optional check as absent, retaining the other 15 checkpoints |
+| `python scripts/content_pack_safety_tests.py` | 31 live API checks: atomic failure, resume, idempotence, teacher-edit conflict, both explicit resolutions, stale versions, audit and unchanged published snapshots |
+| `python scripts/pwa_update_tests.py` | Actual service-worker update scenarios pass: active attempt blocks update, refresh retains deadline/session and waiting worker, second tab blocks activation, explicit safe single-tab activation reloads |
+| `python scripts/measure_ux.py` | 72 cold/warm navigations against exact Phase 2 and current frontend with the same API dataset; see [UX_VERIFICATION.md](UX_VERIFICATION.md) for raw denominators/tradeoffs |
+
+On Windows run the Python commands with `.venv/Scripts/python.exe -X utf8`; on Linux use `.venv/bin/python`. Browser dependencies and Chromium are installed from `scripts/requirements-browser.txt`. Run the browser suites only on a local/isolated database: they register disposable accounts, use local operator SQL solely to provision test roles, and perform actual content/learning operations through HTTP/UI. Screenshots are committed under `docs/screenshots/expansion`; local traces and backups stay ignored. The CI workflow uses offline structural validation and safe original PDF fixtures; it does not download books or call NCT websites.
+
+The expansion suite additionally covers versioned pack/source UI, mass review/publication preview and confirmation, deterministic planner creation/move preservation, private notes/bookmarks/cards, CLEAN file upload, real teacher grade and scheduled grade reminder, resubmission grade reset, explicit offline public reading and timed training refresh. The dedicated Python course suite covers all six lessons, all thirty quiz answers, explicit six-of-six completion, a real assigned text response and the protected licensed PDF when installed locally. Their final checkpoint counts are in the release handoff.
+
+Viewports: 320/390/768/1024/1440. Reduced motion, long RU/KZ text, responsive CMS hierarchy/editor/preview, groups/courses, planner/practice and safe rich content were exercised. Axe found no violations in tested surfaces; this is not full accessibility certification. No unexpected browser/console/network errors remained in passing runs.
+
+The independent [security review](EXPANSION_SECURITY_REVIEW.md) closed editorial answer-evidence leakage, pack locking/conflicts, context withdrawal, stale session/deadline races and legacy assessment compatibility. No unresolved P0/P1 findings remain. Source content is untrusted; safe renderers never execute imported HTML. Student attachments use real ClamAV, revision-specific grades and protected downloads.
+
+[CONTENT_RELEASE_REPORT.md](CONTENT_RELEASE_REPORT.md) records actual publication, file hashes, repeat/resume and preservation of 51 old users / 26 unchanged old attempts / 17 old Flyway checksums. [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md) identifies deployment work not claimed as completed. Full ENT content and human subject approval remain incomplete; working software is not evidence of a complete or expert-reviewed exam bank.
+
+## Historical Phase 1 baseline
 
 Verified locally on 2026-10-04, Windows PowerShell, JDK 21.0.9, Node 25.8.0, Docker Desktop, PostgreSQL 17. Production containers use Java 21 and Node 24 for the frontend build. CI uses Node 24 and Java 21 on Ubuntu.
 
