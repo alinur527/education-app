@@ -15,5 +15,7 @@ public record TestQuestionResponse(
   String questionKz,
   List<QuestionOptionResponse> options,
   String difficulty,
-  Integer year
+  Integer year,
+  com.fasterxml.jackson.databind.JsonNode assessment,
+  com.fasterxml.jackson.databind.JsonNode context
 ) {}

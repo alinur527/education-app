@@ -9,9 +9,12 @@ public enum ContentKind {
   MODULE,
   LESSON,
   QUIZ,
-  ASSIGNMENT;
+  ASSIGNMENT,
+  CONTEXT;
 
   public boolean ent() {
-    return ordinal() <= QUESTION.ordinal();
+    return java.util.Set.of(SUBJECT, TOPIC, THEORY, QUESTION, CONTEXT).contains(
+      this
+    );
   }
 }

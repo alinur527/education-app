@@ -13,5 +13,8 @@ public record TestResultsResponse(
   Integer correctAnswers,
   BigDecimal score,
   Integer timeTakenSecs,
-  List<TestAnswerResultResponse> answers
+  List<TestAnswerResultResponse> answers,
+  Integer earnedPoints,
+  Integer maxPoints,
+  String practiceMode
 ) {}

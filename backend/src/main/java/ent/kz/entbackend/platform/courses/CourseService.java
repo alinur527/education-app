@@ -145,7 +145,7 @@ public class CourseService {
         .count();
     return new Detail(
       id,
-      c.publishedPayload(),
+      PublicLearningPayload.of(c.publishedPayload()),
       status.isEmpty() ? null : status.getFirst(),
       total,
       completed,

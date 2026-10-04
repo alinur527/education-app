@@ -22,7 +22,9 @@ public class QuizController {
     return service.get(id);
   }
 
-  public record Answers(List<String> answers) {}
+  public record Answers(
+    List<com.fasterxml.jackson.databind.JsonNode> answers
+  ) {}
 
   @PostMapping("/api/quiz-attempts/{id}/finish")
   public Map<String, Object> finish(

@@ -9,5 +9,6 @@ public record SubjectResponse(
   String icon,
   String color,
   Integer questionCount,
-  Integer durationMinutes
+  Integer durationMinutes,
+  String category
 ) {}

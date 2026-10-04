@@ -1,54 +1,28 @@
 package ent.kz.entbackend.service;
 
 import ent.kz.entbackend.dto.TopicResponse;
-import ent.kz.entbackend.entity.Topic;
-import ent.kz.entbackend.repository.TopicRepository;
-import java.util.List;
-import java.util.UUID;
+import ent.kz.entbackend.repository.CurriculumQueryRepository;
+import java.util.*;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TopicService {
 
-  @org.springframework.beans.factory.annotation.Autowired
-  private ContentAccess access;
+  private final CurriculumQueryRepository queries;
+  private final ContentAccess access;
 
-  private final TopicRepository topicRepository;
-
-  @org.springframework.beans.factory.annotation.Autowired
-  private ent.kz.entbackend.repository.QuestionRepository questions;
-
-  @org.springframework.beans.factory.annotation.Autowired
-  private ent.kz.entbackend.repository.TheoryRepository theories;
-
-  public TopicService(TopicRepository topicRepository) {
-    this.topicRepository = topicRepository;
+  public TopicService(CurriculumQueryRepository queries, ContentAccess access) {
+    this.queries = queries;
+    this.access = access;
   }
 
   public List<TopicResponse> getActiveTopicsBySubjectId(UUID subjectId) {
     access.subject(subjectId);
-    return topicRepository
-      .findBySubjectIdAndIsActiveTrueOrderBySortOrderAsc(subjectId)
-      .stream()
-      .map(this::toResponse)
-      .toList();
+    return queries.topics(subjectId, null);
   }
 
   public TopicResponse getTopic(UUID id) {
-    return toResponse(access.topic(id));
-  }
-
-  private TopicResponse toResponse(Topic topic) {
-    return new TopicResponse(
-      topic.getId(),
-      topic.getSubject().getId(),
-      topic.getTitleRu(),
-      topic.getTitleKz(),
-      topic.getDescriptionRu(),
-      topic.getDescriptionKz(),
-      topic.getSortOrder(),
-      questions.countByTopicIdAndIsActiveTrue(topic.getId()),
-      theories.countByTopicIdAndIsActiveTrue(topic.getId())
-    );
+    access.topic(id);
+    return queries.topics(null, id).getFirst();
   }
 }

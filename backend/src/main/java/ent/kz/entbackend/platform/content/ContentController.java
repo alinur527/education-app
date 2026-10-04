@@ -19,10 +19,20 @@ public class ContentController {
     @RequestParam(defaultValue = "") String kind,
     @RequestParam(defaultValue = "") String status,
     @RequestParam(defaultValue = "") String q,
+    @RequestParam(required = false) UUID parentId,
+    @RequestParam(defaultValue = "false") boolean missingTranslation,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "25") int size
   ) {
-    return service.list(kind, status, q, page, size);
+    return service.list(
+      kind,
+      status,
+      q,
+      parentId,
+      missingTranslation,
+      page,
+      size
+    );
   }
 
   @GetMapping("/{id}")

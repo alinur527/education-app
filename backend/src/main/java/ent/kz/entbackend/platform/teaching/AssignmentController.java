@@ -25,11 +25,10 @@ public class AssignmentController {
   }
 
   @PostMapping("/{id}/submit")
-  public Map<String, Boolean> submit(
+  public Map<String, Object> submit(
     @PathVariable UUID id,
     @Valid @RequestBody TeachingService.Submission req
   ) {
-    service.submit(id, req);
-    return Map.of("saved", true);
+    return service.submit(id, req);
   }
 }

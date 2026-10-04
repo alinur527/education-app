@@ -8,5 +8,7 @@ public record FinishTestResponse(
   Integer correctAnswers,
   Integer totalQuestions,
   BigDecimal score,
-  Integer timeTakenSecs
+  Integer timeTakenSecs,
+  Integer earnedPoints,
+  Integer maxPoints
 ) {}

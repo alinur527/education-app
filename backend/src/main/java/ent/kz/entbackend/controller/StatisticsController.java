@@ -37,9 +37,9 @@ public class StatisticsController {
       db.queryForList(
         """
         select s.id as "sessionId",s.topic_id as "topicId",s.subject_id as "subjectId",
-        b.name_ru as "nameRu",b.name_kz as "nameKz",s.score,s.total_questions as "totalQuestions",
+        coalesce(b.name_ru,'Смешанная практика') as "nameRu",coalesce(b.name_kz,'Аралас тәжірибе') as "nameKz",s.score,s.total_questions as "totalQuestions",
         s.correct_answers as "correctAnswers",s.completed_at as "completedAt"
-        from test_sessions s join subjects b on b.id=s.subject_id where s.user_id=? and s.status='COMPLETED'
+        from test_sessions s left join subjects b on b.id=s.subject_id where s.user_id=? and s.status='COMPLETED'
         order by s.completed_at desc,s.id desc limit 10
         """,
         id
@@ -50,9 +50,10 @@ public class StatisticsController {
       db.queryForList(
         """
         select b.id as "subjectId",b.name_ru as "nameRu",b.name_kz as "nameKz",count(*) as "testsTaken",
-        round(avg(s.score),2) as "averageScore",max(s.score) as "bestScore"
-        from test_sessions s join subjects b on b.id=s.subject_id where s.user_id=? and s.status='COMPLETED'
-        group by b.id,b.name_ru,b.name_kz order by b.name_ru
+        round(avg(a.score),2) as "averageScore",max(a.score) as "bestScore"
+        from (select subject_id,session_id,100.0*sum(earned_points)/nullif(sum(max_points),0) as score
+              from completed_question_activity where user_id=? group by subject_id,session_id) a
+        join subjects b on b.id=a.subject_id group by b.id,b.name_ru,b.name_kz order by b.name_ru
         """,
         id
       )
@@ -61,9 +62,9 @@ public class StatisticsController {
       "activeAttempts",
       db.queryForList(
         """
-        select s.id as "sessionId",s.topic_id as "topicId",b.name_ru as "nameRu",b.name_kz as "nameKz",
+        select s.id as "sessionId",s.topic_id as "topicId",coalesce(b.name_ru,'Смешанная практика') as "nameRu",coalesce(b.name_kz,'Аралас тәжірибе') as "nameKz",
         s.total_questions as "totalQuestions",(select count(*) from test_answers a where a.session_id=s.id) as "answeredQuestions"
-        from test_sessions s join subjects b on b.id=s.subject_id where s.user_id=? and s.status='IN_PROGRESS'
+        from test_sessions s left join subjects b on b.id=s.subject_id where s.user_id=? and s.status='IN_PROGRESS'
         order by s.updated_at desc limit 5
         """,
         id

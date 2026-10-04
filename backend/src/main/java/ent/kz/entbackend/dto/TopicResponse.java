@@ -11,5 +11,9 @@ public record TopicResponse(
   String descriptionKz,
   Integer sortOrder,
   long questionCount,
-  long theoryCount
+  long theoryCount,
+  String contentRole,
+  com.fasterxml.jackson.databind.JsonNode curriculum,
+  String documentLanguage,
+  String sourceUrl
 ) {}

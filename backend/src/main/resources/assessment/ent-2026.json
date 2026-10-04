@@ -1,0 +1,443 @@
+{
+  "schema": "education-exam-config/v1",
+  "id": "NTC_FULL_DURATION_FROM_2026",
+  "checkedAt": "2026-10-04",
+  "appliesFrom": 2026,
+  "appliesFromEvidence": {
+    "sourceId": "SPEC-10",
+    "url": "https://testcenter.kz/wp-content/uploads/2025/10/10_Математика_рус.pdf",
+    "sha256": "88ac71b873405ae63f3fd419d947bb437b9ef4c030314ec46ae655b379b3a00a",
+    "page": 1,
+    "section": "Explicit usage-from-2026 heading",
+    "checkedAt": "2026-10-04"
+  },
+  "scope": "Standard full-duration non-creative admission; special categories excluded",
+  "officialSimulatorReady": false,
+  "notReadyReason": "Requires sufficient reviewed bank for exact blueprint, difficulty mix and intact contexts",
+  "totalQuestions": 120,
+  "maxScore": 140,
+  "durationMinutes": 240,
+  "formatEvidence": {
+    "sourceId": "NTC-FORMAT",
+    "url": "https://testcenter.kz/?page_id=15074&lang=ru",
+    "sha256": "3f6ff884c98be50f53ec6ae6d870592c4f54e4327322a300ff495e1af8253cfa",
+    "page": null,
+    "section": "ЕНТ для поступления на нетворческие специальности",
+    "checkedAt": "2026-10-04"
+  },
+  "mandatorySubjects": [
+    {
+      "subject": "Математическая грамотность",
+      "questionCount": 10,
+      "maxScore": 10,
+      "sourceEvidence": {
+        "sourceId": "SPEC-08",
+        "url": "https://testcenter.kz/wp-content/uploads/2025/10/08_Математическая-грамотность.pdf",
+        "sha256": "bc494a31a4c065cae8f0836c88ca5eb4ce811aa2c48f86c8a0b436f7e59a7274",
+        "page": 2,
+        "section": "Количество тестовых заданий",
+        "checkedAt": "2026-10-04"
+      }
+    },
+    {
+      "subject": "Грамотность чтения",
+      "questionCount": 10,
+      "maxScore": 10,
+      "sourceEvidence": {
+        "sourceId": "SPEC-15",
+        "url": "https://testcenter.kz/wp-content/uploads/2025/10/15_Грамотность-чтения_рус.pdf",
+        "sha256": "c90f9638c7028b0cfe9b42cbe9e9e71b7dfded24199184887e51d8088992f628",
+        "page": 1,
+        "section": "Text/question distribution: 2+3+5",
+        "checkedAt": "2026-10-04"
+      }
+    },
+    {
+      "subject": "История Казахстана",
+      "questionCount": 20,
+      "maxScore": 20,
+      "sourceEvidence": {
+        "sourceId": "SPEC-23",
+        "url": "https://testcenter.kz/wp-content/uploads/2025/10/23_История-Казахстана.pdf",
+        "sha256": "6fe50f7f2bc87239cff4c0a8c311efbd8289c91050b57fb458a6342275dfe956",
+        "page": 4,
+        "section": "Количество тестовых заданий",
+        "checkedAt": "2026-10-04"
+      }
+    }
+  ],
+  "profileSubjectCount": 2,
+  "profileBlueprint": [
+    {
+      "questionType": "SINGLE_CHOICE",
+      "count": 25,
+      "pointsEach": 1
+    },
+    {
+      "questionType": "SINGLE_CHOICE",
+      "contextRequired": true,
+      "count": 5,
+      "pointsEach": 1,
+      "contextGroupMustStayIntact": true
+    },
+    {
+      "questionType": "MULTIPLE_SELECT",
+      "count": 5,
+      "pointsEach": 2,
+      "scoringPolicy": "ENT_MULTIPLE_2026_V1"
+    },
+    {
+      "questionType": "MATCHING",
+      "count": 5,
+      "pointsEach": 2,
+      "scoringPolicy": "ENT_MATCHING_2026_V1"
+    }
+  ],
+  "profileBlueprintEvidence": {
+    "sourceId": "SPEC-10",
+    "url": "https://testcenter.kz/wp-content/uploads/2025/10/10_Математика_рус.pdf",
+    "sha256": "88ac71b873405ae63f3fd419d947bb437b9ef4c030314ec46ae655b379b3a00a",
+    "page": 2,
+    "section": "Количество тестовых заданий",
+    "checkedAt": "2026-10-04"
+  },
+  "difficultyShares": {
+    "A": 0.5,
+    "B": 0.3,
+    "C": 0.2
+  },
+  "difficultyEvidence": {
+    "sourceId": "SPEC-10",
+    "url": "https://testcenter.kz/wp-content/uploads/2025/10/10_Математика_рус.pdf",
+    "sha256": "88ac71b873405ae63f3fd419d947bb437b9ef4c030314ec46ae655b379b3a00a",
+    "page": 1,
+    "section": "Трудность тестовых заданий",
+    "checkedAt": "2026-10-04"
+  },
+  "allowedProfilePairs": [
+    {
+      "subjects": [
+        "Математика",
+        "Физика"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B009 / B010",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Математика",
+        "Информатика"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B011",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Математика",
+        "География"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 3,
+        "section": "B038",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Биология",
+        "Химия"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B012 / B013",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Биология",
+        "География"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B001",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Английский язык",
+        "Всемирная история"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B018: Иностранный язык + Всемирная история",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "География",
+        "Английский язык"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 5,
+        "section": "B091 / B093: География + Иностранный язык",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "Немецкий язык",
+        "Всемирная история"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B018: Иностранный язык + Всемирная история",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "География",
+        "Немецкий язык"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 5,
+        "section": "B091 / B093: География + Иностранный язык",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "Французский язык",
+        "Всемирная история"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B018: Иностранный язык + Всемирная история",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "География",
+        "Французский язык"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 5,
+        "section": "B091 / B093: География + Иностранный язык",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": true
+    },
+    {
+      "subjects": [
+        "Всемирная история",
+        "Основы права"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 3,
+        "section": "B049",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Всемирная история",
+        "География"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B008 / B014",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Казахский язык",
+        "Казахская литература"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B016",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Русский язык",
+        "Русская литература"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 1,
+        "section": "B017",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    },
+    {
+      "subjects": [
+        "Химия",
+        "Физика"
+      ],
+      "orderIndependentForPractice": true,
+      "sourceEvidence": {
+        "sourceId": "NTC-PROFILE-PAIRS",
+        "url": "https://testcenter.kz/wp-content/uploads/2026/05/Список-специальностей-полной-формы-обучения-с-профильными-предметами.pdf",
+        "sha256": "e1ad3f6a6d6bab26dd6b3a3d0572d7134e1f082fbae39f5aa719212d3a1660bd",
+        "page": 4,
+        "section": "B060: Химия + Физика/Биология",
+        "checkedAt": "2026-10-04"
+      },
+      "foreignLanguageExpansion": false
+    }
+  ],
+  "foreignLanguageEvidence": [
+    {
+      "sourceId": "SPEC-25",
+      "url": "https://testcenter.kz/wp-content/uploads/2025/10/25_Английский-язык_рус.pdf",
+      "sha256": "bf2d643b3a962d647fa39b02ffb181a24c13cc71dba362aff4991265f3efc846",
+      "page": 1,
+      "section": "Language subject specification",
+      "checkedAt": "2026-10-04"
+    },
+    {
+      "sourceId": "SPEC-32",
+      "url": "https://testcenter.kz/wp-content/uploads/2025/10/32_Немецкий-язык_рус.pdf",
+      "sha256": "fdef467a167fdeb3d181fc397a8f6486e13237fab0ecb60763070b4f50943061",
+      "page": 1,
+      "section": "Language subject specification",
+      "checkedAt": "2026-10-04"
+    },
+    {
+      "sourceId": "SPEC-35",
+      "url": "https://testcenter.kz/wp-content/uploads/2025/10/35_Французский-язык_рус.pdf",
+      "sha256": "a65719f1518e1037da17a68ff38e252fcfaa925529db04c30832a3322454ab2f",
+      "page": 1,
+      "section": "Language subject specification",
+      "checkedAt": "2026-10-04"
+    }
+  ],
+  "scoringPolicies": [
+    {
+      "id": "ENT_MULTIPLE_2026_V1",
+      "correctCountMin": 1,
+      "correctCountMax": 3,
+      "maxPoints": 2,
+      "sourceUrl": "https://old.adilet.zan.kz/rus/docs/V1700015173",
+      "paragraph": "18(2)",
+      "paragraphRevision": "2024-02-28 №92",
+      "checkedAt": "2026-10-04",
+      "rule": "Exact answer set => 2; otherwise n=1,c=1,w=1 => 1; n=2,c>=1,w<=1 => 1; n=3,c>=2,w<=1 => 1; otherwise => 0. n=key size,c=selected correct,w=selected incorrect.",
+      "emptyAnswerPoints": 0
+    },
+    {
+      "id": "ENT_MATCHING_2026_V1",
+      "leftCount": 2,
+      "maxPoints": 2,
+      "sourceUrl": "https://old.adilet.zan.kz/rus/docs/V1700015173",
+      "paragraph": "18(2)",
+      "paragraphRevision": "2024-02-28 №92",
+      "checkedAt": "2026-10-04",
+      "rule": "One selected right value per left item. 2 correct pairs => 2; 1 correct pair => 1; 0 => 0. Unknown/duplicate/extra IDs are validation errors.",
+      "emptyAnswerPoints": 0
+    }
+  ],
+  "deadline": {
+    "year": 2026,
+    "registrationStart": "2026-04-11",
+    "registrationEnd": "2026-04-25",
+    "examStart": "2026-05-10",
+    "examEnd": "2026-07-10",
+    "sourceUrl": "https://testcenter.kz/?custom_news_section=🎓абитуриенты-2026",
+    "publishedAt": "2026-04-09",
+    "checkedAt": "2026-10-04",
+    "status": "HISTORICAL_NOT_NEXT_EXAM_DEADLINE"
+  },
+  "limitations": [
+    "No 2027-wide curriculum inferred from reference filename",
+    "Programme-specific profile ordering preserved in original PDF; pair membership here is unordered",
+    "Do not cross Kazakh language with Russian literature or vice versa",
+    "Full official match/context blueprint varies for literacy/history and special admission categories; this configuration does not claim support for those categories"
+  ]
+}
