@@ -1,0 +1,14 @@
+package ent.kz.entbackend.dto;
+
+import java.util.UUID;
+
+public record SubjectAdminResponse(
+  UUID id,
+  String nameRu,
+  String nameKz,
+  String icon,
+  String color,
+  Integer questionCount,
+  Integer durationMinutes,
+  Boolean isActive
+) {}
