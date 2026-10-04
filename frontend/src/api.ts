@@ -6,7 +6,7 @@ export const userSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   language: z.enum(['ru', 'kz']),
-  role: z.enum(['STUDENT', 'ADMIN']),
+  role: z.enum(['STUDENT', 'TEACHER', 'CONTENT_EDITOR', 'ADMIN']),
 });
 export type User = z.infer<typeof userSchema>;
 export const authSchema = z.object({ token: z.string().min(1), user: userSchema });
@@ -161,10 +161,17 @@ export async function request<T>(
           ? AbortSignal.any([options.signal, AbortSignal.timeout(15000)])
           : AbortSignal.timeout(15000),
         headers: {
-          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+          ...(options.body && !(options.body instanceof FormData)
+            ? { 'Content-Type': 'application/json' }
+            : {}),
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: options.body ? JSON.stringify(options.body) : undefined,
+        body:
+          options.body instanceof FormData
+            ? options.body
+            : options.body
+              ? JSON.stringify(options.body)
+              : undefined,
       },
     );
   } catch (error) {
@@ -180,7 +187,8 @@ export async function request<T>(
       sessionStorage.removeItem(TOKEN_KEY);
       window.dispatchEvent(new Event('session-expired'));
     }
-    throw new ApiError(response.status, `HTTP_${response.status}`);
+    const failure = (await response.json().catch(() => ({}))) as { code?: string };
+    throw new ApiError(response.status, failure.code || `HTTP_${response.status}`);
   }
   let data: unknown;
   try {
