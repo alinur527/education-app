@@ -112,17 +112,32 @@ with sync_playwright() as p:
             assert call('ADMIN','GET','/cms/content/'+imported)['status']==target
             inspect('pack-bulk-'+target.lower(),True)
         login('STUDENT');go('/study')
+        # Use the server's Kazakhstan date, not the runner's timezone/date.
+        today=dt.date.fromisoformat(call('STUDENT','GET','/statistics/me/analytics?period=7d')['to'])
+        target_date=(today+dt.timedelta(days=30)).isoformat()
         page.get_by_label('Моя цель',exact=True).fill('Закрепить математику')
-        page.get_by_label('Целевая дата').fill((dt.date.today()+dt.timedelta(days=30)).isoformat())
+        page.get_by_label('Целевая дата').fill(target_date)
         page.get_by_label('Минут в учебный день').fill('60');page.get_by_label('Часовой пояс',exact=True).fill('Asia/Almaty')
         page.get_by_label('Математика',exact=True).check()
         for label in ('Пн','Вт','Ср','Чт','Пт','Сб','Вс'):page.get_by_label(label,exact=True).check()
         page.get_by_role('button',name='Сохранить профиль',exact=True).click()
         expect(page.get_by_role('button',name='Составить / обновить план')).to_be_enabled()
-        page.get_by_role('button',name='Составить / обновить план').click()
+        with page.expect_response(lambda response:response.url.endswith('/api/study/plan/recompute') and response.request.method=='POST') as plan_response:
+            page.get_by_role('button',name='Составить / обновить план').click()
+        assert plan_response.value.ok
+        generated=call('STUDENT','GET',f'/study/tasks?from={today.isoformat()}&to={target_date}')['items']
+        assert generated, 'The real planner generated no scheduled tasks'
+        # After 18:00 on Sunday the first task falls outside the displayed week.
+        # Open the real task's local date rather than assuming it belongs to today.
+        first_date=page.evaluate("""s=>{
+            const parts=new Intl.DateTimeFormat('en',{timeZone:'Asia/Almaty',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(s));
+            const value=t=>parts.find(p=>p.type===t).value;
+            return value('year')+'-'+value('month')+'-'+value('day');
+        }""",generated[0]['scheduledAt'])
+        page.get_by_label('Дата календаря',exact=True).fill(first_date);page.wait_for_load_state('networkidle')
         expect(page.locator('.study-task').first).to_be_visible();inspect('planner-generated',True)
         task=page.locator('.study-task').first;task.get_by_role('button',name='Перенести',exact=True).click()
-        tomorrow=(dt.date.today()+dt.timedelta(days=1)).isoformat()
+        tomorrow=(dt.date.fromisoformat(first_date)+dt.timedelta(days=1)).isoformat()
         task.get_by_label('Новая дата и время',exact=False).fill(tomorrow+'T18:30')
         task.get_by_role('button',name='Применить перенос').click();page.wait_for_load_state('networkidle');page.get_by_label('Дата календаря',exact=True).fill(tomorrow);page.wait_for_load_state('networkidle')
         page.get_by_role('button',name='Составить / обновить план').click();page.wait_for_load_state('networkidle')
