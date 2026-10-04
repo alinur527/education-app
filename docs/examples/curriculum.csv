@@ -1,0 +1,5 @@
+key,kind,parentKey,titleRu,titleKz,sortOrder,blocks,options,correctOptionId,explanationRu,explanationKz,sourceType,verified
+math,SUBJECT,,Математика — учебный пример,Математика — оқу үлгісі,,,,,,,EDITOR_CREATED,false
+addition,TOPIC,math,Сложение,Қосу,1,,,,,,,
+theory,THEORY,addition,Две пары,Екі жұп,,"[{""type"": ""TEXT"", ""textRu"": ""Две пары предметов — это четыре предмета."", ""textKz"": ""Заттардың екі жұбы — төрт зат.""}]",,,,,,
+question,QUESTION,addition,Сколько будет 2 + 2?,2 + 2 қанша?,,,"[{""id"": ""A"", ""textRu"": ""4"", ""textKz"": ""4""}, {""id"": ""B"", ""textRu"": ""5"", ""textKz"": ""5""}]",A,2 + 2 = 4,2 + 2 = 4,EDITOR_CREATED,false
