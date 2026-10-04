@@ -149,3 +149,34 @@ The independent adversarial review found and drove fixes for archive resurrectio
 P0 CMS/LMS/files/import/roles and P1 mastery/error-review/analytics are implemented. P2 planner/calendar/in-app reminders/bookmarks/notes, Mixed Practice, the official mock exam and full ENT content are deferred. Lesson completion is self-reported, text assignments are teacher-graded, deadlines do not reject late answers, and the scanner interface is a no-op by default. These limits are described in [PLATFORM.md](PLATFORM.md) and [STORAGE.md](STORAGE.md).
 
 Skills applied this phase: frontend-design (prior design plan + screenshot critique), webapp-testing (native Python Playwright + rendered-DOM reconnaissance + actual browser runs), grill-me/grilling (brief's settled scope and independent adversarial factual review). The handoff skill is applied only after delivery, saving an OS-temp continuity note with final PR/SHA references.
+# Statistics 2.0 verification (2026-10-04)
+
+Continues the verified expansion head `179315534f4c0f3c28f47eb7e238b705c2776e1c`; no old migration or content pack was edited. V23/V24 add completion evidence and analytics indexes. A dedicated V22-upgrade test preserves a prior user, practice snapshot/result and known completed task date.
+
+Local exact commands:
+
+```powershell
+$env:JAVA_HOME='C:\Program Files\Java\jdk-21'
+./backend/mvnw.cmd -q -f backend/pom.xml verify
+# frontend working directory:
+npm run typecheck
+npm run lint
+npm test -- --silent
+npm run build
+# repository root:
+docker compose --profile app --profile malware up -d --build --wait --wait-timeout 300
+.venv/Scripts/python.exe -X utf8 scripts/test_admin_operator.py
+.venv/Scripts/python.exe -X utf8 scripts/analytics_browser_tests.py
+```
+
+Backend: **75 tests**, zero failures/errors/skips; includes 13 analytics integration cases with fixed injected Clock. Frontend: **54 tests**. Typecheck, lint and Docker build/health passed. No chart dependency was added. Statistics route is lazy (11.44 kB, 4.24 kB gzip); staff route 6.02 kB, 2.46 kB gzip. Initial app JS changed from 21.00 to 23.40 kB gzip including the weekly summary; shared vendor size is unchanged.
+
+New browser: **43 checks**. Actual API-completed SINGLE_CHOICE/MULTIPLE_SELECT attempts are dated on four logical days based on server asOf, with a genuine unanswered question and partial credit. Exact 7-day evidence: 6 questions, 2 fully correct, accuracy 33.33%, 4/8 points (50%), 2 tests, 2 active days, streak 2, 2 resolved errors, 1 theory, 1 lesson, 22 completed fixture planner tasks, 1 assignment revision, test time 105 seconds. Previous-period question/accuracy/point deltas: +3, −66.67 pp, −50 pp. 30-day/all question counts: 9/12. Fixture accounts are disabled and fixture content archived afterward.
+
+Verified UI: empty account; dashboard weekly summary; 7/30/all switching; distinct accuracy/points; daily table; keyboard heatmap details; filtered history pagination (20 + 2 planner events); RU/KZ; 1440/1024/768/390/320 without page overflow; axe WCAG2A/AA/2.1AA at all those widths, plus Kazakh 320; reduced motion; student without staff navigation; `/admin` redirect and all obvious ADMIN sections; separate ADMIN and owned TEACHER analytics. The real local CLI promotion records OPERATOR_PROMOTE_ADMIN after explicit fixture-ID confirmation. No page errors were observed.
+
+Evidence: `test-results/analytics/report.json` (ignored local report), [screenshots](screenshots/analytics/), [formulas and contract](STUDENT_ANALYTICS.md), [independent security/UX review](ANALYTICS_REVIEW.md). The dashboard also passes desktop/390/320 axe and overflow checks; the empty dashboard no longer shows false accuracy. Operator safety has five unit cases; the real browser flow invokes the PowerShell wrapper on Windows and shell wrapper on Linux.
+
+Existing browser regression passed with `BROWSER_BASE_URL=http://127.0.0.1:8081`, invoking `.venv/Scripts/python.exe -X utf8` for each of: `scripts/browser_tests.py` (28 checkpoints), `scripts/phase2_browser_tests.py` (68), `scripts/expansion_browser_tests.py` (29), `scripts/content_browser_tests.py` (18 subject journeys/180 answers, plus RU/KZ rich content), `scripts/course_content_browser_tests.py` (16 local Python flows/30 quiz answers), `scripts/content_pack_safety_tests.py` (31), and `scripts/pwa_update_tests.py` (four update scenarios). Legacy statistics response compatibility is explicitly checked after the 18 completed subject attempts. A regression run interrupted by a local container restart was discarded and rerun successfully; it is not counted as passing evidence.
+
+The existing three-job GitHub workflow includes analytics integration/frontend cases, operator safety tests and the new browser suite. Exact-head CI completion is verified on [PR #16](https://github.com/alinur527/education-app/pull/16); the final response and OS-temp handoff record its immutable run URL and final SHA. This section describes reproducible local evidence and does not claim curriculum subject approval or external deployment.

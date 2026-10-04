@@ -76,6 +76,10 @@ jobs:
       - run: .venv/bin/python scripts/content_pack_safety_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081
+      - run: .venv/bin/python scripts/test_admin_operator.py
+      - run: .venv/bin/python scripts/analytics_browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
       - run: .venv/bin/python scripts/pwa_update_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081

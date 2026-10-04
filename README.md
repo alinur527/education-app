@@ -4,7 +4,7 @@
 
 Проект восстановлен из предоставленных frontend/backend архивов и объединён в monorepo. Учебный набор намеренно небольшой: **3 предмета, 4 темы, 6 вопросов и 5 материалов**. Это платформа на текущем контенте, а не полный курс или официальный банк заданий ЕНТ.
 
-![Главная страница](docs/screenshots/dashboard-desktop.png)
+![Главная страница](docs/screenshots/analytics/dashboard-weekly-1440.png)
 
 <details>
 <summary>Другие экраны</summary>
@@ -12,7 +12,7 @@
 ![Чтение теории](docs/screenshots/theory.png)
 ![Тест](docs/screenshots/test-desktop.png)
 ![Результаты](docs/screenshots/results.png)
-![Статистика](docs/screenshots/statistics.png)
+![Статистика](docs/screenshots/analytics/daily-charts.png)
 <img src="docs/screenshots/dashboard-mobile.png" width="300" alt="Главная на телефоне" />
 <img src="docs/screenshots/test-mobile.png" width="300" alt="Тест на телефоне" />
 
@@ -20,6 +20,9 @@
 </details>
 
 ## Возможности
+
+- [Statistics 2.0](docs/STUDENT_ANALYTICS.md): реальные 7/30-дневные и общие показатели, accuracy отдельно от частичных баллов, сравнение периодов, графики с таблицами, календарь активности и история с фильтрами. На главной — компактная недельная сводка. Отдельная `/workspace/analytics` для ADMIN/TEACHER соблюдает права на учеников и курсы.
+- Первого ADMIN назначает локальный оператор: `./scripts/admin.ps1 promote user@example.com` или `sh scripts/admin.sh promote user@example.com`. Требуется подтвердить точный ID; [инструкция и ограничения](docs/STUDENT_ANALYTICS.md#first-admin-local-operator). Публичного bootstrap endpoint нет.
 
 - Регистрация, вход, выход, восстановление сессии после обновления страницы, обработка истёкшего JWT.
 - RU/KZ для навигации, форм, ошибок, теории, тестов, результатов и настроек. Язык сохраняется на устройстве и в профиле.
