@@ -21,8 +21,8 @@ Original input copies are under content/inputs. Their SHA-256 values match INPUT
 - [x] Deterministic planner, accessible calendar, in-app reminders/preferences, private notes/bookmarks/repetition.
 - [x] Coherent learner/staff surfaces, safe rich formulas/tables/code, CMS review queues and material library.
 - [x] Explicit public-theory offline save, manifest/icons/update flow, no private/auth API caching.
-- [ ] Data/upgrade/security/frontend/browser tests, independent adversarial review, final regression/Docker/CI.
-- [ ] Docs, logical commits, dependent PR, final-SHA CI and durable docs/FINAL_HANDOFF.md (plus skill OS-temp pointer).
+- [x] Data/upgrade/security/frontend/browser tests, independent adversarial review, final regression/Docker/CI.
+- [x] Docs, logical commits, dependent PR and durable docs/FINAL_HANDOFF.md (plus skill OS-temp pointer). Final documentation-inclusive SHA is verified separately in PR #16 Checks.
 
 ## Design plan — frontend-design, before implementation
 
@@ -62,4 +62,4 @@ Content CLI apply/publish/materials completed through API, 1329 mapped published
 
 Independent review closed P1 editorial evidence leaks in context/public content. Sorted locks, duplicate-target rejection, audited conflict resolution, withdrawn-context error review, legacy null-policy/Cyrillic IDs and deadline concurrency are tested. See EXPANSION_SECURITY_REVIEW. CMS wizard/library ownership and real file/grade history are browser verified. Performance comparison uses exact Phase2 frontend against same expanded API dataset, with tradeoffs reported honestly.
 
-Remaining release work: clean own interrupted browser fixtures; finish logical commits/push/dependent PR; green CI on final head; final handoff only after checks complete. Preservation audit passed:51 old users,26 unchanged old attempts,17 original Flyway checksums. API/README/verification/deployment docs now describe the implemented release and actual limits. Never commit credentials, dumps, source caches or the user's untracked original expansion directory.
+Implementation and cleanup are complete. PR #16 is pushed and depends on #15; implementation SHA b03598774ce50e3abb3fb0bffaa979ceb179c68d passed all three CI jobs in run37180342329. Handoff is recorded in FINAL_HANDOFF.md; the final documentation-inclusive head/CI is linked in the PR and delivery message. Preservation audit passed:51 old users,26 unchanged old attempts,17 original Flyway checksums. Never commit credentials, dumps, source caches or the user's untracked original expansion directory. Content remains PARTIAL_CONTENT because human review/full-curriculum completion are not delivered by publication alone.
