@@ -109,7 +109,7 @@ with sync_playwright() as p:
     check('server-prior-period-deltas',data['comparison']['questionsDelta']==3 and data['comparison']['accuracyDelta']==-66.67 and data['comparison']['pointsPercentDelta']==-50)
     check('server-30d-and-lifetime',call('STUDENT','GET','/statistics/me/analytics?period=30d')['summary']['questionsAnswered']==9 and call('STUDENT','GET','/statistics/me/analytics?period=all')['summary']['questionsAnswered']==12)
     browser=p.chromium.launch(headless=True)
-    context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce')
+    context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',locale='ru-RU')
     page=context.new_page();page.on('pageerror',lambda error:errors.append(str(error)))
     def go(path):
         page.goto(BASE+path);page.wait_for_load_state('networkidle')
