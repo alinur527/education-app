@@ -1,0 +1,435 @@
+{
+  "schema": "education-core-checks/v1",
+  "sourceSha256": "7fee3defe67ecf1542de68926f6895a90cf7908c842714aafd1b288817cdc116",
+  "structuralQuestionCount": 160,
+  "distinctRussianPrompts": 160,
+  "contextCount": 2,
+  "contextQuestionCount": 20,
+  "questionTypes": {
+    "SINGLE_CHOICE": 155,
+    "MULTIPLE_SELECT": 3,
+    "MATCHING": 2
+  },
+  "explicitAnswerChecks": 64,
+  "proofs": [
+    {
+      "questionExternalKey": "core-numeracy-percent-q01",
+      "expectedAnswer": "300 тенге",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q02",
+      "expectedAnswer": "12000",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q03",
+      "expectedAnswer": "12000",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q04",
+      "expectedAnswer": "60%",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q05",
+      "expectedAnswer": "2420",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q06",
+      "expectedAnswer": "15",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q07",
+      "expectedAnswer": "500 г за 1400",
+      "method": "Independent unit-price comparison 2.8 < 3 tenge/g",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q08",
+      "expectedAnswer": "300",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q09",
+      "expectedAnswer": "25%",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-percent-q10",
+      "expectedAnswer": "3600",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q01",
+      "expectedAnswer": "6",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q02",
+      "expectedAnswer": "5",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q03",
+      "expectedAnswer": "6",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q04",
+      "expectedAnswer": "3",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q05",
+      "expectedAnswer": "11 °C",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q06",
+      "expectedAnswer": "16",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q07",
+      "expectedAnswer": "7",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-numeracy-data-q10",
+      "expectedAnswer": "60%",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q01",
+      "expectedAnswer": "8",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q02",
+      "expectedAnswer": "14",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q03",
+      "expectedAnswer": "12",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q04",
+      "expectedAnswer": "10",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q05",
+      "expectedAnswer": "10",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q07",
+      "expectedAnswer": "15",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q01",
+      "expectedAnswer": "18 г/моль",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q02",
+      "expectedAnswer": "44 г/моль",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q03",
+      "expectedAnswer": "3 моль",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q04",
+      "expectedAnswer": "11 г",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q05",
+      "expectedAnswer": "6 моль",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q09",
+      "expectedAnswer": "58,5 г/моль",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q08",
+      "expectedAnswer": "3,01·10²³",
+      "method": "0.5 * 6.02 = 3.01 with unchanged 10^23 exponent",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q01",
+      "expectedAnswer": "2 км",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q02",
+      "expectedAnswer": "2 км",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q03",
+      "expectedAnswer": "6 см",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q08",
+      "expectedAnswer": "45,5°",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q09",
+      "expectedAnswer": "60",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-weather-q05",
+      "expectedAnswer": "4 °C",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-weather-q06",
+      "expectedAnswer": "12 °C",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-weather-q08",
+      "expectedAnswer": "5 л",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q01",
+      "expectedAnswer": "5",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q02",
+      "expectedAnswer": "1010₂",
+      "method": "Python integer formatter verifies decimal-to-binary conversion",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q03",
+      "expectedAnswer": "16",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q04",
+      "expectedAnswer": "31",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q05",
+      "expectedAnswer": "24",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q06",
+      "expectedAnswer": "2048",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q07",
+      "expectedAnswer": "256 байт",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q08",
+      "expectedAnswer": "8",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-binary-q09",
+      "expectedAnswer": "4",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q01",
+      "expectedAnswer": "10",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q02",
+      "expectedAnswer": "11",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q03",
+      "expectedAnswer": "4",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q04",
+      "expectedAnswer": "3",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q07",
+      "expectedAnswer": "10",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q09",
+      "expectedAnswer": "32",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q10",
+      "expectedAnswer": "6",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q05",
+      "expectedAnswer": "==",
+      "method": "Python comparison grammar, distinct from assignment =",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q06",
+      "expectedAnswer": "2,3,4",
+      "method": "range endpoints verified by Python itself",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-info-python-q08",
+      "expectedAnswer": "True",
+      "method": "Direct Boolean boundary comparison",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-reading-evidence-q08",
+      "expectedAnswer": "25 литров",
+      "method": "Independent computation from authored operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-atoms-q10",
+      "expectedAnswer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "method": "Model independent re-reading of definition-based truth set",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-bio-cell-q10",
+      "expectedAnswer": [
+        "A",
+        "B",
+        "D"
+      ],
+      "method": "Model independent re-reading of definition-based truth set",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-bio-photosynthesis-q10",
+      "expectedAnswer": [
+        "A",
+        "B"
+      ],
+      "method": "Model independent re-reading of definition-based truth set",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-chem-mole-q10",
+      "expectedAnswer": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ],
+      "method": "Independent re-reading of both explicit relationships",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "core-geo-map-q10",
+      "expectedAnswer": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ],
+      "method": "Independent re-reading of both explicit relationships",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Conceptual, legal, historical and translation checks are model review, not human certification",
+    "Law content reads Constitution K2600000000 effective 2026-07-01; older article numbering must not be substituted",
+    "Reading passages and their scenarios are original fictional educational examples",
+    "This is starter coverage, not an official exam-ready complete bank"
+  ]
+}

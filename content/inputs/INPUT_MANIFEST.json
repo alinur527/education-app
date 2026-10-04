@@ -1,0 +1,27 @@
+{
+  "package": "education-app-codex-unified-expansion",
+  "createdAt": "2026-10-04",
+  "contents": "Codex prompt and three source-catalogue files. Original textbooks/PDFs are NOT included.",
+  "files": [
+    {
+      "path": "inputs/ent_sources/ENT_sources_2026-10-04.json",
+      "bytes": 75325,
+      "sha256": "005dd29da5b813ce8b9902fd7019ca7cdedde099a45a4d653d159613caffe150"
+    },
+    {
+      "path": "inputs/ent_sources/ENT_content_catalog_2026-10-04.xlsx",
+      "bytes": 29191,
+      "sha256": "423e0013798f27b7f81ab40c469a00a0ffd31518e1aab0224833fcdefb60d9da"
+    },
+    {
+      "path": "inputs/ent_sources/ENT_research_NotebookLM_2026-10-04.md",
+      "bytes": 42703,
+      "sha256": "ad92ae15fd5c6018946861e536861c9a0adb589c2f9989d5c704a5be6c1f96d3"
+    }
+  ],
+  "prompt": {
+    "path": "CODEX_Education_App_Unified_Expansion_Prompt.md",
+    "bytes": 53885,
+    "sha256": "dfe175c337a0627ecb31cb3fc8220db7fa32a984e57e5f2201f904e96194fe44"
+  }
+}
