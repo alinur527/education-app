@@ -83,7 +83,7 @@ jobs:
       - run: .venv/bin/python scripts/pwa_update_tests.py
         env:
           BROWSER_BASE_URL: http://127.0.0.1:8081
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: browser-verification
