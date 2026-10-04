@@ -21,7 +21,7 @@ Account updates require a revision; self-demotion/deactivation and removal of th
 
 Choose **Создать материал**, select a type, find its parent by title, and fill RU/KZ fields. Save a draft before attaching files. Create ENT content in order: **Предмет → Тема → Теория / Вопрос**. Course content uses **Курс → Модуль → Урок → Тест урока / Задание**. The API also supports an assignment directly under a course.
 
-Blocks support text, headings, images, files, external video/URL links, quotes, plain-text formulas and callouts. Upload an image/file first, then select it in a block. Blocks can be moved up or removed. External URLs are links, not embedded executable HTML. Legacy theory text stays readable alongside new blocks. Source type, URL/name, year and verification checkbox belong to the staff editor.
+Blocks support text, headings, images, files, external video/URL links, quotes, safely rendered formulas, code, tables and callouts. Upload an image/file first, then select it in a block. Blocks can be moved up or removed. External URLs are links, not embedded executable HTML. Legacy theory text stays readable alongside new blocks. Source type, URL/name, year and separate editorial evidence stages belong to the staff editor; publication alone is not human verification.
 
 New content starts DRAFT. **На проверку** validates the bilingual title and question translations; **Опубликовать** publishes REVIEW content. Teachers may publish their own course hierarchy, editors may publish content, and administrators may publish/archive/restore. There is no separate mandatory reviewer identity in this first workflow.
 
@@ -48,18 +48,20 @@ Teacher analytics show current group members, actual completed lesson counts, av
 `/learning` and the dashboard calculate mastery on the server:
 
 ```
-recentAccuracy = 100 × sum(correct answers in latest 3 completed topic attempts)
-                      / sum(question count in those attempts)
+recentAccuracy = 100 × fully correct questions in latest 3 completed attempts containing the topic
+                      / all snapshot questions for that topic in those attempts
 theoryFraction = marked-read active theories / all active theories
 mastery = 20 × theoryFraction + 0.8 × recentAccuracy
 ```
 
-Without theory, mastery is recentAccuracy. No attempts means zero practice accuracy. Percentages are rounded to one decimal server-side; compact UI values may round to integers. Unanswered questions in completed attempts count as incorrect. An abandoned/in-progress attempt does not contribute. Subject mastery is the unweighted mean of its active topic mastery, including unstudied topics. This is an activity-based learning indicator, not a prediction of an official ENT score.
+Without theory, mastery is recentAccuracy. No attempts means zero practice accuracy. Percentages are rounded to one decimal server-side; compact UI values may round to integers. Unanswered questions in completed attempts count as incorrect. An abandoned/in-progress attempt does not contribute. Subject mastery is the unweighted mean of available learning-topic mastery, including unstudied learning topics. This is an activity-based learning indicator, not a prediction of an official ENT score.
 
 The dashboard shows completed-attempt question count (including unanswered), accuracy, subject mastery, weak attempted topics followed by new topics, error count, and the most recently practiced/marked-read active topic. It does not invent study time.
 
-`/learning/errors` takes the latest completed outcome for each question ID across attempts. Incorrect/unanswered outcomes appear once. Correctly answering in a later completed attempt removes the question; another later mistake returns it. Archived topics are excluded. Each review session takes at most 50 frozen questions from one topic; repeat again for additional errors. Answer keys remain server-side until that session finishes. Existing TOPIC_PRACTICE is preserved; ERROR_REVIEW is implemented. MIXED_PRACTICE and MOCK_ENT are reserved domain modes, not exposed as working exam simulators.
+`/learning/errors` takes the latest completed outcome for each question ID across attempts. Incorrect/unanswered outcomes appear once. Correctly answering in a later completed attempt removes the question; another later mistake returns it. Archived topics are excluded. Each review session takes at most 50 frozen questions from one topic; repeat again for additional errors. Answer keys remain server-side until that session finishes. Existing TOPIC_PRACTICE is preserved; ERROR_REVIEW is implemented. MIXED_PRACTICE and shortened timed practice are implemented; the full official-format mock is not available.
 
 ## Intentional limits
 
-No payments, ERP, sales CRM, full curriculum generation, student file submissions, automatic grading of text answers, reviewer assignment workflow, full revision rollback or offline synchronization. Planner/calendar/reminders/bookmarks/notes are deferred P2 work. File scanning is an extension point, not a working antivirus. See [STORAGE.md](STORAGE.md), [IMPORT.md](IMPORT.md) and [API.md](API.md).
+No payments, ERP, sales CRM, complete human-reviewed ENT course, automatic grading/execution of student code, reviewer assignment workflow, full revision rollback or private offline synchronization. Planner/calendar/reminders/bookmarks/notes, versioned student files and working ClamAV are now implemented. The content remains a starter release; see [CURRICULUM_COVERAGE](CURRICULUM_COVERAGE.md).
+
+The current guided CMS and file library are described in [CMS_AUTHORING_UX](CMS_AUTHORING_UX.md). [EXPANSION_API](EXPANSION_API.md) supersedes older single-choice-only and text-submission-only examples. Mixed practice and an explicitly shortened timed practice are working modes; a full official mock remains unavailable. Programme-only syllabus rows do not dilute mastery: only topics with available theory or practice are included. Mixed attempts contribute frozen per-question earned/max points to the corresponding topics.

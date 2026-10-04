@@ -1,14 +1,12 @@
+import ResultSubjects from './features/assessment/ResultSubjects';
+import Today from './features/study/Today';
+import WeeklySummary from './features/analytics/WeeklySummary';
+import TopicCatalog from './features/content/TopicCatalog';
+import { AnswerText } from './features/assessment/AnswerControls';
+import { RichText, InlineText } from './features/content/RichText';
 import { useState, useRef, type FormEvent } from 'react';
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router';
-import {
-  ArrowRight,
-  BookOpen,
-  Check,
-  ChevronRight,
-  Clock3,
-  Compass,
-  RotateCcw,
-} from 'lucide-react';
+import { ArrowRight, Check, ChevronRight, Clock3, Compass, RotateCcw } from 'lucide-react';
 import { z } from 'zod';
 import {
   ApiError,
@@ -39,7 +37,6 @@ import {
 } from './components';
 
 const subjectsSchema = z.array(subjectSchema);
-const topicsSchema = z.array(topicSchema);
 const theoriesSchema = z.array(theorySchema);
 
 export function AuthPage({ mode }: { mode: 'login' | 'register' }) {
@@ -192,6 +189,8 @@ export function Dashboard() {
       </section>
       <div className="dashboard-columns">
         <div>
+          <Today />
+          <WeeklySummary />
           <LearningSummary />
           <div className="section-heading">
             <h2>{t('yourSubjects')}</h2>
@@ -257,17 +256,55 @@ export function Dashboard() {
   );
 }
 export function SubjectsPage() {
-  const { t } = useApp();
+  const { t, content } = useApp();
+  const [search, setSearch] = useState('');
   const resource = useResource('/subjects', subjectsSchema);
   return (
     <>
       <PageHeading title={t('subjects')} body={t('subjectIntro')} />
+      <label className="catalog-search">
+        {content('Найти предмет', 'Пәнді табу')}
+        <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} />
+      </label>
       {resource.loading ? (
         <Loading />
       ) : resource.error ? (
         <ErrorState error={resource.error} retry={resource.reload} />
       ) : resource.data?.length ? (
-        <SubjectCards items={resource.data} />
+        <>
+          {resource.data.some((s) => s.category) ? (
+            <>
+              {resource.data.some((s) => s.category === 'MANDATORY') && (
+                <section className="subject-section">
+                  <h2>{content('Обязательные предметы', 'Міндетті пәндер')}</h2>
+                  <SubjectCards
+                    items={resource.data.filter(
+                      (s) =>
+                        s.category === 'MANDATORY' &&
+                        `${s.nameRu} ${s.nameKz}`.toLowerCase().includes(search.toLowerCase()),
+                    )}
+                  />
+                </section>
+              )}
+              <section className="subject-section">
+                <h2>{content('Профильные предметы', 'Бейіндік пәндер')}</h2>
+                <SubjectCards
+                  items={resource.data.filter(
+                    (s) =>
+                      s.category !== 'MANDATORY' &&
+                      `${s.nameRu} ${s.nameKz}`.toLowerCase().includes(search.toLowerCase()),
+                  )}
+                />
+              </section>
+            </>
+          ) : (
+            <SubjectCards
+              items={resource.data.filter((s) =>
+                `${s.nameRu} ${s.nameKz}`.toLowerCase().includes(search.toLowerCase()),
+              )}
+            />
+          )}
+        </>
       ) : (
         <Empty title={t('noSubjects')} body={t('noSubjectsBody')} />
       )}
@@ -275,61 +312,7 @@ export function SubjectsPage() {
   );
 }
 export function TopicsPage() {
-  const { subjectId } = useParams();
-  const { t, content } = useApp();
-  const resource = useResource(`/topics/subject/${subjectId}`, topicsSchema);
-  const subjects = useResource('/subjects', subjectsSchema);
-  const subject = subjects.data?.find((s) => s.id === subjectId);
-  return (
-    <>
-      <PageHeading
-        title={subject ? content(subject.nameRu, subject.nameKz) : t('topics')}
-        body={t('subjectIntro')}
-        back={{ to: '/subjects', label: t('backSubjects') }}
-      />
-      {resource.loading ? (
-        <Loading />
-      ) : resource.error ? (
-        <ErrorState error={resource.error} retry={resource.reload} />
-      ) : resource.data?.length ? (
-        <div className="topic-list">
-          {resource.data.map((topic, i) => (
-            <Link className="topic-row" to={`/topics/${topic.id}`} key={topic.id}>
-              <span className="topic-number" aria-hidden="true">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div className="topic-copy">
-                <h2>{content(topic.titleRu, topic.titleKz)}</h2>
-                <p>{content(topic.descriptionRu, topic.descriptionKz)}</p>
-                <div className="topic-meta">
-                  <span>
-                    <BookOpen size={15} />
-                    {t('material')}: {topic.theoryCount}
-                  </span>
-                  <span>
-                    {t('questions')}: {topic.questionCount}
-                  </span>
-                </div>
-              </div>
-              <span className="topic-action">
-                {t('read')}
-                <ArrowRight size={18} />
-              </span>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <Empty
-          title={t('noTopics')}
-          action={
-            <Link to="/subjects" className="text-link">
-              {t('backSubjects')}
-            </Link>
-          }
-        />
-      )}
-    </>
-  );
+  return <TopicCatalog />;
 }
 export function TopicPage() {
   const { topicId } = useParams();
@@ -373,6 +356,12 @@ export function TopicPage() {
         body={content(topic.data.descriptionRu, topic.data.descriptionKz)}
         back={{ to: `/subjects/${topic.data.subjectId}`, label: t('backTopics') }}
       />
+      <Link
+        className="text-link"
+        to={`/notes?kind=TOPIC&target=${topicId}&title=${encodeURIComponent(content(topic.data.titleRu, topic.data.titleKz))}`}
+      >
+        {content('Заметка / закладка к теме', 'Тақырыпқа жазба / бетбелгі')}
+      </Link>
       <div className="reading-layout">
         <article className="theory-content">
           <Materials contentId={topicId!} />
@@ -380,15 +369,7 @@ export function TopicPage() {
             theories.data.map((theory, i) => (
               <section id={`material-${i}`} key={theory.id}>
                 <h2>{content(theory.titleRu, theory.titleKz)}</h2>
-                {content(theory.contentRu, theory.contentKz)
-                  .split(/\n\s*\n/)
-                  .map((paragraph, n) =>
-                    paragraph.startsWith('## ') ? (
-                      <h3 key={n}>{paragraph.slice(3)}</h3>
-                    ) : (
-                      <p key={n}>{paragraph}</p>
-                    ),
-                  )}
+                <RichText text={content(theory.contentRu, theory.contentKz)} />
                 <TheoryExtras id={theory.id} />
               </section>
             ))
@@ -435,77 +416,6 @@ export function TopicPage() {
     </>
   );
 }
-export function StatisticsPage() {
-  const { t, content } = useApp();
-  const resource = useResource('/statistics/me', statsSchema);
-  const stats = resource.data;
-  return (
-    <>
-      <PageHeading title={t('statistics')} body={t('statsIntro')} />
-      {resource.loading ? (
-        <Loading />
-      ) : resource.error ? (
-        <ErrorState error={resource.error} retry={resource.reload} />
-      ) : (
-        stats && (
-          <>
-            <Metrics stats={stats} />
-            {stats.testsTaken > 0 && (
-              <div className="stats-columns">
-                <section className="panel">
-                  <h2>{t('trend')}</h2>
-                  <div
-                    className="chart"
-                    role="img"
-                    aria-label={`${t('trend')}: ${[...stats.recentAttempts]
-                      .reverse()
-                      .map((a) => `${content(a.nameRu, a.nameKz)} ${a.score}%`)
-                      .join(', ')}`}
-                  >
-                    {[...stats.recentAttempts].reverse().map((a, i) => (
-                      <div className="chart-column" key={a.sessionId}>
-                        <strong>{Math.round(a.score)}%</strong>
-                        <div className="chart-track">
-                          <div style={{ height: `${Math.max(a.score, 1)}%` }} />
-                        </div>
-                        <small>{i + 1}</small>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-                <section className="panel">
-                  <h2>{t('bySubject')}</h2>
-                  <ul className="subject-results">
-                    {stats.subjects.map((s) => (
-                      <li key={s.subjectId}>
-                        <div>
-                          <strong>{content(s.nameRu, s.nameKz)}</strong>
-                          <span>{Math.round(s.averageScore)}%</span>
-                        </div>
-                        <progress
-                          value={s.averageScore}
-                          max={100}
-                          aria-label={`${content(s.nameRu, s.nameKz)}: ${t('average')}`}
-                        />
-                        <small>
-                          {t('attempts')}: {s.testsTaken}
-                        </small>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              </div>
-            )}
-            <section className="panel">
-              <h2>{t('recent')}</h2>
-              <RecentAttempts stats={stats} />
-            </section>
-          </>
-        )
-      )}
-    </>
-  );
-}
 export function ResultsPage() {
   const { sessionId } = useParams();
   const { t, content } = useApp();
@@ -535,6 +445,14 @@ export function ResultsPage() {
           <h2>{t('resultTitle')}</h2>
           <p>{t('resultBody')}</p>
           <div className="result-facts">
+            {results.maxPoints != null && (
+              <span>
+                {content('Баллы', 'Балдар')}:{' '}
+                <b>
+                  {results.earnedPoints ?? 0} / {results.maxPoints}
+                </b>
+              </span>
+            )}
             <span>
               <Check size={18} />
               {t('correct')}: <b>{results.correctAnswers}</b>
@@ -561,6 +479,7 @@ export function ResultsPage() {
           {t('toStatistics')}
         </Link>
       </div>
+      <ResultSubjects answers={results.answers} />
       <h2>{t('review')}</h2>
       <div className="review-list">
         {results.answers.map((answer, i) => (
@@ -569,7 +488,7 @@ export function ResultsPage() {
               <span className={`review-status ${answer.isCorrect ? 'correct' : 'incorrect'}`}>
                 {answer.isCorrect
                   ? t('correct')
-                  : answer.selectedOptionId
+                  : answer.selectedOptionId || answer.answer
                     ? t('incorrect')
                     : t('unanswered')}
               </span>
@@ -577,27 +496,44 @@ export function ResultsPage() {
                 {t('question')} {i + 1}
               </small>
             </div>
-            <h3>{content(answer.questionRu, answer.questionKz)}</h3>
+            <h3>
+              <InlineText text={content(answer.questionRu, answer.questionKz)} />
+            </h3>
+            {answer.context && (
+              <RichText text={content(answer.context.contentRu, answer.context.contentKz)} />
+            )}
+            {answer.maxPoints && (
+              <p>
+                {answer.earnedPoints ?? 0} / {answer.maxPoints} {t('score')}
+              </p>
+            )}
             <dl>
               <div>
                 <dt>{t('yourAnswer')}</dt>
                 <dd>
-                  {answer.selectedOptionId
-                    ? content(
-                        answer.options.find((o) => o.id === answer.selectedOptionId)?.textRu,
-                        answer.options.find((o) => o.id === answer.selectedOptionId)?.textKz,
-                      )
-                    : t('unanswered')}
+                  <AnswerText
+                    question={{ ...answer.assessment, options: answer.options }}
+                    answer={
+                      answer.answer ||
+                      (answer.selectedOptionId
+                        ? { selectedOptionId: answer.selectedOptionId }
+                        : null)
+                    }
+                  />
                 </dd>
               </div>
               {!answer.isCorrect && (
                 <div>
                   <dt>{t('rightAnswer')}</dt>
                   <dd>
-                    {content(
-                      answer.options.find((o) => o.id === answer.correctOptionId)?.textRu,
-                      answer.options.find((o) => o.id === answer.correctOptionId)?.textKz,
-                    )}
+                    <AnswerText
+                      question={{
+                        ...answer.assessment,
+                        options: answer.options,
+                        correctOptionId: answer.correctOptionId,
+                      }}
+                      correct
+                    />
                   </dd>
                 </div>
               )}
@@ -605,7 +541,7 @@ export function ResultsPage() {
             {(answer.explanationRu || answer.explanationKz) && (
               <div className="explanation">
                 <strong>{t('explanation')}</strong>
-                <p>{content(answer.explanationRu, answer.explanationKz)}</p>
+                <RichText text={content(answer.explanationRu, answer.explanationKz)} />
               </div>
             )}
           </article>

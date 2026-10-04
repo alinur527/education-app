@@ -1,6 +1,44 @@
 # Verification and handoff record
 
-The first sections record the Phase 1 baseline. Current Phase 2 results and limits are appended below.
+The expansion release is recorded first. Phase 1 and Phase 2 sections below are historical baseline evidence; their deferred-feature lists do not describe the current expansion.
+
+## Unified expansion — 2026-10-04
+
+Branch `codex/education-content-experience` extends Phase 2 commit `e39293b3d9a044006a8768698dccffbaaa1b6234`, whose PR #15 remains open. The release PR targets `codex/education-platform-phase-2`; neither PR is automatically merged. Exact release SHA and final CI are recorded in the PR and final handoff, separately from earlier baseline runs.
+
+| Command / evidence | Local result |
+|---|---|
+| `backend/mvnw.cmd -q -f backend/pom.xml verify` with JDK 21 | 62 backend tests, zero failures/errors/skips; real PostgreSQL/Testcontainers, legacy migration upgrade, concurrency, ownership, scoring, imports, S3 and scanner tests |
+| `npm --prefix frontend run typecheck` | Pass |
+| `npm --prefix frontend run lint` | Pass, zero warnings |
+| `npm --prefix frontend test` | 45 frontend tests pass, including RU/KZ safe assignment description rendering |
+| `docker compose --profile app build` | Both production images pass; final frontend rebuilt after readability repair |
+| `docker compose --profile app --profile malware up -d --build --wait --wait-timeout 300` | Nginx, backend, PostgreSQL and real ClamAV healthy |
+| `python scripts/validate_content.py --verify-cache` | All 480 questions structurally checked; 147 pilot/core proof checks, 112 model sample checks, 12 Python examples and 8 boundary cases; 77 cached NCT source hashes match; zero network requests |
+| `python scripts/browser_tests.py` with `BROWSER_BASE_URL=http://127.0.0.1:8081` | 28 original student browser checkpoints pass |
+| `python scripts/phase2_browser_tests.py` | 68 CMS/LMS browser checkpoints pass; four roles, ENT publication, courses, PDF upload/download, enrollment, group, assignment, grading, quiz, mastery/error review, CSV/JSON imports and invalid imports |
+| `python scripts/content_browser_tests.py` | 18 real subject journeys / 180 UI answers / 18 completed attempts; 175 single, 3 multiple, 2 matching and 10 shared-context answers; no keys exposed in 180 question responses; 22 axe/overflow inspections including RU/KZ KaTeX/table/code and keyboard scrolling |
+| `python scripts/expansion_browser_tests.py` | 29 UI checkpoints, zero unexpected errors; includes actual scheduled grade reminder and mass REVIEW/PUBLISHED confirmation |
+| `python scripts/course_content_browser_tests.py` | 16 local course checkpoints, 30 UI quiz answers, six-of-six lesson completion, assigned response and exact protected-PDF SHA; CI omits the licensed external PDF and reports that optional check as absent, retaining the other 15 checkpoints |
+| `python scripts/content_pack_safety_tests.py` | 31 live API checks: atomic failure, resume, idempotence, teacher-edit conflict, both explicit resolutions, stale versions, audit and unchanged published snapshots |
+| `python scripts/pwa_update_tests.py` | Actual service-worker update scenarios pass: active attempt blocks update, refresh retains deadline/session and waiting worker, second tab blocks activation, explicit safe single-tab activation reloads |
+| `python scripts/measure_ux.py` | 72 cold/warm navigations against exact Phase 2 and current frontend with the same API dataset; see [UX_VERIFICATION.md](UX_VERIFICATION.md) for raw denominators/tradeoffs |
+
+On Windows run the Python commands with `.venv/Scripts/python.exe -X utf8`; on Linux use `.venv/bin/python`. Browser dependencies and Chromium are installed from `scripts/requirements-browser.txt`. Run the browser suites only on a local/isolated database: they register disposable accounts, use local operator SQL solely to provision test roles, and perform actual content/learning operations through HTTP/UI. Screenshots are committed under `docs/screenshots/expansion`; local traces and backups stay ignored. The CI workflow uses offline structural validation and safe original PDF fixtures; it does not download books or call NCT websites.
+
+The expansion suite additionally covers versioned pack/source UI, mass review/publication preview and confirmation, deterministic planner creation/move preservation, private notes/bookmarks/cards, CLEAN file upload, real teacher grade and scheduled grade reminder, resubmission grade reset, explicit offline public reading and timed training refresh. The dedicated Python course suite covers all six lessons, all thirty quiz answers, explicit six-of-six completion, a real assigned text response and the protected licensed PDF when installed locally. Their final checkpoint counts are in the release handoff.
+
+Viewports: 320/390/768/1024/1440. Reduced motion, long RU/KZ text, responsive CMS hierarchy/editor/preview, groups/courses, planner/practice and safe rich content were exercised. Axe found no violations in tested surfaces; this is not full accessibility certification. No unexpected browser/console/network errors remained in passing runs.
+
+The first expansion CI run caught a Windows CRLF versus Git LF mismatch in byte-based content proof hashes. New content JSON and its writers now use canonical LF; the four original input files remain byte-preserved. Proof/review hashes were regenerated for the identical parsed content, and checked against staged Git blobs. The canonical release-plan checksum and runtime content are unchanged. That failed run is not counted as release verification.
+
+A final import-contract review also closed a CSV compatibility gap: `correctOptionIds`, `leftOptions` and `correctPairs` are parsed as JSON nodes, and `contextVersion` as a 64-bit integer. Four regression tests exercise real CSV parsing, ContentValidation and assessment freeze/grade, including invalid shapes/keys and invalid/overflowing versions. The complete 62-test Maven suite and rebuilt backend passed after this change.
+
+The independent [security review](EXPANSION_SECURITY_REVIEW.md) closed editorial answer-evidence leakage, pack locking/conflicts, context withdrawal, stale session/deadline races and legacy assessment compatibility. No unresolved P0/P1 findings remain. Source content is untrusted; safe renderers never execute imported HTML. Student attachments use real ClamAV, revision-specific grades and protected downloads.
+
+[CONTENT_RELEASE_REPORT.md](CONTENT_RELEASE_REPORT.md) records actual publication, file hashes, repeat/resume and preservation of 51 old users / 26 unchanged old attempts / 17 old Flyway checksums. [PRODUCTION_CHECKLIST.md](PRODUCTION_CHECKLIST.md) identifies deployment work not claimed as completed. Full ENT content and human subject approval remain incomplete; working software is not evidence of a complete or expert-reviewed exam bank.
+
+## Historical Phase 1 baseline
 
 Verified locally on 2026-10-04, Windows PowerShell, JDK 21.0.9, Node 25.8.0, Docker Desktop, PostgreSQL 17. Production containers use Java 21 and Node 24 for the frontend build. CI uses Node 24 and Java 21 on Ubuntu.
 
@@ -111,3 +149,36 @@ The independent adversarial review found and drove fixes for archive resurrectio
 P0 CMS/LMS/files/import/roles and P1 mastery/error-review/analytics are implemented. P2 planner/calendar/in-app reminders/bookmarks/notes, Mixed Practice, the official mock exam and full ENT content are deferred. Lesson completion is self-reported, text assignments are teacher-graded, deadlines do not reject late answers, and the scanner interface is a no-op by default. These limits are described in [PLATFORM.md](PLATFORM.md) and [STORAGE.md](STORAGE.md).
 
 Skills applied this phase: frontend-design (prior design plan + screenshot critique), webapp-testing (native Python Playwright + rendered-DOM reconnaissance + actual browser runs), grill-me/grilling (brief's settled scope and independent adversarial factual review). The handoff skill is applied only after delivery, saving an OS-temp continuity note with final PR/SHA references.
+# Statistics 2.0 verification (2026-10-04)
+
+Continues the verified expansion head `179315534f4c0f3c28f47eb7e238b705c2776e1c`; no old migration or content pack was edited. V23/V24 add completion evidence and analytics indexes. A dedicated V22-upgrade test preserves a prior user, practice snapshot/result and known completed task date.
+
+Local exact commands:
+
+```powershell
+$env:JAVA_HOME='C:\Program Files\Java\jdk-21'
+./backend/mvnw.cmd -q -f backend/pom.xml verify
+# frontend working directory:
+npm run typecheck
+npm run lint
+npm test -- --silent
+npm run build
+# repository root:
+docker compose --profile app --profile malware up -d --build --wait --wait-timeout 300
+.venv/Scripts/python.exe -X utf8 scripts/test_admin_operator.py
+.venv/Scripts/python.exe -X utf8 scripts/analytics_browser_tests.py
+```
+
+Backend: **75 tests**, zero failures/errors/skips; includes 13 analytics integration cases with fixed injected Clock. Frontend: **54 tests**. Typecheck, lint and Docker build/health passed. No chart dependency was added. Statistics route is lazy (11.44 kB, 4.24 kB gzip); staff route 6.02 kB, 2.46 kB gzip. Initial app JS changed from 21.00 to 23.40 kB gzip including the weekly summary; shared vendor size is unchanged.
+
+New browser: **43 checks**. Actual API-completed SINGLE_CHOICE/MULTIPLE_SELECT attempts are dated on four logical days based on server asOf, with a genuine unanswered question and partial credit. Exact 7-day evidence: 6 questions, 2 fully correct, accuracy 33.33%, 4/8 points (50%), 2 tests, 2 active days, streak 2, 2 resolved errors, 1 theory, 1 lesson, 22 completed fixture planner tasks, 1 assignment revision, test time 105 seconds. Previous-period question/accuracy/point deltas: +3, −66.67 pp, −50 pp. 30-day/all question counts: 9/12. Fixture accounts are disabled and fixture content archived afterward.
+
+Verified UI: empty account; dashboard weekly summary; 7/30/all switching; distinct accuracy/points; daily table; keyboard heatmap details; filtered history pagination (20 + 2 planner events); RU/KZ; 1440/1024/768/390/320 without page overflow; axe WCAG2A/AA/2.1AA at all those widths, plus Kazakh 320; reduced motion; student without staff navigation; `/admin` redirect and all obvious ADMIN sections; separate ADMIN and owned TEACHER analytics. The real local CLI promotion records OPERATOR_PROMOTE_ADMIN after explicit fixture-ID confirmation. No page errors were observed.
+
+Evidence: `test-results/analytics/report.json` (ignored local report), [screenshots](screenshots/analytics/), [formulas and contract](STUDENT_ANALYTICS.md), [independent security/UX review](ANALYTICS_REVIEW.md). The dashboard also passes desktop/390/320 axe and overflow checks; the empty dashboard no longer shows false accuracy. Operator safety has five unit cases; the real browser flow invokes the PowerShell wrapper on Windows and shell wrapper on Linux.
+
+Existing browser regression passed with `BROWSER_BASE_URL=http://127.0.0.1:8081`, invoking `.venv/Scripts/python.exe -X utf8` for each of: `scripts/browser_tests.py` (28 checkpoints), `scripts/phase2_browser_tests.py` (68), `scripts/expansion_browser_tests.py` (29), `scripts/content_browser_tests.py` (18 subject journeys/180 answers, plus RU/KZ rich content), `scripts/course_content_browser_tests.py` (16 local Python flows/30 quiz answers), `scripts/content_pack_safety_tests.py` (31), and `scripts/pwa_update_tests.py` (four update scenarios). Legacy statistics response compatibility is explicitly checked after the 18 completed subject attempts. A regression run interrupted by a local container restart was discarded and rerun successfully; it is not counted as passing evidence.
+
+The first Linux CI run passed backend/frontend but exposed an implicit browser-locale assumption in the Russian percentage assertion (`33.3%` versus `33,3%`). The browser scenario now explicitly selects `ru-RU`; the full 43-check local rerun passed. This fixes test reproducibility without changing metric calculations.
+
+The existing three-job GitHub workflow includes analytics integration/frontend cases, operator safety tests and the new browser suite. Exact-head CI completion is verified on [PR #16](https://github.com/alinur527/education-app/pull/16); the final response and OS-temp handoff record its immutable run URL and final SHA. This section describes reproducible local evidence and does not claim curriculum subject approval or external deployment.

@@ -14,5 +14,7 @@ public record QuestionSnapshot(
   String explanationRu,
   String explanationKz,
   String difficulty,
-  Integer year
+  Integer year,
+  UUID subjectId,
+  com.fasterxml.jackson.databind.JsonNode assessment
 ) {}

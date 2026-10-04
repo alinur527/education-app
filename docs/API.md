@@ -192,7 +192,7 @@ Conflicts return 409: `REVISION_CONFLICT`, `INVALID_TRANSITION`, `ARCHIVED_CONTE
 | GET `/teacher/assignments/{id}/submissions?page=` | → page of `{userId,firstName,lastName,text,score,feedback,revision,submittedAt}` | Owned assignment and current group students / ADMIN |
 | POST `/teacher/assignments/{id}/submissions/{userId}/grade` | `{score,feedback?,revision}` → saved | Same; range 0..published maxScore |
 
-`GroupDetail` = `{id,name,courseId,students:[{id,email,firstName,lastName,enrollment,completed}],totalLessons,averageProgress,assignments:[{id,titleRu,titleKz,dueAt,submitted}],availableAssignments:[{id,titleRu,titleKz}],weakTopics:[{id,titleRu,titleKz,accuracy}]}`. `submission` is null or `{text,submittedAt,score,feedback}`; ungraded fields are null. Groups do not create new user accounts. There is no student file-submission endpoint. Group/course mismatch and score outside scale return 400, unrelated resources 404, stale grade or unpublished assignment 409. Resubmission clears the grade and increments revision.
+`GroupDetail` = `{id,name,courseId,students:[{id,email,firstName,lastName,enrollment,completed}],totalLessons,averageProgress,assignments:[{id,titleRu,titleKz,dueAt,submitted}],availableAssignments:[{id,titleRu,titleKz}],weakTopics:[{id,titleRu,titleKz,accuracy}]}`. `submission` is null or `{text,submittedAt,score,feedback}`; ungraded fields are null. Groups do not create new user accounts. Versioned file submissions are documented in [STUDENT_FILES.md](STUDENT_FILES.md). Group/course mismatch and score outside scale return 400, unrelated resources 404, stale grade or unpublished assignment 409. Resubmission clears the grade and increments revision.
 
 ## Lesson quizzes
 
@@ -230,3 +230,29 @@ Conflicts return 409: `REVISION_CONFLICT`, `INVALID_TRANSITION`, `ARCHIVED_CONTE
 GET `/admin/users?q=&role=&page=` returns a page of `{id,email,firstName,lastName,role,active,revision}`. PATCH `/admin/users/{id}` requires `{role,active,revision}` and returns saved. Both require ADMIN. Revision mismatch, self-demotion/deactivation, or losing the last active administrator return 409. Role/status changes are audited. No password hashes are returned.
 
 V16 creates the editorial/LMS/file/import/audit schema and backfills legacy content as published/archived without changing IDs. V17 adds practice modes and the completed-question activity view. V18 adds submission revisions. The migration upgrade integration test applies V1–V15, inserts an old completed attempt and users, upgrades, and asserts unchanged snapshot/score/roles plus visible activity.
+
+
+## Current expansion contracts
+
+[EXPANSION_API.md](EXPANSION_API.md) documents typed assessments, mixed/timed practice, contexts, sources, versioned imports, bulk publication, file library and offline export. Planner, reminders, private notes and versioned student files are implemented. Existing requests remain compatible.
+# Statistics 2.0 (additive)
+
+Legacy `GET /api/statistics/me` remains unchanged. All new routes require a live authenticated account. Student routes derive identity from JWT/current user and accept no userId.
+
+| Route | Parameters | Response / permissions |
+| --- | --- | --- |
+| GET /api/statistics/me/analytics | period=7d (default), 30d, all | Own Overview: period, timeZone, asOf (ISO instant), from/to (local ISO dates), hasPracticeHistory, summary, comparison, daily, heatmap, subjects, weakTopics, strongTopics |
+| GET /api/statistics/me/activity | period, kind=ALL, page=0, size=20 | Own History: items, total, page, size; size 1–50; page 0–100000 |
+| GET /api/teacher/analytics | period=7d or 30d | ADMIN: global; TEACHER: owned roster/course scope. STUDENT/CONTENT_EDITOR: 403 |
+
+Summary: questionsAnswered, fullyCorrectAnswers, nullable accuracyPercent, earnedPoints, maxPoints, nullable pointsPercent, testsCompleted, activeDays, currentStreak, errorsResolved, theoriesRead, lessonsCompleted, plannerTasksCompleted, assignmentsSubmitted, testTimeSecs. See [formulas and timestamp policy](STUDENT_ANALYTICS.md).
+
+Comparison (null for all): available, from/to, nullable questionsDelta/accuracyDelta/pointsPercentDelta/testsCompletedDelta/activeDaysDelta. Percentage deltas are percentage points; missing prior evidence stays null. Daily and heatmap: date, questionsAnswered, fullyCorrect, nullable accuracy, earnedPoints, maxPoints, testsCompleted, testTimeSecs, theoryReads, lessonCompletions, plannerTasksCompleted, assignmentsSubmitted, errorsResolved, studyActions. Empty dates are included. Heatmap always has 84 dates.
+
+Subject: subjectId, titleRu/Kz, questionsAnswered, nullable accuracyPercent/pointsPercent/accuracyDelta, attempts. Topic recommendations reuse existing mastery DTO fields and lifetime evidence thresholds. No answer keys are exposed.
+
+Activity item: id, kind, occurredAt (ISO instant), titleRu/Kz, href. kind: TEST, THEORY, LESSON, ERROR_RESOLVED, PLANNER_TASK, ASSIGNMENT. Events are sorted by occurredAt descending, kind, id; history is a projection of existing records rather than page-open tracking.
+
+Staff Overview: period, timeZone, from/to, global, studentsInScope, activeStudents, testsCompleted, questionsAnswered, nullable accuracyPercent, courseEnrollments, assignmentRecipients, assignmentSubmitters, nullable assignmentSubmissionRate, subjects (top 8), coverage (kind, published/draft/review/archived). Scope and denominators are documented in STUDENT_ANALYTICS.md.
+
+Errors: 401 unauthenticated/inactive; 403 staff access denied; 400 INVALID_PERIOD, INVALID_ACTIVITY_KIND, INVALID_PAGINATION. Invalid integer query arguments also return 400. Fixed Clock is supplied only through backend test dependency injection; no clock-setting HTTP endpoint exists.

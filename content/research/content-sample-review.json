@@ -1,0 +1,1337 @@
+{
+  "schema": "education-content-sample-review/v1",
+  "reviewedAt": "2026-10-04",
+  "reviewKind": "SECOND_PASS_MODEL_REVIEW_NOT_HUMAN_APPROVAL",
+  "editorialApproval": false,
+  "selectionMethod": "Questions 3 and 8 of every reviewed school topic, every typed pilot question, and questions 2 and 5 of all six Python lessons. Selection is fixed before checking keys; this is not a statistical accuracy estimate.",
+  "files": {
+    "pilot": {
+      "path": "content/starter/pilot.json",
+      "sha256": "ea38d0c5fc098d5c2ca590d182342e5293cf8a8b2b00b4c0135e3737f692ed04",
+      "topicOrLessonCount": 15,
+      "structuralQuestionCount": 150,
+      "structuralChecksPassed": true
+    },
+    "languages": {
+      "path": "content/starter/languages.json",
+      "sha256": "e8646e77c7615bb0324c74e78109522c9aef0e9bf46f94d21bd83f650309b558",
+      "topicOrLessonCount": 14,
+      "structuralQuestionCount": 140,
+      "structuralChecksPassed": true
+    },
+    "python-course": {
+      "path": "content/starter/python-course.json",
+      "sha256": "9d849cfe39016bb8e9379b1d69d3412f019dafe30aa06626346a828ec51ddf67",
+      "topicOrLessonCount": 6,
+      "structuralQuestionCount": 30,
+      "structuralChecksPassed": true
+    },
+    "core": {
+      "path": "content/starter/core.json",
+      "sha256": "951be462ba2eb1bd70d5c042ed841f18450cfeeaaeca78ad7794cdc1f1276923",
+      "topicOrLessonCount": 16,
+      "structuralQuestionCount": 160,
+      "structuralChecksPassed": true
+    }
+  },
+  "sampleCount": 112,
+  "cases": [
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-radicals",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-math-radicals-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "sqrt(27)=3sqrt(3); the coefficient difference is one."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-radicals",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-math-radicals-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "16+9=25; the principal square root is five."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-powers",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-math-powers-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Repeated powers multiply exponents: 3*4=12."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-powers",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-math-powers-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Five factors of negative two give negative 32."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-linear",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-math-linear-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "7x-3x=17-1 gives x=4."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-linear",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-math-linear-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "-2x=6 gives x=-3."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-quadratic",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-math-quadratic-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A real square is nonnegative, so x^2+4 cannot vanish."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-quadratic",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-math-quadratic-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The signed coefficient of x is -2."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-right-triangle",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-math-right-triangle-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Area is one half of 5*12, or 30 square centimetres."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-right-triangle",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-math-right-triangle-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Pythagoras gives sqrt(100+576)=26 metres."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-motion",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-physics-motion-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Equal and opposite displacements cancel; total distance does not."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-motion",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-physics-motion-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A constant position has zero slope and zero velocity."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-newton",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-physics-newton-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The signed net force is +12 N; division by 4 kg gives +3 m/s^2."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-newton",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-physics-newton-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Decreasing positive velocity means negative acceleration."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-energy",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-physics-energy-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "One half of 2*6^2 is 36 joules."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-energy",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-physics-energy-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "v^2=2gh=400 gives positive speed 20 m/s."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-ohm",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-physics-ohm-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "R=12/0.4=30 ohms."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-ohm",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-physics-ohm-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "With fixed R, I=U/R halves when U halves."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-reflection",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-physics-reflection-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A plane-mirror image is at equal perpendicular distance behind the plane."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-reflection",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-physics-reflection-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The normal is perpendicular to the surface, not along it."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-early",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-history-early-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The Botai source identifies the expedition leader as V. F. Zaibert."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-early",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-history-early-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Recording the archaeological layer provides context and relative chronology, not an automatic exact year."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-turks",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-history-turks-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The cited history account identifies the kagan as supreme ruler."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-turks",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-history-turks-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The cited account locates the core around the Chu/Semirechye region; unrelated continents cannot qualify."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-khanate",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-history-khanate-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The Kerey biography explicitly places the migration in western Zhetysu."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-khanate",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-history-khanate-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The source describes interrelated ethnopolitical and socioeconomic processes."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-independence",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-history-independence-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "UN membership resolution A/RES/46/224 action date is 1992-03-02."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-independence",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-history-independence-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The question explicitly requests the name at the 1997 transfer: Akmola, before Astana."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-sources",
+      "questionOrdinal": 3,
+      "questionExternalKey": "pilot-history-sources-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Two republications of the same report still represent one independent original report."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-sources",
+      "questionOrdinal": 8,
+      "questionExternalKey": "pilot-history-sources-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A shared year alone establishes neither location nor causality."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-radicals",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-math-radicals-q10",
+      "expectedKey": [
+        "A",
+        "C",
+        "D"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Principal roots give 8,5,4,6; the second equality is false."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-quadratic",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-math-quadratic-q10",
+      "expectedKey": [
+        "A",
+        "C"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Direct substitution confirms -2 and 3; 2 and -3 do not solve x^2-x-6=0."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-newton",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-physics-newton-q10",
+      "expectedKey": [
+        "A",
+        "B"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Zero net force permits rest or constant straight-line velocity; a circle requires acceleration."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-ohm",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-physics-ohm-q10",
+      "expectedKey": [
+        "A",
+        "B"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Parallel branches share voltage; currents add and need not be equal."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-turks",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-history-turks-q10",
+      "expectedKey": [
+        "A",
+        "B"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Date range and historical territory distinguish political entities."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-khanate",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-history-khanate-q10",
+      "expectedKey": [
+        "A",
+        "B",
+        "D"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Kerey/Janibek, western Zhetysu and the fifteenth century agree with the cited biography; 552 belongs to a different formation."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-sources",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-history-sources-q10",
+      "expectedKey": [
+        "A",
+        "B",
+        "D"
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Provenance, independent corroboration and comparable measures support source criticism; hiding contrary evidence does not."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-math-right-triangle",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-math-right-triangle-q10",
+      "expectedKey": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "sqrt(9^2+12^2)=15 and sqrt(8^2+15^2)=17."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-physics-energy",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-physics-energy-q10",
+      "expectedKey": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Work is measured in joules and power in watts."
+    },
+    {
+      "file": "pilot",
+      "topicOrLesson": "pilot-history-independence",
+      "questionOrdinal": 10,
+      "questionExternalKey": "pilot-history-independence-q10",
+      "expectedKey": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ],
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "UN admission is 1992; introduction of the tenge is 1993."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-verb-aspect",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-e0b5051398b5fedb",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Compound future uses буду plus imperfective infinitive решать."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-verb-aspect",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-f30d6108034a560b",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Перечитывать is imperfective despite its prefix; the complete form and aspect question matter."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-direct-speech",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-35db8b5cd92b2459",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The question mark remains inside quotation marks; the author clause follows an em dash without an extra comma."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-direct-speech",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-b63bd791893c2037",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A following speech attribution begins with lowercase попросила."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-lit-krylov-crow",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-faf3b02dbd9799f3",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "In Krylov, cawing opens the beak and causes the cheese to fall."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-lit-krylov-crow",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-0f44fa2f23cae2f8",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The observed plot order is cheese noticed, flattery, cawing, cheese falling."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-lit-gogol-act1",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-b9c8a54dc6c310b3",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Incognito here means concealment of official identity, not lack of powers."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-ru-lit-gogol-act1",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-aa616f5622becd01",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Nonpayment does not logically establish an official inspection mandate."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-vowel-harmony",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-9af00e53fdbac5e9",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The front vowel in бөлме takes -ге after a vowel, giving бөлмеге."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-vowel-harmony",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-da64afc4f1861abb",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The instrumental -мен/-бен/-пен does not have a back-vowel counterpart."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-cases",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-c77e3546f4c71bc1",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Сыныпта is locative and expresses location of sitting."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-cases",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-3f7a4005c0348ab0",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Кітапты is a definite direct object answering нені?"
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-lit-abai-31",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-3d46ee730eeca3f3",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The third stated condition concerns repeated reflection and consolidation."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-lit-abai-31",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-062c77c7e01593ed",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Smartphone notifications are a modern application, not a recommendation in Abai’s original text."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-lit-altynsarin-atymtai",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-d589f871f8c65a47",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Acquaintances ask why a wealthy benefactor still does physical work."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-kk-lit-altynsarin-atymtai",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-2fefd97a8a33dd29",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The dialogue elicits the protagonist’s four reasons."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-en-present-contrast",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-63ba9adc550289ed",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Does not is followed by base form play."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-en-present-contrast",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-e3516db2a8053892",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "I requires am plus the present participle reading for this progressive statement."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-en-reading-book-exchange",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-0a17dad0bf1a30a2",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The original passage assigns Aida the completeness-of-pages check."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-en-reading-book-exchange",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-10edd4e76af46a3c",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The original passage explicitly excludes bookshops."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-de-praesens",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-9835fa38f09c15e0",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Mira und Ali is plural and requires wohnen."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-de-praesens",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-dc48ab65869ff391",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The correct sein form for wir is sind."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-de-word-order",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-06da576cb303e962",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The W-question order is Wo + wohnt + Mira."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-de-word-order",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-d3bc59e8c26cc8da",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Nach der Schule is one initial constituent, followed by singular spielt then Ali."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-fr-present-er",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-0f4f17ee1695281d",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Nous takes the -ons ending: préparons."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-fr-present-er",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-c1de939dd73cc673",
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The cedilla in commençons preserves the soft consonant before o."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-fr-reading-school-visit",
+      "questionOrdinal": 3,
+      "questionExternalKey": "original-61a24829bc8be50b",
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The original passage distinguishes departure at 09:00 from meeting at 08:30."
+    },
+    {
+      "file": "languages",
+      "topicOrLesson": "starter-fr-reading-school-visit",
+      "questionOrdinal": 8,
+      "questionExternalKey": "original-ddd2faf59fc409a7",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Avant lundi means before Monday, not the Wednesday trip or afterwards."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-values",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Reassignment uses 4+3 and stores seven in x."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-values",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Outside a string literal # begins a line comment."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-input",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "int converts a valid decimal integer string to an integer."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-input",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Parentheses produce 15 before multiplication by two."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-conditions",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Indentation defines the branch body."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-start-conditions",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The first matching elif wins, so the higher overlapping threshold must be tested first."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-lists",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The list has three elements, including the zero."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-lists",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "D",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "append mutates the existing list and returns None."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-functions",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "return transfers the computed value to the caller; displaying a string does not."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-functions",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "A",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "goal is a formal parameter receiving an argument."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-files",
+      "questionOrdinal": 2,
+      "questionExternalKey": null,
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The with context closes the file on leaving its block; it does not suppress arbitrary errors."
+    },
+    {
+      "file": "python-course",
+      "topicOrLesson": "python-data-files",
+      "questionOrdinal": 5,
+      "questionExternalKey": null,
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "print defaults to stdout; saving a named file needs a file-directed operation."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-numeracy-percent",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-numeracy-percent-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The remaining price is 75%: 9000/0.75=12000."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-numeracy-percent",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-numeracy-percent-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The whole is 45/0.15=300."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-numeracy-data",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-numeracy-data-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "For four ordered values the median averages 4 and 8, giving six."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-numeracy-data",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-numeracy-data-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A common translation cancels in (max+5)-(min+5)."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-reading-library",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-reading-library-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Both original-language contexts state that the six delayed books were still borrowed."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-reading-library",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-reading-library-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Both original-language contexts explicitly continue the experiment in May."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-reading-evidence",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-reading-evidence-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The observation supports a one-week comparison, not a universal savings amount."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-reading-evidence",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-reading-evidence-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The two recorded volumes differ by 95-70=25 litres."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-chem-atoms",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-chem-atoms-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A neutral atom has equal proton and electron counts, hence 12 electrons for Z=12."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-chem-atoms",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-chem-atoms-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Among the given choices the neutron is electrically neutral."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-chem-mole",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-chem-mole-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "n=m/M=54/18=3 moles."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-chem-mole",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-chem-mole-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "0.5 times 6.02e23 is 3.01e23 particles."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-bio-cell",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-bio-cell-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Bacteria are prokaryotes and lack a membrane-bound nucleus."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-bio-cell",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-bio-cell-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Typical living plant cells possess mitochondria and respire."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-bio-photosynthesis",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-bio-photosynthesis-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Oxygenic photosynthesis releases molecular oxygen."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-bio-photosynthesis",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-bio-photosynthesis-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Illumination does not stop cellular respiration in living plants."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-geo-map",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-geo-map-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Six kilometres equals 600000 cm, divided by 100000 gives six map centimetres."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-geo-map",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-geo-map-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Thirty arcminutes equals one half of a degree, giving 45.5 degrees."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-geo-weather",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-geo-weather-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "A north wind is named for its source direction, the north."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-geo-weather",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-geo-weather-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "0.005 m times 1 m^2 is 0.005 m^3 or five litres."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-info-binary",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-info-binary-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Four independent binary positions give 2^4=16 combinations."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-info-binary",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-info-binary-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Rightmost positional weights are 1,2,4,8."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-info-python",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-info-python-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Python floor division 19//4 equals four."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-info-python",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-info-python-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Ten is greater than or equal to ten; the comparison is True."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-world-mesopotamia",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-world-mesopotamia-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The British Museum identifies the wedge-shaped strokes as the basis for the script’s modern name."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-world-mesopotamia",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-world-mesopotamia-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Dating and provenance delimit interpretations; popularity and website colour do not establish historical context."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-world-un",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-world-un-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The UN Charter source separates signature on 1945-06-26 from entry into force on 1945-10-24."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-world-un",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-world-un-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "An institutional objective does not logically prove all wars have ceased."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-law-constitution-2026",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-law-constitution-2026-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "The official 2026 Constitution article 2(1) identifies a unitary state; both official languages were read."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-law-constitution-2026",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-law-constitution-2026-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Article 7(1) states separation of religion from the state in both official-language versions."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-law-rights-2026",
+      "questionOrdinal": 3,
+      "questionExternalKey": "core-law-rights-2026-q03",
+      "expectedKey": "C",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Article 36(1) requires every person to observe the Constitution and legislation."
+    },
+    {
+      "file": "core",
+      "topicOrLesson": "core-law-rights-2026",
+      "questionOrdinal": 8,
+      "questionExternalKey": "core-law-rights-2026-q08",
+      "expectedKey": "B",
+      "answerCheck": "PASS_MODEL_REVIEW",
+      "ruKzSemanticEquivalence": "PASS_MODEL_REVIEW",
+      "explanationCheck": "PASS_MODEL_REVIEW",
+      "reason": "Article 12(1) permits methods of rights protection that do not conflict with law."
+    }
+  ],
+  "codeExecution": {
+    "source": "content/starter/python-course.json verification",
+    "pythonVersion": "3.12.14",
+    "examplesExecuted": 12,
+    "conditionBoundaryCasesExecuted": 8,
+    "allPassed": true
+  },
+  "coreExactArithmeticChecksPassed": true,
+  "readingContextReferencesChecked": 20,
+  "limitations": [
+    "Language/Python authoring and this second pass use the same model agent; this is not an independent human or subject-expert assessment. Pilot/core were authored by another agent and reviewed here.",
+    "Checks concern source JSON and sample semantics, not rendered CMS imports or every translated sentence.",
+    "Structural checks do not prove semantic correctness. No release status or editorial review flag is changed by this report."
+  ]
+}

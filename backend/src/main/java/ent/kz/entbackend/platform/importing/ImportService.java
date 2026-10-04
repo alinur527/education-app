@@ -134,7 +134,7 @@ public class ImportService {
         ContentKind expected = switch (kind) {
           case SUBJECT, COURSE -> null;
           case TOPIC -> ContentKind.SUBJECT;
-          case THEORY, QUESTION -> ContentKind.TOPIC;
+          case THEORY, QUESTION, CONTEXT -> ContentKind.TOPIC;
           case MODULE -> ContentKind.COURSE;
           case LESSON -> ContentKind.MODULE;
           case QUIZ -> ContentKind.LESSON;

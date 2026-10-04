@@ -14,6 +14,33 @@ export function QuestionEditor({
   return (
     <fieldset className="question-editor">
       <legend>{l('Варианты ответа', 'Жауап нұсқалары')}</legend>
+      <Field label={l('Тип вопроса', 'Сұрақ түрі')}>
+        <select
+          value={value.questionType || 'SINGLE_CHOICE'}
+          onChange={(e) => {
+            const questionType = e.target.value as QuizQuestion['questionType'];
+            onChange({
+              ...value,
+              questionType,
+              scoringPolicy: undefined,
+              correctOptionId: questionType === 'SINGLE_CHOICE' ? '' : undefined,
+              correctOptionIds: questionType === 'MULTIPLE_SELECT' ? [] : undefined,
+              correctPairs: questionType === 'MATCHING' ? [] : undefined,
+              leftOptions:
+                questionType === 'MATCHING'
+                  ? [
+                      { id: 'L1', textRu: '', textKz: '' },
+                      { id: 'L2', textRu: '', textKz: '' },
+                    ]
+                  : undefined,
+            });
+          }}
+        >
+          <option value="SINGLE_CHOICE">{l('Один ответ', 'Бір жауап')}</option>
+          <option value="MULTIPLE_SELECT">{l('Несколько ответов', 'Бірнеше жауап')}</option>
+          <option value="MATCHING">{l('Соответствие', 'Сәйкестік')}</option>
+        </select>
+      </Field>
       {titles && (
         <div className="form-pair">
           <Field label={l('Вопрос RU', 'Сұрақ RU')}>
@@ -71,6 +98,8 @@ export function QuestionEditor({
                 ...value,
                 options: value.options.filter((_, n) => n !== i),
                 correctOptionId: value.correctOptionId === o.id ? '' : value.correctOptionId,
+                correctOptionIds: value.correctOptionIds?.filter((id) => id !== o.id),
+                correctPairs: value.correctPairs?.filter((pair) => pair.rightId !== o.id),
               })
             }
           >
@@ -89,20 +118,100 @@ export function QuestionEditor({
       >
         + {l('Вариант ответа', 'Жауап нұсқасы')}
       </button>
-      <Field label={l('Правильный ответ', 'Дұрыс жауап')}>
-        <select
-          required
-          value={value.correctOptionId || ''}
-          onChange={(e) => onChange({ ...value, correctOptionId: e.target.value })}
-        >
-          <option value="">{l('Выберите', 'Таңдаңыз')}</option>
+      {value.questionType === 'MULTIPLE_SELECT' ? (
+        <fieldset>
+          <legend>{l('Правильные ответы (1–3)', 'Дұрыс жауаптар (1–3)')}</legend>
           {value.options.map((o) => (
-            <option key={o.id} value={o.id}>
+            <label className="check-field" key={o.id}>
+              <input
+                type="checkbox"
+                checked={value.correctOptionIds?.includes(o.id) || false}
+                onChange={(e) =>
+                  onChange({
+                    ...value,
+                    correctOptionIds: e.target.checked
+                      ? [...(value.correctOptionIds || []), o.id]
+                      : (value.correctOptionIds || []).filter((id) => id !== o.id),
+                  })
+                }
+              />
               {o.id}
-            </option>
+            </label>
           ))}
-        </select>
-      </Field>
+        </fieldset>
+      ) : value.questionType === 'MATCHING' ? (
+        <fieldset>
+          <legend>{l('Левые части и ключ', 'Сол жақ бөліктері және кілт')}</legend>
+          {value.leftOptions?.map((o, i) => (
+            <div className="form-pair" key={o.id}>
+              <Field label={`${o.id} RU`}>
+                <input
+                  required
+                  value={o.textRu}
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      leftOptions: value.leftOptions?.map((v, n) =>
+                        n === i ? { ...v, textRu: e.target.value } : v,
+                      ),
+                    })
+                  }
+                />
+              </Field>
+              <Field label={`${o.id} KZ`}>
+                <input
+                  value={o.textKz || ''}
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      leftOptions: value.leftOptions?.map((v, n) =>
+                        n === i ? { ...v, textKz: e.target.value } : v,
+                      ),
+                    })
+                  }
+                />
+              </Field>
+              <Field label={`${l('Соответствие', 'Сәйкестік')} ${o.id}`}>
+                <select
+                  required
+                  value={value.correctPairs?.find((p) => p.leftId === o.id)?.rightId || ''}
+                  onChange={(e) =>
+                    onChange({
+                      ...value,
+                      correctPairs: [
+                        ...(value.correctPairs || []).filter((p) => p.leftId !== o.id),
+                        { leftId: o.id, rightId: e.target.value },
+                      ],
+                    })
+                  }
+                >
+                  <option value="">{l('Выберите', 'Таңдаңыз')}</option>
+                  {value.options.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.id}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+          ))}
+        </fieldset>
+      ) : (
+        <Field label={l('Правильный ответ', 'Дұрыс жауап')}>
+          <select
+            required
+            value={value.correctOptionId || ''}
+            onChange={(e) => onChange({ ...value, correctOptionId: e.target.value })}
+          >
+            <option value="">{l('Выберите', 'Таңдаңыз')}</option>
+            {value.options.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.id}
+              </option>
+            ))}
+          </select>
+        </Field>
+      )}
       <div className="form-pair">
         <Field label={l('Объяснение RU', 'Түсіндірме RU')}>
           <textarea

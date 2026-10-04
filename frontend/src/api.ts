@@ -1,3 +1,4 @@
+import { assessmentSchema, answerSchema, contextSchema } from './features/assessment/model';
 import { z } from 'zod';
 
 export const userSchema = z.object({
@@ -18,6 +19,7 @@ export const subjectSchema = z.object({
   color: z.string().nullable(),
   questionCount: z.number(),
   durationMinutes: z.number(),
+  category: z.string().nullish(),
 });
 export type Subject = z.infer<typeof subjectSchema>;
 export const topicSchema = z.object({
@@ -30,6 +32,21 @@ export const topicSchema = z.object({
   sortOrder: z.number(),
   questionCount: z.number(),
   theoryCount: z.number(),
+  contentRole: z.string().optional(),
+  curriculum: z
+    .object({
+      extractionStatus: z.string().optional(),
+      sourceId: z.string().optional(),
+      officialCode: z.string().optional(),
+      page: z.string().optional(),
+      sectionRu: z.string().optional(),
+      sectionKz: z.string().optional(),
+      variant: z.string().optional(),
+      examVersion: z.string().optional(),
+    })
+    .nullish(),
+  documentLanguage: z.string().nullish(),
+  sourceUrl: z.string().nullish(),
 });
 export const theorySchema = z.object({
   id: z.string().uuid(),
@@ -54,15 +71,27 @@ export const questionSchema = z.object({
   options: z.array(optionSchema).min(2),
   difficulty: z.string(),
   year: z.number().nullable(),
+  assessment: assessmentSchema.nullish(),
+  context: contextSchema.nullish(),
 });
 export const sessionSchema = z.object({
   sessionId: z.string().uuid(),
   topicId: z.string().uuid().nullable(),
-  subjectId: z.string().uuid(),
+  subjectId: z.string().uuid().nullable(),
   status: z.enum(['IN_PROGRESS', 'COMPLETED', 'ABANDONED']),
   totalQuestions: z.number(),
   startedAt: z.string(),
-  answers: z.array(z.object({ questionId: z.string().uuid(), selectedOptionId: z.string() })),
+  answers: z.array(
+    z.object({
+      questionId: z.string().uuid(),
+      selectedOptionId: z.string().nullable(),
+      answer: answerSchema.nullish(),
+    }),
+  ),
+  questionIds: z.array(z.string().uuid()).optional(),
+  practiceMode: z.string().optional(),
+  deadlineAt: z.string().nullish(),
+  maxPoints: z.number().nullish(),
 });
 export const startSchema = z.object({
   sessionId: z.string().uuid(),
@@ -71,7 +100,8 @@ export const startSchema = z.object({
 });
 export const receiptSchema = z.object({
   questionId: z.string().uuid(),
-  selectedOptionId: z.string(),
+  selectedOptionId: z.string().nullable(),
+  answer: answerSchema.nullish(),
 });
 export const finishSchema = z.object({
   sessionId: z.string().uuid(),
@@ -79,10 +109,12 @@ export const finishSchema = z.object({
   totalQuestions: z.number(),
   score: z.number(),
   timeTakenSecs: z.number(),
+  earnedPoints: z.number().nullish(),
+  maxPoints: z.number().nullish(),
 });
 export const resultsSchema = finishSchema.extend({
   topicId: z.string().uuid().nullable(),
-  subjectId: z.string().uuid(),
+  subjectId: z.string().uuid().nullable(),
   status: z.string(),
   answers: z.array(
     z.object({
@@ -91,7 +123,14 @@ export const resultsSchema = finishSchema.extend({
       questionKz: z.string().nullable(),
       options: z.array(optionSchema),
       selectedOptionId: z.string().nullable(),
-      correctOptionId: z.string(),
+      correctOptionId: z.string().nullable(),
+      assessment: assessmentSchema.nullish(),
+      answer: answerSchema.nullish(),
+      context: contextSchema.nullish(),
+      earnedPoints: z.number().optional(),
+      maxPoints: z.number().optional(),
+      topicId: z.string().nullish(),
+      subjectId: z.string().nullish(),
       isCorrect: z.boolean(),
       explanationRu: z.string().nullable(),
       explanationKz: z.string().nullable(),
@@ -108,7 +147,7 @@ export const statsSchema = z.object({
     z.object({
       sessionId: z.string().uuid(),
       topicId: z.string().uuid().nullable(),
-      subjectId: z.string().uuid(),
+      subjectId: z.string().uuid().nullable(),
       ...names,
       score: z.number(),
       totalQuestions: z.number(),

@@ -81,6 +81,12 @@ public class AdminQuestionService {
       .orElseThrow(() ->
         new ResponseStatusException(HttpStatus.NOT_FOUND, "Topic not found")
       );
+    if (
+      question.getAssessment() != null
+    ) throw new ent.kz.entbackend.platform.PlatformException(
+      409,
+      "USE_CMS_FOR_TYPED_QUESTION"
+    );
     validateOptions(request.options(), request.correctOptionId());
 
     question.setTopic(topic);

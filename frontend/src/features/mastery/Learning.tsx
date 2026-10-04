@@ -67,7 +67,7 @@ export function LearningSummary() {
           <span>{l('Вопросов в завершённых попытках', 'Аяқталған талпыныстардағы сұрақтар')}</span>
         </div>
         <div>
-          <strong>{a.accuracy}%</strong>
+          <strong>{a.questionsAnswered > 0 ? `${a.accuracy}%` : '—'}</strong>
           <span>{l('Правильных ответов', 'Дұрыс жауаптар')}</span>
         </div>
         <div>

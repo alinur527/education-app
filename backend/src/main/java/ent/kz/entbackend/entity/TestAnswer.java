@@ -36,6 +36,19 @@ public class TestAnswer {
   @Column(name = "selected_option_id", length = 10)
   private String selectedOptionId;
 
+  @Column(name = "answer_payload", columnDefinition = "jsonb")
+  @org.hibernate.annotations.ColumnTransformer(
+    read = "answer_payload::text",
+    write = "?::jsonb"
+  )
+  private String answerPayload;
+
+  @Column(name = "earned_points")
+  private Integer earnedPoints;
+
+  @Column(name = "max_points")
+  private Integer maxPoints;
+
   @Column(name = "is_correct")
   private Boolean isCorrect;
 

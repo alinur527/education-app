@@ -33,6 +33,16 @@ public class MaterialController {
     return service.list(id);
   }
 
+  @GetMapping("/api/cms/materials")
+  public ent.kz.entbackend.platform.content.ContentDtos.Page<
+    Map<String, Object>
+  > library(
+    @RequestParam(defaultValue = "") String q,
+    @RequestParam(defaultValue = "0") int page
+  ) {
+    return service.library(q, page);
+  }
+
   @GetMapping("/api/materials/{id}/download")
   public ResponseEntity<byte[]> download(@PathVariable UUID id) {
     var file = service.download(id);

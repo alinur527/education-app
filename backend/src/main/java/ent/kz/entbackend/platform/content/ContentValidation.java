@@ -37,7 +37,25 @@ public class ContentValidation {
     "selfEnroll",
     "dueAt",
     "maxScore",
-    "questions"
+    "questions",
+    "questionType",
+    "leftOptions",
+    "correctOptionIds",
+    "correctPairs",
+    "scoringPolicy",
+    "contextId",
+    "contextVersion",
+    "answerEvidence",
+    "difficultyReason",
+    "sourceIds",
+    "reviewChecks",
+    "contentLanguage",
+    "studiedLanguage",
+    "curriculumVariant",
+    "examVersion",
+    "category",
+    "curriculum",
+    "offlineAllowed"
   );
 
   public void validate(ContentKind kind, JsonNode p, boolean publish) {
@@ -93,6 +111,8 @@ public class ContentValidation {
     enumeration(p, "difficulty", Set.of("easy", "medium", "hard"));
     text(p, "correctOptionId", 10, false);
     text(p, "sourceName", 300, false);
+    text(p, "answerEvidence", 5000, false);
+    text(p, "difficultyReason", 1000, false);
     text(p, "sourceUrl", 2000, false);
     text(p, "dueAt", 100, false);
     text(p, "icon", 50, false);
@@ -114,11 +134,16 @@ public class ContentValidation {
         "QUIZ_QUESTIONS_REQUIRED"
       );
       for (JsonNode q : p.path("questions")) {
+        require(
+          !q.hasNonNull("contextId") && !q.hasNonNull("contextVersion"),
+          "QUIZ_SHARED_CONTEXT_UNSUPPORTED"
+        );
         text(q, "titleRu", 10000, true);
         text(q, "titleKz", 10000, publish);
         question(q, publish);
       }
     }
+    ent.kz.entbackend.platform.content.ProvenanceValidation.validate(p);
     if (p.has("blocks")) {
       require(
         p.path("blocks").isArray() && p.path("blocks").size() <= 100,
@@ -135,7 +160,9 @@ public class ContentValidation {
             "QUOTE",
             "FORMULA",
             "CALLOUT",
-            "PRACTICE"
+            "PRACTICE",
+            "CODE",
+            "TABLE"
           ).contains(b.path("type").asText()),
           "INVALID_BLOCK_TYPE"
         );
@@ -158,25 +185,7 @@ public class ContentValidation {
   }
 
   private void question(JsonNode p, boolean publish) {
-    text(p, "correctOptionId", 10, true);
-    text(p, "explanationRu", 50000, false);
-    text(p, "explanationKz", 50000, false);
-    JsonNode options = p.path("options");
-    require(
-      options.isArray() && options.size() >= 2 && options.size() <= 8,
-      "OPTIONS_COUNT"
-    );
-    Set<String> ids = new HashSet<>();
-    for (JsonNode o : options) {
-      text(o, "id", 10, true);
-      text(o, "textRu", 5000, true);
-      text(o, "textKz", 5000, publish);
-      require(ids.add(o.path("id").asText()), "DUPLICATE_OPTION");
-    }
-    require(
-      ids.contains(p.path("correctOptionId").asText()),
-      "CORRECT_OPTION_MISSING"
-    );
+    ent.kz.entbackend.platform.assessment.Assessment.validate(p, publish);
   }
 
   public static UUID uuid(String s) {

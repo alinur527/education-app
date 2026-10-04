@@ -1,0 +1,138 @@
+/* Golos/blue workspace: sequence and hierarchy carry the visual structure. */
+.authoring-parent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 12px 0 24px;
+  font-size: 14px;
+}
+.authoring-parent a,
+.authoring-child-list a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.authoring-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  gap: 8px;
+}
+.authoring-steps button {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+  min-height: 54px;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+}
+.authoring-steps button[aria-current='step'] {
+  border-color: var(--blue);
+  color: #2344b6;
+  background: #edf2ff;
+  font-weight: 600;
+}
+.authoring-steps button span:first-child {
+  font-weight: 600;
+}
+.authoring-panel[hidden] {
+  display: none !important;
+}
+.authoring-stage-title {
+  font-size: 20px;
+  margin: 20px 0 12px;
+}
+.authoring-guidance {
+  max-width: 70ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.authoring-next {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 24px 0;
+}
+.authoring-checks {
+  background: #f4f6fa;
+  border-left: 3px solid var(--blue);
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+.authoring-checks h3 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+.authoring-checks ul {
+  padding-left: 20px;
+  line-height: 1.7;
+}
+.authoring-checks p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.authoring-children {
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+  margin-top: 36px;
+}
+.authoring-children > p {
+  max-width: 70ch;
+  line-height: 1.7;
+}
+.authoring-child-list {
+  padding: 0;
+  list-style: none;
+  margin: 20px 0;
+}
+.authoring-child-list li {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.authoring-child-list span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.authoring-starts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+}
+.authoring-starts p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+@media (max-width: 520px) {
+  .authoring-steps {
+    grid-template-columns: 1fr;
+  }
+  .authoring-steps button {
+    min-height: 44px;
+  }
+  .authoring-checks {
+    padding: 14px;
+  }
+  .authoring-child-list li {
+    flex-direction: column;
+  }
+}

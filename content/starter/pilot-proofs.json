@@ -1,0 +1,568 @@
+{
+  "schema": "education-pilot-checks/v1",
+  "sourceSha256": "ea38d0c5fc098d5c2ca590d182342e5293cf8a8b2b00b4c0135e3737f692ed04",
+  "structuralQuestionCount": 150,
+  "distinctRussianPrompts": 150,
+  "questionTypes": {
+    "SINGLE_CHOICE": 140,
+    "MULTIPLE_SELECT": 7,
+    "MATCHING": 3
+  },
+  "explicitAnswerChecks": 83,
+  "proofs": [
+    {
+      "questionExternalKey": "pilot-math-radicals-q01",
+      "expectedAnswer": "9",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q02",
+      "expectedAnswer": "5√2",
+      "method": "50 = 25 * 2; positive root of perfect square25 is5",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q03",
+      "expectedAnswer": "√3",
+      "method": "Coefficient4 - sqrt(27/3)=1",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q04",
+      "expectedAnswer": "7",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q05",
+      "expectedAnswer": "5 и 6",
+      "method": "25 < 30 < 36",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q06",
+      "expectedAnswer": "4√2",
+      "method": "Rationalisation:8*sqrt(2)/2",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q08",
+      "expectedAnswer": "5",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q09",
+      "expectedAnswer": "0,7",
+      "method": "Exact square: Fraction(7,10)^2 == Fraction(49,100)",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q01",
+      "expectedAnswer": "128",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q02",
+      "expectedAnswer": "25",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q03",
+      "expectedAnswer": "a¹²",
+      "method": "Independent exponent multiplication:3*4=12",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q04",
+      "expectedAnswer": "1",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q05",
+      "expectedAnswer": "1/9",
+      "method": "Exact reciprocal square",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q06",
+      "expectedAnswer": "-16",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q07",
+      "expectedAnswer": "5,6·10⁻⁴",
+      "method": "Coefficient5.6 lies in[1,10); exponent−4 preserves exact rational value",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q08",
+      "expectedAnswer": "-32",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-powers-q09",
+      "expectedAnswer": "9x⁴",
+      "method": "Coefficient3²=9; variable exponent2*2=4",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q01",
+      "expectedAnswer": "5",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q02",
+      "expectedAnswer": "6",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q03",
+      "expectedAnswer": "4",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q04",
+      "expectedAnswer": "20",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q08",
+      "expectedAnswer": "-3",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q10",
+      "expectedAnswer": "4",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-linear-q07",
+      "expectedAnswer": "800 тенге",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q01",
+      "expectedAnswer": "4",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q02",
+      "expectedAnswer": "2 и 3",
+      "method": "Both roots substituted into original polynomial; degree2 limits distinct roots to2",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q04",
+      "expectedAnswer": "4",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q05",
+      "expectedAnswer": "9",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q06",
+      "expectedAnswer": "3/2",
+      "method": "Vieta product c/a, a=2,c=3",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q07",
+      "expectedAnswer": "0 и 4",
+      "method": "Direct substitution of both polynomial roots",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q08",
+      "expectedAnswer": "-2",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q09",
+      "expectedAnswer": "7 см",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q01",
+      "expectedAnswer": "10 см",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q02",
+      "expectedAnswer": "15 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q03",
+      "expectedAnswer": "30 см²",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q08",
+      "expectedAnswer": "26 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q09",
+      "expectedAnswer": "12 см",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q04",
+      "expectedAnswer": "62°",
+      "method": "Complementary acute angles",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q05",
+      "expectedAnswer": "7,24,25",
+      "method": "Longest-side squared equals sum of other squares; remaining triples fail",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q01",
+      "expectedAnswer": "5 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q02",
+      "expectedAnswer": "15 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q03",
+      "expectedAnswer": "0 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q04",
+      "expectedAnswer": "80 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q05",
+      "expectedAnswer": "-3 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q06",
+      "expectedAnswer": "4 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q07",
+      "expectedAnswer": "200 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q09",
+      "expectedAnswer": "4 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-motion-q10",
+      "expectedAnswer": "10 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q01",
+      "expectedAnswer": "4 м/с²",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q02",
+      "expectedAnswer": "10 Н",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q05",
+      "expectedAnswer": "25 Н",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q06",
+      "expectedAnswer": "0 Н",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q03",
+      "expectedAnswer": "3 м/с² вправо",
+      "method": "Signed force balance +20−8 before division by mass4",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q01",
+      "expectedAnswer": "60 Дж",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q02",
+      "expectedAnswer": "0",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q03",
+      "expectedAnswer": "36 Дж",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q05",
+      "expectedAnswer": "60 Дж",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q06",
+      "expectedAnswer": "15 Дж",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q07",
+      "expectedAnswer": "20 Вт",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q08",
+      "expectedAnswer": "20 м/с",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q01",
+      "expectedAnswer": "3 А",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q02",
+      "expectedAnswer": "5 В",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q03",
+      "expectedAnswer": "30 Ом",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q04",
+      "expectedAnswer": "10 Ом",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q05",
+      "expectedAnswer": "4 Ом",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q06",
+      "expectedAnswer": "30 Кл",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q07",
+      "expectedAnswer": "18 Вт",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q01",
+      "expectedAnswer": "35°",
+      "method": "Incident angle equals reflected angle",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q02",
+      "expectedAnswer": "70°",
+      "method": "Surface angle converted to normal angle",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q04",
+      "expectedAnswer": "4 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q06",
+      "expectedAnswer": "15 см",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q07",
+      "expectedAnswer": "0,8 м",
+      "method": "Independent arithmetic from explicit problem operands",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-physics-reflection-q10",
+      "expectedAnswer": "0°",
+      "method": "Normal incidence is zero angle to normal",
+      "passed": true
+    },
+    {
+      "questionExternalKey": "pilot-math-radicals-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "C",
+        "D"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-math-quadratic-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "C"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-physics-newton-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-physics-ohm-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-history-turks-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-history-khanate-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-history-sources-q10",
+      "passed": true,
+      "method": "Explicit independently re-read multi-answer truth set",
+      "expectedAnswer": [
+        "A",
+        "B",
+        "D"
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-math-right-triangle-q10",
+      "passed": true,
+      "method": "Both matching relationships rechecked independently",
+      "expectedAnswer": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-physics-energy-q10",
+      "passed": true,
+      "method": "Both matching relationships rechecked independently",
+      "expectedAnswer": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ]
+    },
+    {
+      "questionExternalKey": "pilot-history-independence-q10",
+      "passed": true,
+      "method": "Both matching relationships rechecked independently",
+      "expectedAnswer": [
+        {
+          "leftId": "L1",
+          "rightId": "R2"
+        },
+        {
+          "leftId": "L2",
+          "rightId": "R1"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Conceptual, translation and historical explanations reviewed by model; no human subject expert approval claimed",
+    "This script proves authored arithmetic and structural constraints, not completeness of ENT coverage",
+    "Official PDF examples were not mechanically copied into the bank"
+  ]
+}

@@ -33,6 +33,10 @@ services:
       APP_STORAGE_S3_REGION: ${APP_STORAGE_S3_REGION:-us-east-1}
       APP_STORAGE_S3_ACCESS_KEY: ${APP_STORAGE_S3_ACCESS_KEY:-}
       APP_STORAGE_S3_SECRET_KEY: ${APP_STORAGE_S3_SECRET_KEY:-}
+      APP_SCAN_ENGINE: ${APP_SCAN_ENGINE:-none}
+      APP_SCAN_HOST: ${APP_SCAN_HOST:-clamav}
+      APP_SCAN_PORT: ${APP_SCAN_PORT:-3310}
+      APP_SCAN_REQUIRED: ${APP_SCAN_REQUIRED:-false}
     volumes:
       - material_data:/app/data/materials
     depends_on:
@@ -50,6 +54,22 @@ services:
     ports:
       - "127.0.0.1:8081:80"
     restart: unless-stopped
+  clamav:
+    profiles: [malware]
+    image: clamav/clamav:1.4
+    ports:
+      - "127.0.0.1:${CLAMAV_PORT:-3310}:3310"
+    volumes:
+      - clamav_data:/var/lib/clamav
+    healthcheck:
+      test: ["CMD", "clamdscan", "--ping=1"]
+      interval: 15s
+      timeout: 5s
+      start_period: 120s
+      retries: 20
+    mem_limit: 3g
+    restart: unless-stopped
 volumes:
   postgres_data:
   material_data:
+  clamav_data:

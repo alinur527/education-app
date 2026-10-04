@@ -1,3 +1,4 @@
+import { assessmentSchema } from '../assessment/model';
 import { z } from 'zod';
 const optionalText = z
   .string()
@@ -18,6 +19,7 @@ export const kinds = [
   'LESSON',
   'QUIZ',
   'ASSIGNMENT',
+  'CONTEXT',
 ] as const;
 export type Kind = (typeof kinds)[number];
 export const kindLabels: Record<Kind, readonly [string, string]> = {
@@ -30,6 +32,7 @@ export const kindLabels: Record<Kind, readonly [string, string]> = {
   LESSON: ['Урок', 'Сабақ'],
   QUIZ: ['Тест урока', 'Сабақ тесті'],
   ASSIGNMENT: ['Задание', 'Тапсырма'],
+  CONTEXT: ['Общий контекст', 'Ортақ мәтін'],
 };
 export const statusLabels = {
   DRAFT: ['Черновик', 'Жоба'],
@@ -48,6 +51,8 @@ export const blockSchema = z.object({
     'FORMULA',
     'CALLOUT',
     'PRACTICE',
+    'CODE',
+    'TABLE',
   ]),
   textRu: optionalText,
   textKz: optionalText,
@@ -58,6 +63,7 @@ export const blockSchema = z.object({
 export type Block = z.infer<typeof blockSchema>;
 export const option = z.object({ id: z.string(), textRu: z.string(), textKz: draftTranslation });
 export const questionPayload = z.object({
+  ...assessmentSchema.shape,
   titleRu: z.string(),
   titleKz: draftTranslation,
   options: z.array(option),
@@ -67,6 +73,20 @@ export const questionPayload = z.object({
 });
 export type QuizQuestion = z.infer<typeof questionPayload>;
 export const payloadSchema = z.object({
+  ...assessmentSchema.shape,
+  contextId: optionalText,
+  contextVersion: z.number().nullish(),
+  answerEvidence: z.string().optional(),
+  difficultyReason: z.string().optional(),
+  sourceIds: z.array(z.string()).optional(),
+  reviewChecks: z.record(z.string(), z.boolean()).optional(),
+  contentLanguage: optionalText,
+  studiedLanguage: optionalText,
+  curriculumVariant: optionalText,
+  examVersion: optionalText,
+  category: z.enum(['MANDATORY', 'PROFILE', 'OTHER']).optional(),
+  curriculum: z.record(z.string(), z.string()).optional(),
+  offlineAllowed: z.boolean().optional(),
   titleRu: z.string(),
   titleKz: draftTranslation,
   descriptionRu: z.string().nullish(),
@@ -170,6 +190,9 @@ export const materialSchema = z.object({
   mimeType: z.string(),
   size: z.number(),
   published: z.boolean(),
+  scanStatus: z
+    .enum(['CLEAN', 'UNSCANNED', 'UNSCANNED_LEGACY', 'INFECTED', 'SCAN_FAILED'])
+    .optional(),
 });
 export type Material = z.infer<typeof materialSchema>;
 export const materialsSchema = z.array(materialSchema);

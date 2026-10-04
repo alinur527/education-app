@@ -1,3 +1,4 @@
+import { RichText, MathText, TextTable } from './RichText';
 import { Link } from 'react-router';
 import { useL, Field } from '../shared';
 import type { Block, Payload, Material } from './model';
@@ -11,6 +12,8 @@ export const blockLabels: Record<Block['type'], readonly [string, string]> = {
   VIDEO: ['Видео / ссылка', 'Бейне / сілтеме'],
   QUOTE: ['Цитата', 'Дәйексөз'],
   FORMULA: ['Формула', 'Формула'],
+  CODE: ['Код', 'Код'],
+  TABLE: ['Таблица', 'Кесте'],
   CALLOUT: ['Запомните', 'Есте сақтаңыз'],
   PRACTICE: ['Ссылка на практику', 'Жаттығуға сілтеме'],
 };
@@ -140,12 +143,20 @@ export function RenderedContent({
   const l = useL();
   return (
     <article className="learning-content">
+      {payload.sourceType === 'AI_GENERATED' && (
+        <p className="hint">
+          {l(
+            'Авторский тренировочный материал создан с помощью ИИ; проверка специалистом отмечается отдельно.',
+            'Авторлық жаттығу материалы ЖИ көмегімен жасалған; маман тексеруі бөлек белгіленеді.',
+          )}
+        </p>
+      )}
       {(payload.titleRu || payload.titleKz) && <h2>{l(payload.titleRu, payload.titleKz)}</h2>}
       {l(payload.descriptionRu, payload.descriptionKz) && (
-        <p>{l(payload.descriptionRu, payload.descriptionKz)}</p>
+        <RichText text={l(payload.descriptionRu, payload.descriptionKz)} />
       )}
       {l(payload.contentRu, payload.contentKz) && (
-        <div className="plain-content">{l(payload.contentRu, payload.contentKz)}</div>
+        <RichText text={l(payload.contentRu, payload.contentKz)} />
       )}
       {payload.blocks.map((b, i) => {
         const text = l(b.textRu, b.textKz);
@@ -155,11 +166,15 @@ export function RenderedContent({
           case 'QUOTE':
             return <blockquote key={i}>{text}</blockquote>;
           case 'FORMULA':
+            return <MathText key={i} text={text} display />;
+          case 'CODE':
             return (
-              <pre className="formula" key={i}>
-                {text}
+              <pre key={i}>
+                <code>{text}</code>
               </pre>
             );
+          case 'TABLE':
+            return <TextTable key={i} text={text} />;
           case 'CALLOUT':
             return (
               <aside className="learning-callout" key={i}>
@@ -191,11 +206,7 @@ export function RenderedContent({
           case 'FILE':
             return <MaterialList key={i} items={materials.filter((m) => m.id === b.materialId)} />;
           default:
-            return (
-              <p className="plain-content" key={i}>
-                {text}
-              </p>
-            );
+            return <RichText key={i} text={text} />;
         }
       })}
     </article>

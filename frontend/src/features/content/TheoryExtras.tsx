@@ -1,3 +1,4 @@
+import SaveTheory from '../offline/SaveTheory';
 import { request } from '../../api';
 import { useResource } from '../../hooks';
 import { ErrorState } from '../../components';
@@ -23,7 +24,16 @@ export function TheoryExtras({ id }: { id: string }) {
           />
         )
       )}
+      {r.data?.content.sourceType === 'AI_GENERATED' && (
+        <p className="hint">
+          {l(
+            'Авторский тренировочный материал создан с помощью ИИ; проверка специалистом отмечается отдельно.',
+            'Авторлық жаттығу материалы ЖИ көмегімен жасалған; маман тексеруі бөлек белгіленеді.',
+          )}
+        </p>
+      )}
       <MaterialList items={files.data || []} />
+      {r.data?.content.offlineAllowed && <SaveTheory id={id} />}
       <button
         className="button secondary"
         disabled={action.busy || action.saved}

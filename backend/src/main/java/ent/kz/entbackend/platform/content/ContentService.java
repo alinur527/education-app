@@ -42,6 +42,8 @@ public class ContentService {
     String kind,
     String status,
     String q,
+    UUID parentId,
+    boolean missingTranslation,
     int page,
     int size
   ) {
@@ -50,6 +52,8 @@ public class ContentService {
       kind,
       status,
       q,
+      parentId,
+      missingTranslation,
       actor.editor() ? null : actor.id(),
       Math.max(0, page),
       Math.clamp(size, 1, 100)
@@ -184,7 +188,7 @@ public class ContentService {
       id,
       c.kind(),
       c.parentId(),
-      c.publishedPayload()
+      PublicLearningPayload.of(c.publishedPayload())
     );
   }
 
@@ -207,7 +211,7 @@ public class ContentService {
     require(
       switch (child) {
         case TOPIC -> parent == ContentKind.SUBJECT;
-        case THEORY, QUESTION -> parent == ContentKind.TOPIC;
+        case THEORY, QUESTION, CONTEXT -> parent == ContentKind.TOPIC;
         case MODULE -> parent == ContentKind.COURSE;
         case LESSON -> parent == ContentKind.MODULE;
         case QUIZ -> parent == ContentKind.LESSON;

@@ -32,7 +32,7 @@ public class TestSession {
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "subject_id", nullable = false)
+  @JoinColumn(name = "subject_id")
   private Subject subject;
 
   @ManyToOne
@@ -42,6 +42,26 @@ public class TestSession {
   @Column(name = "question_snapshot", columnDefinition = "jsonb")
   @ColumnTransformer(read = "question_snapshot::text", write = "?::jsonb")
   private String questionSnapshot;
+
+  @Column(name = "context_snapshot", columnDefinition = "jsonb")
+  @ColumnTransformer(read = "context_snapshot::text", write = "?::jsonb")
+  private String contextSnapshot = "{}";
+
+  @Column(name = "snapshot_version")
+  private Integer snapshotVersion = 1;
+
+  @Column(name = "earned_points")
+  private Integer earnedPoints;
+
+  @Column(name = "max_points")
+  private Integer maxPoints;
+
+  @Column(name = "deadline_at")
+  private java.time.OffsetDateTime deadlineAt;
+
+  @Column(name = "exam_configuration", columnDefinition = "jsonb")
+  @ColumnTransformer(read = "exam_configuration::text", write = "?::jsonb")
+  private String examConfiguration;
 
   @Column(name = "status", nullable = false, length = 20)
   private String status;

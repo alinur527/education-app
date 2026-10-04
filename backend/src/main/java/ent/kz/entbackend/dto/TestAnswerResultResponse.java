@@ -12,5 +12,12 @@ public record TestAnswerResultResponse(
   String correctOptionId,
   Boolean isCorrect,
   String explanationRu,
-  String explanationKz
+  String explanationKz,
+  com.fasterxml.jackson.databind.JsonNode assessment,
+  com.fasterxml.jackson.databind.JsonNode answer,
+  com.fasterxml.jackson.databind.JsonNode context,
+  int earnedPoints,
+  int maxPoints,
+  UUID topicId,
+  UUID subjectId
 ) {}

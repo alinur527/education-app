@@ -50,7 +50,11 @@ public class Question {
   @ColumnTransformer(read = "options::text", write = "?::jsonb")
   private String options;
 
-  @Column(name = "correct_option_id", nullable = false, length = 10)
+  @Column(name = "assessment", columnDefinition = "jsonb")
+  @ColumnTransformer(read = "assessment::text", write = "?::jsonb")
+  private String assessment;
+
+  @Column(name = "correct_option_id", length = 10)
   private String correctOptionId;
 
   @Column(name = "explanation_ru")

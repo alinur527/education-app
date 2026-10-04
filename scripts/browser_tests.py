@@ -38,7 +38,7 @@ with sync_playwright() as p:
             ready = '.subject-card' if name.startswith('dashboard') or name == 'subjects' else {
                 'topics': '.topic-row', 'theory': '.theory-content section',
                 'test-desktop': 'input[type=radio]', 'test-mobile': 'input[type=radio]',
-                'results': '.review-item', 'statistics': '.chart', 'login': 'input[type=password]',
+                'results': '.review-item', 'statistics': '.activity-bars', 'login': 'input[type=password]',
             }.get(name)
             if ready:
                 expect(page.locator(ready).first).to_be_visible()
@@ -127,7 +127,7 @@ with sync_playwright() as p:
         results_url = page.url
         page.get_by_role('link', name='Моя статистика', exact=True).click()
         inspect('statistics', True)
-        expect(page.locator('.metric').first).to_contain_text('1')
+        expect(page.locator('.analytics-metrics > div').filter(has_text='Завершено тестов').get_by_text('1',exact=True)).to_be_visible()
         # Direct navigation and full Kazakh result/review translation.
         page.goto(results_url)
         page.get_by_role('button', name='ҚАЗ', exact=True).click()

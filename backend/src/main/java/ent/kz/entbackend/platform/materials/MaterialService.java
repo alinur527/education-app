@@ -3,6 +3,7 @@ package ent.kz.entbackend.platform.materials;
 import ent.kz.entbackend.platform.*;
 import ent.kz.entbackend.platform.content.*;
 import java.util.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class MaterialService {
   private final StorageService storage;
   private final MalwareScanner scanner;
   private final AuditService audit;
+  private final boolean scanRequired;
 
   public MaterialService(
     JdbcTemplate db,
@@ -31,7 +33,8 @@ public class MaterialService {
     FileValidation validation,
     StorageService storage,
     MalwareScanner scanner,
-    AuditService audit
+    AuditService audit,
+    @Value("${app.scan.required:false}") boolean scanRequired
   ) {
     this.db = db;
     this.actor = actor;
@@ -41,6 +44,7 @@ public class MaterialService {
     this.storage = storage;
     this.scanner = scanner;
     this.audit = audit;
+    this.scanRequired = scanRequired;
   }
 
   @Transactional
@@ -81,7 +85,14 @@ public class MaterialService {
       file.getContentType(),
       bytes
     );
-    scanner.scan(bytes, mime);
+    var scan = scanner.scan(bytes, mime);
+    if (
+      scan.status() == MalwareScanner.Status.INFECTED
+    ) throw new PlatformException(400, "MALWARE_DETECTED");
+    if (
+      scan.status() == MalwareScanner.Status.SCAN_FAILED ||
+      (scanRequired && scan.status() != MalwareScanner.Status.CLEAN)
+    ) throw new PlatformException(503, "SCANNER_UNAVAILABLE");
     UUID id = UUID.randomUUID();
     String key = UUID.randomUUID().toString();
     storage.put(key, bytes, mime);
@@ -94,7 +105,7 @@ public class MaterialService {
       }
     );
     db.update(
-      "INSERT INTO materials(id,content_id,title_ru,title_kz,storage_key,original_file_name,mime_type,size,created_by) VALUES (?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO materials(id,content_id,title_ru,title_kz,storage_key,original_file_name,mime_type,size,created_by,scan_status,sha256,scanned_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,CASE WHEN ? THEN now() ELSE NULL END)",
       id,
       parent,
       titleRu,
@@ -103,7 +114,10 @@ public class MaterialService {
       file.getOriginalFilename(),
       mime,
       bytes.length,
-      actor.id()
+      actor.id(),
+      scan.status().name(),
+      FileDigests.sha256(bytes),
+      scan.status() == MalwareScanner.Status.CLEAN
     );
     audit.record(id, "MATERIAL", "UPLOAD", null);
     return metadata(id);
@@ -111,7 +125,7 @@ public class MaterialService {
 
   private Map<String, Object> metadata(UUID id) {
     return db.queryForMap(
-      "SELECT id,content_id AS \"contentId\",title_ru AS \"titleRu\",title_kz AS \"titleKz\",original_file_name AS \"originalFileName\",mime_type AS \"mimeType\",size,published FROM materials WHERE id=?",
+      "SELECT id,content_id AS \"contentId\",title_ru AS \"titleRu\",title_kz AS \"titleKz\",original_file_name AS \"originalFileName\",mime_type AS \"mimeType\",size,published,scan_status AS \"scanStatus\" FROM materials WHERE id=?",
       id
     );
   }
@@ -121,7 +135,7 @@ public class MaterialService {
     policy.read(c);
     if (!materialAccess(c)) return List.of();
     return db.queryForList(
-      "SELECT id,content_id AS \"contentId\",title_ru AS \"titleRu\",title_kz AS \"titleKz\",original_file_name AS \"originalFileName\",mime_type AS \"mimeType\",size,published FROM materials WHERE content_id=? AND (? OR published) ORDER BY created_at LIMIT 100",
+      "SELECT id,content_id AS \"contentId\",title_ru AS \"titleRu\",title_kz AS \"titleKz\",original_file_name AS \"originalFileName\",mime_type AS \"mimeType\",size,published,scan_status AS \"scanStatus\" FROM materials WHERE content_id=? AND (? OR published) ORDER BY created_at LIMIT 100",
       parent,
       policy.canEdit(c)
     );
@@ -137,11 +151,47 @@ public class MaterialService {
     if (
       !policy.canEdit(c) && !Boolean.TRUE.equals(m.get("published"))
     ) throw PlatformException.missing();
+    String scanStatus = m.get("scan_status").toString();
+    if (
+      !scanStatus.equals("CLEAN") &&
+      !scanStatus.equals("UNSCANNED_LEGACY") &&
+      (!scanStatus.equals("UNSCANNED") || scanRequired)
+    ) throw new PlatformException(409, "FILE_NOT_CLEAN");
+    byte[] bytes = storage.get((String) m.get("storage_key"));
+    if (
+      m.get("sha256") != null &&
+      !m.get("sha256").equals(FileDigests.sha256(bytes))
+    ) throw new PlatformException(409, "FILE_INTEGRITY_ERROR");
     return new Download(
-      storage.get((String) m.get("storage_key")),
+      bytes,
       (String) m.get("original_file_name"),
       (String) m.get("mime_type")
     );
+  }
+
+  public ContentDtos.Page<Map<String, Object>> library(String q, int page) {
+    actor.staffOnly();
+    PlatformException.require(
+      q != null && q.length() <= 200 && page >= 0 && page <= 100000,
+      "INVALID_FILTER"
+    );
+    String where =
+      " FROM materials m JOIN content_records c ON c.id=m.content_id WHERE (? OR (c.owner_id=? AND c.kind IN ('COURSE','MODULE','LESSON','ASSIGNMENT','QUIZ'))) AND (lower(m.title_ru||' '||coalesce(m.title_kz,'')||' '||m.original_file_name||' '||c.title_ru||' '||c.title_kz) LIKE ?)";
+    Object[] args = {
+      actor.editor(),
+      actor.id(),
+      "%" + q.toLowerCase(Locale.ROOT) + "%",
+    };
+    long total = db.queryForObject("SELECT count(*)" + where, Long.class, args);
+    List<Object> paged = new ArrayList<>(Arrays.asList(args));
+    paged.add(page * 25);
+    var items = db.queryForList(
+      "SELECT m.id,m.content_id AS \"contentId\",m.title_ru AS \"titleRu\",m.title_kz AS \"titleKz\",m.original_file_name AS \"originalFileName\",m.mime_type AS \"mimeType\",m.size,m.published,m.scan_status AS \"scanStatus\",c.title_ru AS \"contentTitleRu\",c.title_kz AS \"contentTitleKz\",c.kind AS \"contentKind\"" +
+        where +
+        " ORDER BY m.created_at DESC,m.id LIMIT 25 OFFSET ?",
+      paged.toArray()
+    );
+    return new ContentDtos.Page<>(items, page, 25, total);
   }
 
   private boolean materialAccess(ContentRecord content) {

@@ -80,12 +80,14 @@ public class ContentRepository {
     String kind,
     String status,
     String query,
+    UUID parentId,
+    boolean missingTranslation,
     UUID owner,
     int page,
     int size
   ) {
     String where =
-      " WHERE (?='' OR kind=?) AND (?='' OR status=?) AND (title_ru ILIKE ? OR title_kz ILIKE ?) AND (?::uuid IS NULL OR (owner_id=?::uuid AND kind NOT IN ('SUBJECT','TOPIC','THEORY','QUESTION')))";
+      " WHERE (?='' OR kind=?) AND (?='' OR status=?) AND (title_ru ILIKE ? OR title_kz ILIKE ?) AND (?::uuid IS NULL OR parent_id=?::uuid) AND (NOT ? OR btrim(coalesce(title_kz,''))='') AND (?::uuid IS NULL OR (owner_id=?::uuid AND kind NOT IN ('SUBJECT','TOPIC','THEORY','QUESTION','CONTEXT')))";
     Object[] values = {
       kind,
       kind,
@@ -93,6 +95,9 @@ public class ContentRepository {
       status,
       "%" + query + "%",
       "%" + query + "%",
+      parentId,
+      parentId,
+      missingTranslation,
       owner,
       owner,
     };

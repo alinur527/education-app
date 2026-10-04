@@ -3,6 +3,7 @@ package ent.kz.entbackend.platform.teaching;
 import ent.kz.entbackend.platform.*;
 import ent.kz.entbackend.platform.content.*;
 import ent.kz.entbackend.platform.courses.CourseService;
+import ent.kz.entbackend.platform.submissions.SubmissionRevisionService;
 import jakarta.validation.constraints.*;
 import java.util.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +21,12 @@ public class TeachingService {
 
   public record Member(@NotBlank @Email String email) {}
 
-  public record Submission(@NotNull @Size(max = 20000) String text) {}
+  public record Submission(
+    @Size(max = 20000) String text,
+    @Size(max = 5) List<@NotNull UUID> fileIds,
+    UUID requestKey,
+    @Min(0) Long revision
+  ) {}
 
   public record Grade(
     @Min(0) int score,
@@ -34,6 +40,7 @@ public class TeachingService {
   private final ContentPolicy policy;
   private final CourseService courses;
   private final AuditService audit;
+  private final SubmissionRevisionService submissionRevisions;
 
   public TeachingService(
     JdbcTemplate db,
@@ -41,7 +48,8 @@ public class TeachingService {
     ContentRepository records,
     ContentPolicy policy,
     CourseService courses,
-    AuditService audit
+    AuditService audit,
+    SubmissionRevisionService submissionRevisions
   ) {
     this.db = db;
     this.actor = actor;
@@ -49,6 +57,7 @@ public class TeachingService {
     this.policy = policy;
     this.courses = courses;
     this.audit = audit;
+    this.submissionRevisions = submissionRevisions;
   }
 
   private void teacher() {
@@ -173,7 +182,7 @@ public class TeachingService {
     result.put(
       "weakTopics",
       db.queryForList(
-        "SELECT t.id,t.title_ru AS \"titleRu\",t.title_kz AS \"titleKz\",round(avg(s.score),1) AS accuracy FROM test_sessions s JOIN group_members m ON m.user_id=s.user_id JOIN topics t ON t.id=s.topic_id WHERE m.group_id=? AND s.status='COMPLETED' GROUP BY t.id HAVING avg(s.score)<70 ORDER BY accuracy LIMIT 5",
+        "SELECT t.id,t.title_ru AS \"titleRu\",t.title_kz AS \"titleKz\",round(100.0*sum(a.earned_points)/nullif(sum(a.max_points),0),1) AS accuracy FROM completed_question_activity a JOIN group_members m ON m.user_id=a.user_id JOIN topics t ON t.id=a.topic_id WHERE m.group_id=? GROUP BY t.id HAVING 100.0*sum(a.earned_points)/nullif(sum(a.max_points),0)<70 ORDER BY accuracy LIMIT 5",
         id
       )
     );
@@ -249,33 +258,18 @@ public class TeachingService {
     ) throw PlatformException.missing();
     var result = new LinkedHashMap<String, Object>();
     result.put("id", id);
-    result.put("content", c.publishedPayload());
-    result.put(
-      "submission",
-      db
-        .queryForList(
-          "SELECT text,submitted_at AS \"submittedAt\",score,feedback FROM assignment_submissions WHERE assignment_id=? AND user_id=?",
-          id,
-          actor.id()
-        )
-        .stream()
-        .findFirst()
-        .orElse(null)
-    );
+    result.put("content", PublicLearningPayload.of(c.publishedPayload()));
+    result.put("submission", submissionRevisions.current(id, actor.id()));
     return result;
   }
 
-  public void submit(UUID id, Submission req) {
-    records.get(id, true);
-    assignment(id);
-    if (
-      actor.user().getRole() != ent.kz.entbackend.entity.UserRole.STUDENT
-    ) throw PlatformException.forbidden();
-    db.update(
-      "INSERT INTO assignment_submissions(assignment_id,user_id,text) VALUES (?,?,?) ON CONFLICT(assignment_id,user_id) DO UPDATE SET text=excluded.text,revision=assignment_submissions.revision+1,submitted_at=now(),score=null,feedback=null,graded_by=null,graded_at=null",
+  public Map<String, Object> submit(UUID id, Submission req) {
+    return submissionRevisions.submit(
       id,
-      actor.id(),
-      req.text()
+      req.text(),
+      req.fileIds(),
+      req.requestKey(),
+      req.revision()
     );
   }
 
@@ -284,7 +278,7 @@ public class TeachingService {
     policy.edit(records.get(id, false));
     page = Math.max(0, page);
     var rows = db.queryForList(
-      "SELECT s.user_id AS \"userId\",u.first_name AS \"firstName\",u.last_name AS \"lastName\",s.text,s.score,s.feedback,s.revision,s.submitted_at AS \"submittedAt\" FROM assignment_submissions s JOIN users u ON u.id=s.user_id WHERE s.assignment_id=? AND EXISTS(SELECT 1 FROM assignment_groups ag JOIN group_members gm ON gm.group_id=ag.group_id JOIN learning_groups g ON g.id=gm.group_id WHERE ag.assignment_id=s.assignment_id AND gm.user_id=s.user_id AND (? OR g.teacher_id=?)) ORDER BY s.submitted_at DESC,s.user_id LIMIT 25 OFFSET ?",
+      "SELECT s.user_id AS \"userId\",u.first_name AS \"firstName\",u.last_name AS \"lastName\",s.text,s.score,s.feedback,s.revision,s.content_revision AS \"contentRevision\",s.submitted_at AS \"submittedAt\" FROM assignment_submissions s JOIN users u ON u.id=s.user_id WHERE s.assignment_id=? AND EXISTS(SELECT 1 FROM assignment_groups ag JOIN group_members gm ON gm.group_id=ag.group_id JOIN learning_groups g ON g.id=gm.group_id WHERE ag.assignment_id=s.assignment_id AND gm.user_id=s.user_id AND (? OR g.teacher_id=?)) ORDER BY s.submitted_at DESC,s.user_id LIMIT 25 OFFSET ?",
       id,
       actor.admin(),
       actor.id(),
@@ -333,6 +327,13 @@ public class TeachingService {
       req.revision()
     );
     if (saved == 0) throw new PlatformException(409, "REVISION_CONFLICT");
+    submissionRevisions.recordGrade(
+      id,
+      user,
+      req.score(),
+      req.feedback(),
+      c.publishedPayload().path("maxScore").asInt(100)
+    );
     audit.record(id, "ASSIGNMENT", "GRADE", null);
   }
 }

@@ -4,10 +4,14 @@ import tailwind from '@tailwindcss/vite';
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwind()],
   build: {
+    assetsInlineLimit: 0,
     rolldownOptions: {
       output: {
         codeSplitting: {
-          groups: [{ name: 'vendor', test: /node_modules/ }],
+          groups: [
+            { name: 'math', test: /node_modules[/]katex[/]/, priority: 20 },
+            { name: 'vendor', test: /node_modules/, priority: 10 },
+          ],
         },
       },
     },

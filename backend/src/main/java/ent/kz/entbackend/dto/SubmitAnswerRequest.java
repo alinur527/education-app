@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public record SubmitAnswerRequest(
   @NotNull UUID questionId,
-  @NotBlank @Size(max = 10) String selectedOptionId,
-  @Min(0) @Max(86400) Integer timeSpentSecs
+  @Size(max = 10) String selectedOptionId,
+  @Min(0) @Max(86400) Integer timeSpentSecs,
+  com.fasterxml.jackson.databind.JsonNode answer
 ) {}

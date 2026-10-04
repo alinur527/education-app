@@ -26,7 +26,29 @@ checks, errors = [], []
 expected_failure = False
 accounts, ids = {}, {}
 created_ids = []
-pdf = b'%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\n%%EOF\n'
+def lesson_pdf():
+    """A valid, original one-page PDF fixture; no external document dependency."""
+    text = b'BT /F1 16 Tf 72 720 Td (Lesson notes: 2 + 2 = 4.) Tj ET'
+    objects = [
+        b'<</Type /Catalog /Pages 2 0 R>>',
+        b'<</Type /Pages /Kids [3 0 R] /Count 1>>',
+        b'<</Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources <</Font <</F1 4 0 R>>>> /Contents 5 0 R>>',
+        b'<</Type /Font /Subtype /Type1 /BaseFont /Helvetica>>',
+        b'<</Length ' + str(len(text)).encode() + b'>>\nstream\n' + text + b'\nendstream',
+    ]
+    document = bytearray(b'%PDF-1.4\n')
+    offsets = []
+    for n, obj in enumerate(objects, 1):
+        offsets.append(len(document))
+        document.extend(str(n).encode() + b' 0 obj\n' + obj + b'\nendobj\n')
+    xref = len(document)
+    document.extend(b'xref\n0 6\n0000000000 65535 f \n')
+    for offset in offsets:
+        document.extend(f'{offset:010} 00000 n \n'.encode())
+    document.extend(f'trailer\n<</Size 6 /Root 1 0 R>>\nstartxref\n{xref}\n%%EOF\n'.encode())
+    return bytes(document)
+
+pdf = lesson_pdf()
 
 with sync_playwright() as p:
     api = p.request.new_context(base_url=BASE)
@@ -79,6 +101,7 @@ with sync_playwright() as p:
         inspect('login-' + role)
 
     def publish():
+        page.get_by_role('button', name='Проверка и публикация', exact=True).click()
         page.get_by_role('button', name='На проверку', exact=True).click()
         expect(page.get_by_role('button', name='Опубликовать', exact=True)).to_be_enabled()
         page.get_by_role('button', name='Опубликовать', exact=True).click()
@@ -96,6 +119,10 @@ with sync_playwright() as p:
         if kind == 'COURSE':
             page.get_by_label('Видимость курса').select_option('PUBLIC')
             page.get_by_label('Разрешить самостоятельную запись').check()
+        if kind == 'ASSIGNMENT':
+            page.get_by_label('Максимальный балл').fill('10')
+            page.get_by_label('Срок сдачи').fill('2027-05-20T18:00')
+        page.get_by_role('button', name='Далее: Содержание', exact=True).click()
         if kind in ('THEORY', 'LESSON', 'ASSIGNMENT'):
             page.get_by_role('button', name='+ Текст', exact=True).click()
             page.get_by_label('RU', exact=True).fill('Разберите пример: 2 + 2 = 4. Объясните ход решения.')
@@ -109,11 +136,11 @@ with sync_playwright() as p:
                     page.get_by_label(f'Ответ {option} {lang}', exact=True).fill(answer)
             page.get_by_label('Объяснение RU').fill('2 + 2 = 4')
             page.get_by_label('Объяснение KZ').fill('2 + 2 = 4')
-        if kind == 'ASSIGNMENT':
-            page.get_by_label('Максимальный балл').fill('10')
-            page.get_by_label('Срок сдачи').fill('2027-05-20T18:00')
+        page.get_by_role('button', name='Далее: Проверка и публикация', exact=True).click()
+        expect(page.get_by_text('Предпросмотр черновика. Ученики видят только опубликованную версию.', exact=True)).to_be_visible()
         page.get_by_role('button', name='Сохранить черновик', exact=True).click()
         expect(page.get_by_role('heading', name='Редактор материала', exact=True)).to_be_visible()
+        page.get_by_role('button', name='Проверка и публикация', exact=True).click()
         expect(page.get_by_role('button', name='На проверку', exact=True)).to_be_enabled()
         cid = page.url.rsplit('/', 1)[1]
         assert str(uuid.UUID(cid)) == cid
@@ -146,6 +173,15 @@ with sync_playwright() as p:
         page.get_by_label('Название файла KZ').fill('Сабақ конспектісі')
         page.get_by_role('button', name='Загрузить файл', exact=True).click()
         expect(page.get_by_role('button', name='Скачать', exact=True)).to_be_visible()
+        go('/workspace/files?q=' + lesson[1].replace(' ', '%20'), 'Библиотека файлов')
+        expect(page.get_by_text('Черновик: ученикам недоступен', exact=True)).to_be_visible()
+        expect(page.get_by_role('link', name=lesson[1], exact=True)).to_have_attribute('href', '/workspace/content/' + lesson[0])
+        with page.expect_download() as teacher_download:
+            page.get_by_role('button', name='Скачать: Конспект урока', exact=True).click()
+        assert Path(teacher_download.value.path()).read_bytes() == pdf
+        inspect('teacher-file-library', True)
+        page.get_by_role('link', name=lesson[1], exact=True).click()
+        expect(page.get_by_role('heading', name='Редактор материала', exact=True)).to_be_visible()
         publish()
         assignment = new_content('ASSIGNMENT', 'Объясните решение ' + run, lesson, 'Урок')
         quiz = new_content('QUIZ', 'Проверьте себя ' + run, lesson, 'Урок')
@@ -199,7 +235,7 @@ with sync_playwright() as p:
         expect(page.get_by_label('Ваш ответ')).to_be_visible()
         page.get_by_label('Ваш ответ').fill('Складываем две пары и получаем четыре.')
         page.get_by_role('button', name='Отправить ответ', exact=True).click()
-        expect(page.get_by_text('Повторная отправка заменит ответ и сбросит прежнюю оценку.', exact=True)).to_be_visible()
+        expect(page.get_by_text('Новая отправка создаст следующую версию. Прежний ответ, файлы и оценки останутся в истории; новая версия ожидает новой оценки.', exact=True)).to_be_visible()
         inspect('student-assignment', True)
         go('/quizzes/' + quiz[0], 'Проверка знаний')
         page.get_by_role('button', name='Начать тест урока').click()
@@ -278,9 +314,16 @@ with sync_playwright() as p:
         for width in (1440, 1024, 768, 390, 320):
             page.set_viewport_size({'width':width,'height':900})
             inspect(f'cms-{width}', True)
+            page.get_by_role('button', name='Содержание', exact=True).click()
+            expect(page.get_by_role('button', name='+ Текст', exact=True)).to_be_visible()
+            inspect(f'cms-content-{width}', True)
+            page.get_by_role('button', name='Проверка и публикация', exact=True).click()
+            expect(page.get_by_text('Предпросмотр черновика. Ученики видят только опубликованную версию.', exact=True)).to_be_visible()
+            inspect(f'cms-preview-{width}', True)
+            page.get_by_role('button', name='Основное', exact=True).click()
         page.set_viewport_size({'width':1440,'height':1000})
         page.get_by_label('Название RU', exact=True).fill('Несохранённая правка')
-        page.get_by_role('link', name='Материалы', exact=True).click()
+        page.get_by_role('link', name='Контент', exact=True).click()
         expect(page.get_by_role('alertdialog')).to_be_visible()
         inspect('dirty-draft-dialog', True)
         page.get_by_role('button', name='Остаться', exact=True).click()

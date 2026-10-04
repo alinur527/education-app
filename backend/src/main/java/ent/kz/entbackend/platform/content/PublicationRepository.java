@@ -65,20 +65,57 @@ public class PublicationRepository {
         active,
         parent
       );
-      case QUESTION -> db.update(
-        "INSERT INTO questions(id,subject_id,topic_id,topic_ru,topic_kz,question_ru,question_kz,options,correct_option_id,explanation_ru,explanation_kz,difficulty,year,is_active) SELECT ?,subject_id,id,title_ru,title_kz,?,?,?::jsonb,?,?,?,?,?,? FROM topics WHERE id=? ON CONFLICT(id) DO UPDATE SET question_ru=excluded.question_ru,question_kz=excluded.question_kz,options=excluded.options,correct_option_id=excluded.correct_option_id,explanation_ru=excluded.explanation_ru,explanation_kz=excluded.explanation_kz,difficulty=excluded.difficulty,year=excluded.year,is_active=excluded.is_active,updated_at=now()",
-        id,
-        ru,
-        kz,
-        p.path("options").toString(),
-        text(p, "correctOptionId"),
-        text(p, "explanationRu"),
-        text(p, "explanationKz"),
-        p.path("difficulty").asText("medium"),
-        p.hasNonNull("year") ? p.get("year").asInt() : null,
-        active,
-        parent
-      );
+      case QUESTION -> {
+        db.update(
+          "INSERT INTO questions(id,subject_id,topic_id,topic_ru,topic_kz,question_ru,question_kz,options,correct_option_id,explanation_ru,explanation_kz,difficulty,year,is_active) SELECT ?,subject_id,id,title_ru,title_kz,?,?,?::jsonb,?,?,?,?,?,? FROM topics WHERE id=? ON CONFLICT(id) DO UPDATE SET question_ru=excluded.question_ru,question_kz=excluded.question_kz,options=excluded.options,correct_option_id=excluded.correct_option_id,explanation_ru=excluded.explanation_ru,explanation_kz=excluded.explanation_kz,difficulty=excluded.difficulty,year=excluded.year,is_active=excluded.is_active,updated_at=now()",
+          id,
+          ru,
+          kz,
+          p.path("options").toString(),
+          p.hasNonNull("correctOptionId") ? text(p, "correctOptionId") : null,
+          text(p, "explanationRu"),
+          text(p, "explanationKz"),
+          p.path("difficulty").asText("medium"),
+          p.hasNonNull("year") ? p.get("year").asInt() : null,
+          active,
+          parent
+        );
+        var assessment =
+          ent.kz.entbackend.platform.assessment.Assessment.freeze(p);
+        if (p.hasNonNull("contextId")) {
+          UUID context = ContentValidation.uuid(p.path("contextId").asText());
+          var versions = db.queryForList(
+            "SELECT v.version FROM context_versions v JOIN content_records c ON c.id=v.content_id WHERE c.id=? AND c.parent_id=? AND c.published_payload IS NOT NULL AND c.status<>'ARCHIVED' AND (?=0 OR v.version=?) ORDER BY v.version DESC LIMIT 1",
+            context,
+            parent,
+            p.path("contextVersion").asLong(0),
+            p.path("contextVersion").asLong(0)
+          );
+          if (
+            active && versions.isEmpty()
+          ) throw new ent.kz.entbackend.platform.PlatformException(
+            400,
+            "CONTEXT_NOT_PUBLISHED"
+          );
+          if (!versions.isEmpty()) assessment.put(
+            "contextKey",
+            context + ":" + versions.getFirst().get("version")
+          );
+        }
+        db.update(
+          "UPDATE questions SET assessment=?::jsonb WHERE id=?",
+          assessment.toString(),
+          id
+        );
+      }
+      case CONTEXT -> {
+        if (active) db.update(
+          "INSERT INTO context_versions(content_id,version,payload) VALUES (?,?,?::jsonb)",
+          id,
+          c.version() + 1,
+          p.toString()
+        );
+      }
       case COURSE -> db.update(
         "INSERT INTO courses(id,teacher_id,title_ru,title_kz,description_ru,description_kz,visibility,self_enroll,icon) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET title_ru=excluded.title_ru,title_kz=excluded.title_kz,description_ru=excluded.description_ru,description_kz=excluded.description_kz,visibility=excluded.visibility,self_enroll=excluded.self_enroll,icon=excluded.icon",
         id,
