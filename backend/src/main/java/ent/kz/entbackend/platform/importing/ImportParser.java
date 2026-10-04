@@ -60,10 +60,14 @@ public class ImportParser {
           if (v.isEmpty()) continue;
           switch (k) {
             case "key", "kind", "parentKey", "parentId" -> row.put(k, v);
-            case "options", "blocks", "questions" -> payload.set(
-              k,
-              json.readTree(v)
-            );
+            case
+              "options",
+              "blocks",
+              "questions",
+              "correctOptionIds",
+              "leftOptions",
+              "correctPairs" -> payload.set(k, json.readTree(v));
+            case "contextVersion" -> payload.put(k, Long.parseLong(v));
             case
               "year",
               "sortOrder",

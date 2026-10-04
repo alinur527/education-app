@@ -8,7 +8,7 @@ Branch `codex/education-content-experience` extends Phase 2 commit `e39293b3d9a0
 
 | Command / evidence | Local result |
 |---|---|
-| `backend/mvnw.cmd -q -f backend/pom.xml verify` with JDK 21 | 58 backend tests, zero failures/errors/skips; real PostgreSQL/Testcontainers, legacy migration upgrade, concurrency, ownership, scoring, imports, S3 and scanner tests |
+| `backend/mvnw.cmd -q -f backend/pom.xml verify` with JDK 21 | 62 backend tests, zero failures/errors/skips; real PostgreSQL/Testcontainers, legacy migration upgrade, concurrency, ownership, scoring, imports, S3 and scanner tests |
 | `npm --prefix frontend run typecheck` | Pass |
 | `npm --prefix frontend run lint` | Pass, zero warnings |
 | `npm --prefix frontend test` | 45 frontend tests pass, including RU/KZ safe assignment description rendering |
@@ -31,6 +31,8 @@ The expansion suite additionally covers versioned pack/source UI, mass review/pu
 Viewports: 320/390/768/1024/1440. Reduced motion, long RU/KZ text, responsive CMS hierarchy/editor/preview, groups/courses, planner/practice and safe rich content were exercised. Axe found no violations in tested surfaces; this is not full accessibility certification. No unexpected browser/console/network errors remained in passing runs.
 
 The first expansion CI run caught a Windows CRLF versus Git LF mismatch in byte-based content proof hashes. New content JSON and its writers now use canonical LF; the four original input files remain byte-preserved. Proof/review hashes were regenerated for the identical parsed content, and checked against staged Git blobs. The canonical release-plan checksum and runtime content are unchanged. That failed run is not counted as release verification.
+
+A final import-contract review also closed a CSV compatibility gap: `correctOptionIds`, `leftOptions` and `correctPairs` are parsed as JSON nodes, and `contextVersion` as a 64-bit integer. Four regression tests exercise real CSV parsing, ContentValidation and assessment freeze/grade, including invalid shapes/keys and invalid/overflowing versions. The complete 62-test Maven suite and rebuilt backend passed after this change.
 
 The independent [security review](EXPANSION_SECURITY_REVIEW.md) closed editorial answer-evidence leakage, pack locking/conflicts, context withdrawal, stale session/deadline races and legacy assessment compatibility. No unresolved P0/P1 findings remain. Source content is untrusted; safe renderers never execute imported HTML. Student attachments use real ClamAV, revision-specific grades and protected downloads.
 

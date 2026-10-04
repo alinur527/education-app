@@ -44,7 +44,7 @@ Questions require 2–8 unique option IDs and valid answer keys, including in a 
 
 ## CSV
 
-The first row is the header. Structural columns are `key,kind,parentKey,parentId`; remaining columns become payload fields. Arrays such as `options`, `questions` and `blocks` contain JSON inside an RFC4180-quoted CSV cell. Double embedded quotes (`""`), and quote commas/newlines. Boolean fields use `true`/`false`; integer fields use decimal integers. Empty optional cells are omitted. The parser accepts UTF-8 BOM and CRLF/LF, at most 64 columns and 200,000 characters per cell. A spreadsheet editor can export this format; manual DB JSON editing is unnecessary.
+The first row is the header. Structural columns are `key,kind,parentKey,parentId`; remaining columns become payload fields. Arrays `options`, `questions`, `blocks`, `correctOptionIds`, `leftOptions` and `correctPairs` contain JSON inside an RFC4180-quoted CSV cell. Double embedded quotes (`""`), and quote commas/newlines. Boolean fields use `true`/`false`; integer fields, including `contextVersion`, use decimal integers. Empty optional cells are omitted. The parser accepts UTF-8 BOM and CRLF/LF, at most 64 columns and 200,000 characters per cell. A spreadsheet editor can export this format; manual DB JSON editing is unnecessary.
 
 ## Errors and transaction guarantees
 
