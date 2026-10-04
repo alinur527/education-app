@@ -1,0 +1,68 @@
+name: Verify Education App
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - run: chmod +x mvnw && ./mvnw -B verify
+        working-directory: backend
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+  browser:
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --prefix frontend
+      - run: |
+          python -m venv .venv
+          .venv/bin/pip install -r scripts/requirements-browser.txt
+          .venv/bin/python -m playwright install --with-deps chromium
+      - run: sh scripts/setup.sh
+      - run: docker compose --profile app up -d --build --wait --wait-timeout 180
+      - run: .venv/bin/python scripts/browser_tests.py
+        env:
+          BROWSER_BASE_URL: http://127.0.0.1:8081
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-verification
+          path: |
+            test-results/
+            docs/screenshots/
+      - run: docker compose --profile app down
+        if: always()
